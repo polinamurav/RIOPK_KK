@@ -1,0 +1,12 @@
+<div class="table-block">
+  <mat-app-table
+    [objColNameProps]="objColNameProps"
+    [changePage]="changePage"
+    [totalCount]="totalCount"
+    [tableData]="dataSource"
+    [itemLimit]="itemLimit"
+    [isSotring]="false"
+    (selectedPage)="selectedPageEvent($event)"
+  >
+  </mat-app-table>
+</div>

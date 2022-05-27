@@ -1,0 +1,48 @@
+/*
+ * Application global variables.
+ */
+
+// Set Font Awesome font path
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+
+// ---------------------------------------------------------------------------
+// Bootstrap variables
+//
+// Override Bootstrap variables here to suite your theme.
+// Copy variables you want to customize from node_modules/bootstrap/scss/_variables.scss
+
+$font-size-base: 1rem !default; // Assumes the browser default, typically
+
+// TODO fix bug. Content shift when opening a modal window on a full-form page
+html.cdk-global-scrollblock {
+  position: static;
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+  width: 3px;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  outline: #444 solid 1px;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+body .swal2-backdrop-show:not(.swal2-top) {
+  overflow-y: auto !important;
+}
+
+.mat-tab-label,
+.mat-tab-link,
+.mat-tab-group {
+  font-family: Manrope, sans-serif !important;
+}
+
+// Use Bootstrap defaults for other variables, imported here so we can access all app variables in one place when used
+// in components.
+@import "~bootstrap/scss/_functions";
+@import "~bootstrap/scss/_variables";

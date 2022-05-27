@@ -1,0 +1,65 @@
+@import "../../../theme/styles/colors";
+
+.wrapper {
+  width: 350px;
+  height: 400px;
+  padding: 10px;
+}
+
+.comment-list {
+  height: 340px;
+  margin-bottom: 10px;
+}
+
+.comment-block {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.no-comments-block {
+  text-align: center;
+  font-size: 14px;
+  color: $cadet-grey;
+}
+
+.comment-input {
+  display: flex;
+  padding-left: 20px;
+}
+
+.comment-text {
+  width: 250px;
+  margin-right: 20px;
+  padding-left: 10px;
+  border-radius: 5px;
+  border-width: 1px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.icon-wrapper {
+  width: 36px;
+  height: 36px;
+  margin-right: 10px;
+}
+
+.comment-info {
+  font-size: 14px;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  .date-text {
+    font-size: 12px;
+    color: $bank-gray;
+    font-weight: 600;
+    font-family: Manrope, sans-serif !important;
+  }
+
+  .comment-text-view {
+    font-weight: 400;
+  }
+}

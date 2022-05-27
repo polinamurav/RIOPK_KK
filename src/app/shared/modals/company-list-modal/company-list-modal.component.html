@@ -1,0 +1,76 @@
+<div>
+  <div class="close-btn-wrapper">
+    <mat-app-button
+      [mat-dialog-close]="'close'"
+      [radius]="'round'"
+      [className]="'close-modal'"
+      [backgroundColor]="'white'"
+      [color]="'gray'"
+      [hover]="'gray'"
+      [border]="true"
+    >
+      <span [inlineSVG]="'../../../assets/close-1.svg'"></span>
+    </mat-app-button>
+  </div>
+
+  <div class="modal-content">
+    <form [formGroup]="companyListForm">
+      <div class="padding">
+        <div class="margin-dtm">
+          <app-form-field formControlName="name" placeholder="Наименование *" type="text"></app-form-field>
+        </div>
+        <div class="margin-dtm">
+          <mat-app-slide-toggle formControlName="active" [label]="'Активный/неактивный сервис'"></mat-app-slide-toggle>
+        </div>
+        <app-form-field formControlName="inn" placeholder="ИНН" type="string"></app-form-field>
+        <mat-app-search-select formControlName="dirCompanyStatusId" placeholder="Статус *" [options]="statusList">
+        </mat-app-search-select>
+      </div>
+
+      <div class="modal-footer footer">
+        <div class="edit-button-wrapper" *ngIf="!showEditButtons && !showSendButton">
+          <mat-app-button
+            [backgroundColor]="'blue'"
+            [color]="'white'"
+            [hover]="'blue'"
+            [radius]="'semiRound'"
+            [className]="'custom-style-edit-button'"
+            (clickEvent)="editButtonClick()"
+            ><span>Редактировать</span>
+          </mat-app-button>
+        </div>
+        <div class="save-cancel-buttons-wrapper" *ngIf="showEditButtons">
+          <mat-app-button
+            [backgroundColor]="'blue'"
+            [color]="'white'"
+            [hover]="'blue'"
+            [radius]="'semiRound'"
+            [type]="'submit'"
+            (clickEvent)="onSave()"
+            ><span>Сохранить</span></mat-app-button
+          >
+
+          <mat-app-button
+            (clickEvent)="cancelButtonClick(true)"
+            [backgroundColor]="'white'"
+            [color]="'gray'"
+            [hover]="'gray'"
+            [radius]="'semiRound'"
+            ><span>Отменить</span></mat-app-button
+          >
+        </div>
+        <div class="send-button-wrapper" *ngIf="showSendButton">
+          <mat-app-button
+            [backgroundColor]="'blue'"
+            [color]="'white'"
+            [hover]="'blue'"
+            [type]="'submit'"
+            [radius]="'semiRound'"
+            (clickEvent)="sendButtonClick()"
+            ><span>Отправить</span></mat-app-button
+          >
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

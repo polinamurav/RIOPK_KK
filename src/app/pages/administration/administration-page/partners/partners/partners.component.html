@@ -1,0 +1,28 @@
+<div class="filter-wrapper"></div>
+<div class="table-block">
+  <mat-app-table
+    [objColNameProps]="objColNameProps"
+    [tableData]="dataSource"
+    (selectedItem)="selectedItem($event)"
+    [isSelectsItem]="isAdmin"
+    (selectedPage)="selectedPageEvent($event)"
+    [isSotring]="false"
+    [totalCount]="totalCount"
+    [itemLimit]="itemLimit"
+  >
+    <div class="button-block" *ngIf="isAdmin">
+      <mat-app-button
+        [className]="'mr-2'"
+        [size]="'medium'"
+        [border]="true"
+        [radius]="'semiRound'"
+        [backgroundColor]="'white'"
+        [color]="'gray'"
+        [hover]="'gray'"
+        (clickEvent)="openCreateNewDialog()"
+      >
+        Добавить партнёра
+      </mat-app-button>
+    </div>
+  </mat-app-table>
+</div>

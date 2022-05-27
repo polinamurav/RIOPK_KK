@@ -1,0 +1,52 @@
+<div class="wrapper">
+  <span class="close-btn-wrapper" type="" [mat-dialog-close]="'close'">
+    <img src="../../../../assets/PopupCloseDark.png" alt="Close modal" />
+  </span>
+
+  <div class="modal-content">
+    <perfect-scrollbar>
+      <form [formGroup]="integrationForm">
+        <div class="margin-dtm padding">
+          <app-form-field
+            formControlName="serviceName"
+            [placeholder]="'Administration.TableHeaders.Integration.ServiceName'"
+            type="text"
+          ></app-form-field>
+        </div>
+        <div class="margin-dtm padding">
+          <mat-app-slide-toggle
+            formControlName="isServiceOn"
+            [label]="'Administration.TableHeaders.Integration.ServiceStatus'"
+          ></mat-app-slide-toggle>
+        </div>
+        <app-form-field
+          formControlName="serviceCode"
+          [placeholder]="'Administration.TableHeaders.Integration.ServiceCode'"
+          type="text"
+        ></app-form-field>
+        <app-form-field
+          formControlName="created"
+          [placeholder]="'Administration.TableHeaders.Integration.Created'"
+          type="date"
+        ></app-form-field>
+        <app-form-field
+          formControlName="updated"
+          [placeholder]="'Administration.TableHeaders.Integration.Updated'"
+          type="date"
+        ></app-form-field>
+      </form>
+    </perfect-scrollbar>
+  </div>
+  <div class="modal-footer">
+    <mat-app-button
+      [color]="'white'"
+      [backgroundColor]="'blue'"
+      [border]="true"
+      [hover]="'blue'"
+      [radius]="'semiRound'"
+      (clickEvent)="onSave()"
+      type="'submit'"
+      >{{ 'Buttons.Save' | translate }}</mat-app-button
+    >
+  </div>
+</div>

@@ -1,0 +1,185 @@
+<div class="administration-base-modal-container">
+  <span class="close-btn-wrapper" type="" [mat-dialog-close]="'close'">
+    <img src="../../../../assets/PopupCloseDark.png" alt="Close modal" />
+  </span>
+  <form [formGroup]="formGroup">
+    <div class="administration-base-modal-header">
+      <h3 class="administration-base-modal-title">{{ title | translate }}</h3>
+    </div>
+
+    <div class="administration-base-modal-form-wrapper">
+      <perfect-scrollbar>
+        <div class="administration-base-modal-form-wrapper">
+          <perfect-scrollbar>
+            <div class="row m-0 p-b" [ngClass]="containerClass">
+              <ng-container *ngFor="let control of formConfig">
+                <div class="p-t" [ngClass]="control?.class">
+                  <mat-app-slide-toggle
+                    class="m-b"
+                    *ngIf="control.type === EInputType.Checkbox"
+                    [formControlName]="control.code"
+                    [label]="control.placeholder"
+                  >
+                  </mat-app-slide-toggle>
+
+                  <app-form-field
+                    *ngIf="control.type === EInputType.Text || control.type === EInputType.Number"
+                    [formControlName]="control.code"
+                    [placeholder]="control.placeholder"
+                    [readonly]="control?.readonly"
+                    [type]="control.type"
+                  >
+                  </app-form-field>
+
+                  <app-text-field
+                    *ngIf="control.type === EInputType.Textarea"
+                    [formControlName]="control.code"
+                    [label]="control.placeholder"
+                    [autosize]="'none'"
+                    [maxlength]="control.maxLength"
+                    [rows]="4"
+                  >
+                  </app-text-field>
+
+                  <mat-app-search-select-lazy
+                    *ngIf="control.type === EInputType.Select || control.type === EInputType.CustomSelect"
+                    [formControlName]="control.code"
+                    [placeholder]="control.placeholder"
+                    [options]="optionsList[control.optionsListName]"
+                    [propertyName]="control?.propertyName"
+                    [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+                    [language]="currentLanguage"
+                  >
+                  </mat-app-search-select-lazy>
+
+                  <app-date-picker
+                    *ngIf="control.type === EInputType.Date && (!showEditButton || showCreateButton)"
+                    [formControlName]="control.code"
+                    [placeholder]="control.placeholder"
+                    [maxDate]="control.maxDate"
+                    [minDate]="control.minDate"
+                  ></app-date-picker>
+
+                  <div
+                    class="date-wrapper"
+                    *ngIf="control.type === EInputType.Date && showEditButton && !showCreateButton"
+                  >
+                    <p class="date-placeholder">{{ control.placeholder | translate }}</p>
+                    <p class="date-value">{{ formGroup.controls[control.code].value | customDate: 'dd-MM-yyyy' }}</p>
+                  </div>
+
+                  <div *ngIf="control.type === EInputType.SelectWithList">
+                    <mat-app-search-select-lazy
+                      [formControlName]="control.code"
+                      [placeholder]="control.placeholder"
+                      [options]="optionsList[control.optionsListName]"
+                      [propertyName]="control?.propertyName"
+                      [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+                      (selectChange)="
+                        selectionChange($event, control.connectedList, optionsList[control.optionsListName])
+                      "
+                      [language]="currentLanguage"
+                    >
+                    </mat-app-search-select-lazy>
+                  </div>
+
+                  <div *ngIf="control.type === EInputType.ListForSelect">
+                    <div class="product-channels-list pl-4">
+                      <span *ngIf="disabledFields" class="title">{{ control.placeholder | translate }}</span>
+                      <span *ngIf="!disabledFields" class="title">{{ control.placeholder | translate }}</span>
+
+                      <div class="items" [formArrayName]="control.code">
+                        <div *ngFor="let item of formGroup?.get(control.code).value" class="item">
+                          {{
+                            control?.propertyName
+                              ? item[control.propertyName]
+                              : currentLanguage === ELanguage.Ge
+                              ? item?.nameGe
+                              : item?.nameRu
+                          }}
+                          <span class="clear" *ngIf="!disabledFields" (click)="removeListItem(item, control.code)">
+                            {{ 'Administration.Notices.Clear' | translate }}
+                          </span>
+                        </div>
+                      </div>
+                      <div *ngIf="!disabledFields && !formGroup?.get(control.code).value.length" class="default-select">
+                        {{ 'Administration.Notices.SelectFromList' | translate }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="control.type === EInputType.Blank"></div>
+                </div>
+              </ng-container>
+            </div>
+          </perfect-scrollbar>
+        </div>
+      </perfect-scrollbar>
+    </div>
+
+    <div class="administration-base-modal-footer">
+      <div class="buttons-wrapper hard-width-container">
+        <div class="edit-button-wrapper" *ngIf="showEditButton && !showCreateButton">
+          <mat-app-button
+            [backgroundColor]="'blue'"
+            [color]="'white'"
+            [hover]="'blue'"
+            [radius]="'semiRound'"
+            [className]="'custom-style-edit-button'"
+            (clickEvent)="editButtonClick()"
+            ><span>{{ 'Buttons.Edit' | translate }}</span>
+          </mat-app-button>
+        </div>
+
+        <div class="save-cancel-buttons-wrapper" *ngIf="!showEditButton && !showCreateButton && !showAddButton">
+          <mat-app-button
+            [color]="'white'"
+            [backgroundColor]="'blue'"
+            [border]="true"
+            [hover]="'blue'"
+            [radius]="'semiRound'"
+            (clickEvent)="saveButtonClick()"
+            type="'submit'"
+            ><span>{{ 'Buttons.Save' | translate }}</span>
+          </mat-app-button>
+
+          <mat-app-button
+            [color]="'gray'"
+            [backgroundColor]="'transparent'"
+            [border]="true"
+            [hover]="'gray'"
+            [radius]="'semiRound'"
+            [className]="'custom-style-cancel-button'"
+            (clickEvent)="cancelButtonClick()"
+            type=""
+            ><span>{{ 'Buttons.Cancel' | translate }}</span>
+          </mat-app-button>
+        </div>
+
+        <div class="save-cancel-buttons-wrapper" *ngIf="showCreateButton">
+          <mat-app-button
+            type="'submit'"
+            [backgroundColor]="'blue'"
+            [color]="'white'"
+            [hover]="'blue'"
+            [radius]="'semiRound'"
+            (clickEvent)="saveButtonClick()"
+            ><span>{{ 'Buttons.Create' | translate }}</span>
+          </mat-app-button>
+        </div>
+
+        <div class="save-cancel-buttons-wrapper" *ngIf="showAddButton">
+          <mat-app-button
+            type="'submit'"
+            [backgroundColor]="'blue'"
+            [color]="'white'"
+            [hover]="'blue'"
+            [radius]="'semiRound'"
+            (clickEvent)="saveButtonClick()"
+            ><span>{{ 'Buttons.Add' | translate }}</span>
+          </mat-app-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

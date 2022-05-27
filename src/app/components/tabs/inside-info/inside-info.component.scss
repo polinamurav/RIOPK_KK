@@ -1,0 +1,14 @@
+@import "../../../../theme/styles/colors";
+
+span{
+  display: block;
+  position: relative;
+  border-bottom: 2px solid $cadet-grey;
+  top: 12px;
+  margin-left: 80px;
+}
+
+.wrapper {
+  padding-bottom: 40px;
+}
+

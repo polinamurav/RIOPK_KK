@@ -1,0 +1,51 @@
+@import "../../../../theme/styles/common";
+
+.confirm-modal {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  .confirm-modal-title {
+    display: inline-block;
+    padding-top: 40px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    color: $dark-jungle-green;
+    font-family: Manrope, sans-serif !important;
+  }
+  .confirm-modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100px;
+  }
+  .confirm-modal-footer {
+    display: flex;
+    justify-content: center;
+    .confirm-modal-buttons-wrapper {
+      display: flex;
+      justify-content: space-between;
+      width: 200px;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .custom-style-no-button {
+    background: $munsell;
+    border: 1px solid #cbcbcb;
+  }
+
+  .close-modal {
+    margin-left: 2px;
+
+    svg {
+      fill: $cadet-grey;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

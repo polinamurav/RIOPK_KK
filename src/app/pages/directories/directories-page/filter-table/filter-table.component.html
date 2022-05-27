@@ -1,0 +1,40 @@
+<div class="filter-wrapper"></div>
+<div class="table-block">
+  <mat-app-table
+    [changePage]="changePage"
+    [totalCount]="totalCount"
+    [tableData]="dataSource"
+    [itemLimit]="itemLimit"
+    [isSotring]="false"
+    [tableBlockWidth]="tableBlockWidth"
+    (selectedPage)="selectedPageEvent($event)"
+    (sortingData)="sortingDataEvent($event)"
+  >
+    <div class="button-block">
+      <mat-app-button
+        [className]="'mr-2'"
+        [size]="'medium'"
+        [border]="true"
+        [radius]="'semiRound'"
+        [backgroundColor]="'white'"
+        [color]="'gray'"
+        [hover]="'gray'"
+        (clickEvent)="downloadExel()"
+      >
+        {{ 'Buttons.ExportExcel' | translate }}
+      </mat-app-button>
+      <mat-app-button
+        *ngIf="userRole === 1"
+        [size]="'medium'"
+        [border]="true"
+        [radius]="'semiRound'"
+        [backgroundColor]="'white'"
+        [color]="'gray'"
+        [hover]="'gray'"
+        (clickEvent)="uploadExel()"
+      >
+        {{ 'Buttons.ImportExcel' | translate }}
+      </mat-app-button>
+    </div>
+  </mat-app-table>
+</div>

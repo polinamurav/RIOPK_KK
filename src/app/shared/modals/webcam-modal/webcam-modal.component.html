@@ -1,0 +1,59 @@
+<div class="upload-modal-content text-center">
+  <span class="close-btn-wrapper" type="" [mat-dialog-close]="'close'">
+    <img src="../../../../assets/PopupCloseDark.png" alt="Close modal" />
+  </span>
+  <div>
+    <webcam
+      [height]="500"
+      [width]="500"
+      [trigger]="triggerObservable"
+      (imageCapture)="handleImage($event)"
+      *ngIf="showWebcam && !webcamImage"
+      [imageQuality]="1"
+      (initError)="handleInitError($event)"
+      [allowCameraSwitch]="allowCameraSwitch"
+      [switchCamera]="nextWebcamObservable"
+      (cameraSwitched)="cameraWasSwitched($event)"
+    >
+    </webcam>
+    <div class="snapshot" *ngIf="webcamImage">
+      <img [src]="webcamImage.imageAsDataUrl" alt="webcam image" />
+    </div>
+    <h4 *ngIf="errors.length > 0">Messages:</h4>
+    <ul *ngFor="let error of errors">
+      <li>{{ error | json }}</li>
+    </ul>
+    <br />
+    <mat-app-button
+      *ngIf="showWebcam && !webcamImage"
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      [hover]="'blue'"
+      [radius]="'semiRound'"
+      (click)="triggerSnapshot()"
+    >
+      <span>Сфотографировать</span>
+    </mat-app-button>
+    <mat-app-button
+      *ngIf="webcamImage"
+      [backgroundColor]="'white'"
+      [color]="'gray'"
+      [hover]="'gray'"
+      [radius]="'semiRound'"
+      [border]="true"
+      (click)="remakePhotoSnapshot()"
+    >
+      <span>Переснять</span>
+    </mat-app-button>
+    <mat-app-button
+      *ngIf="webcamImage"
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      [hover]="'blue'"
+      [radius]="'semiRound'"
+      (click)="setPathToParent()"
+    >
+      <span>Загрузить</span>
+    </mat-app-button>
+  </div>
+</div>

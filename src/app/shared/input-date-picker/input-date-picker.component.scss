@@ -1,0 +1,17 @@
+@import "../../../theme/styles/common.scss";
+
+.input-date-picker-wrapper ::ng-deep .mat-form-field {
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  background: $white;
+  height: 32px;
+  padding-top: 0;
+  &.mat-focused {
+    border: 1px solid #d7dbe0;
+  }
+  .mat-form-field-wrapper {
+    .mat-form-field-flex .mat-form-field-infix {
+      padding-top: 8px;
+      border-top: 0;
+    }
+  }
+}

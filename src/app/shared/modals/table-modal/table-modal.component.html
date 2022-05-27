@@ -1,0 +1,31 @@
+<div class="wrapper">
+  <div class="header">
+    <span class="title" mat-dialog-title>
+      <p>{{ title }}</p>
+      <p *ngIf="number">{{ number }}</p>
+    </span>
+    <mat-dialog-actions>
+      <mat-app-button
+        [type]="'button'"
+        [radius]="'round'"
+        [className]="'btn'"
+        [backgroundColor]="'white'"
+        [hover]="'transparent'"
+        [border]="true"
+        mat-button
+        mat-dialog-close
+      >
+        <div class="close-modal" [inlineSVG]="'../../../assets/close-1.svg'"></div>
+      </mat-app-button>
+    </mat-dialog-actions>
+  </div>
+
+  <mat-dialog-content class="content">
+    <mat-app-table
+      [objColNameProps]="objColNameProps"
+      [dataSource]="dataSource"
+      [isSotring]="false"
+      [footerIsHide]="true"
+    ></mat-app-table>
+  </mat-dialog-content>
+</div>

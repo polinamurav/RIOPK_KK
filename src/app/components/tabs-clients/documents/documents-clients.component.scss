@@ -1,0 +1,45 @@
+@import "../../../../theme/styles/colors";
+
+:host {
+  display: block;
+  position: relative;
+
+  ::ng-deep mat-app-button {
+    display: block;
+    margin: 10px 0;
+
+    .attach-button {
+      margin-bottom: 20px;
+
+      .mat-button-wrapper {
+        .icon {
+          margin-right: 10px;
+
+          svg {
+            margin-top: -8px;
+          }
+        }
+      }
+
+      &:hover {
+        .mat-button-wrapper {
+          .icon {
+            svg {
+              path {
+                fill: $white;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.attach-button-root {
+  margin-left: 20px;
+}
+
+mat-spinner {
+  z-index: 100;
+}

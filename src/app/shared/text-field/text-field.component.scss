@@ -1,0 +1,57 @@
+@import "../../../theme/styles/common";
+
+:host ::ng-deep .text-field {
+  .mat-form-field {
+    height: auto;
+
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+      padding-right: 1px;
+    }
+
+    &.mat-focused .mat-form-field-wrapper {
+      margin-bottom: -2px;
+    }
+  }
+
+  &.hidden-overflow textarea.mat-input-element {
+    overflow: hidden;
+  }
+
+  .mat-form-field-infix > textarea {
+    color: $dark-jungle-green;
+    font-weight: 600;
+    margin: 8px 0;
+    font-family: Manrope, sans-serif !important;
+  }
+
+  .hidden {
+    overflow: hidden;
+    resize: none;
+  }
+
+  .wesup-current {
+    overflow-y: scroll;
+    resize: none;
+  }
+
+  .weswap-current::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  .weswap-current::-webkit-scrollbar-track {
+    background-color: #f9f9fb;
+    border-radius: 10px;
+  }
+
+  .weswap-current::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #aaa;
+  }
+}
+
+.submitted :host(.ng-invalid) {
+  .mat-form-field {
+    border: 2px solid $cg-red;
+  }
+}

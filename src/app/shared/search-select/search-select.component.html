@@ -1,0 +1,54 @@
+<div class="search-select" [ngClass]="selectHeight">
+  <mat-form-field #formField class="form-field" [floatLabel]="floatLabel">
+    <mat-select
+      [formControl]="fc"
+      [placeholder]="placeholder | translate"
+      [required]="required"
+      (openedChange)="openedChangeEvent($event)"
+      (focus)="onTouched()"
+      #singleSelect
+      (selectionChange)="selectionChange($event.value)"
+    >
+      <mat-option class="option-search">
+        <mat-icon svgIcon="search"></mat-icon>
+        <ngx-mat-select-search
+          noEntriesFoundLabel="{{ 'ErrorMessage.EmptyList' | translate }}"
+          [formControl]="optionFilterCtrl"
+          class="select-search"
+        >
+        </ngx-mat-select-search>
+      </mat-option>
+
+      <perfect-scrollbar>
+        <div class="scroll-wrap">
+          <mat-option
+            *ngFor="let option of filteredOptions | async"
+            [value]="valueType === ValueType.Id ? option.id : option"
+            (click)="onSelectOption($event, option)"
+          >
+            {{ option[tempPropertyName] }}
+          </mat-option>
+        </div>
+      </perfect-scrollbar>
+    </mat-select>
+  </mat-form-field>
+  <div
+    *ngIf="!isGenderLabel"
+    class="search-select-label"
+    (click)="onOpen()"
+    [inlineSVG]="'../../../assets/drop-20.svg'"
+  ></div>
+  <mat-app-button
+    *ngIf="isGenderLabel"
+    [className]="'search-select-gender-label'"
+    [radius]="'round'"
+    [hover]="'blue'"
+    [backgroundColor]="'gray'"
+    [size]="'medium'"
+    [border]="false"
+    [type]="'button'"
+    (clickEvent)="onOpen()"
+  >
+    <span [inlineSVG]="changeIcon ? '../../../assets/male.svg' : '../../../assets/female.svg'" class="icon"></span>
+  </mat-app-button>
+</div>

@@ -1,0 +1,26 @@
+<div class="wrapper">
+  <div class="stage-wrapper">
+    <div *ngFor="let stage of transformedArray; let i = index" class="stage">
+      <p [ngClass]="{ 'color-blue': !!stage?.isPassed || !!stage?.isCurrent }" class="stage-name">
+        {{ language === ELanguage.Ge ? stage?.stage?.nameGe : stage?.stage?.nameRu }}
+      </p>
+
+      <div [ngClass]="{ 'background-blue': !!stage?.isPassed }" class="vertic-line"></div>
+      <div
+        *ngIf="transformedArray.length - 1 !== i"
+        [ngClass]="{ 'background-blue': !!stage?.isHorizontalLineBlue && !stage?.isCurrent }"
+        class="horiz-line"
+      ></div>
+
+      <div *ngIf="!!stage?.isCurrent; else isNotCurrent" id="{{ currentStage?.id }}" class="wrap-for-dynamic-scroll">
+        <div class="current-stage-wrapper">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <ng-template #isNotCurrent>
+        <div [ngClass]="{ 'background-blue': !!stage?.isPassed }" class="circle"></div>
+      </ng-template>
+    </div>
+  </div>
+</div>

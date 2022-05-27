@@ -1,0 +1,36 @@
+<div class="table-content">
+  <p class="table-title">Каналы продаж</p>
+  <perfect-scrollbar class="ps-content">
+    <div class="table-block">
+      <mat-app-table
+        [objColNameProps]="salesChannelColNameProps"
+        [isSotring]="false"
+        [tableData]="salesChannelData"
+        [totalCount]="totalSalesChannelCount"
+        [itemLimit]="itemLimit"
+        (selectedItem)="selectedSalesChannelItem($event)"
+        (selectedPage)="selectedSalesChannelPageEvent($event)"
+        [isSelectsItem]="false"
+      >
+      </mat-app-table>
+    </div>
+  </perfect-scrollbar>
+</div>
+<div class="table-content">
+  <p class="table-title">Продукты</p>
+  <perfect-scrollbar class="ps-content">
+    <div class="table-block">
+      <mat-app-table
+        [objColNameProps]="productColNameProps"
+        [isSotring]="false"
+        [tableData]="productData"
+        [totalCount]="totalProductCount"
+        [itemLimit]="itemLimit"
+        (selectedItem)="selectedProductItem($event)"
+        (selectedPage)="selectedProductPageEvent($event)"
+        [isSelectsItem]="false"
+      >
+      </mat-app-table>
+    </div>
+  </perfect-scrollbar>
+</div>

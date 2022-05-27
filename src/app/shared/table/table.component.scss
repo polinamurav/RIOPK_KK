@@ -1,0 +1,274 @@
+@import "../../../theme/styles/colors";
+
+.flex-block {
+  display: flex;
+  height: 80px;
+  justify-content: space-between;
+  background-color: $white;
+  border-radius: 0 0 12px 12px;
+}
+
+.mat-table {
+  font-family: Manrope, sans-serif !important;
+}
+
+:host ::ng-deep .ps-height > .ps > .ps-content {
+  height: calc(100% - 1px);
+}
+
+.table-block-scroll {
+  width: 100%;
+  overflow: auto;
+  height: calc(100% - 80px);
+  border-radius: 12px 12px 0 0;
+
+  .table-block {
+    height: 100%;
+  }
+}
+
+.vertical-scroll {
+  max-height: 44vh;
+}
+
+.content-table {
+  // margin-left: 20px;
+  // width: calc(100% - 40px);
+  width: 100%;
+
+  p {
+    color: $outer-space-triple;
+  }
+}
+
+.header-table {
+  margin-left: 20px;
+  width: calc(100% - 40px);
+}
+
+.header-table-container {
+  border-bottom: 1px solid $gainsboro;
+  background-color: #fff;
+}
+
+.content-table-container {
+  position: relative;
+  height: 100%;
+  overflow: auto;
+  background-color: #fff;
+}
+
+.row-arrow .content-colm:first-of-type::before {
+  content: "➤";
+  font-weight: 900;
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  margin-top: -1px;
+  line-height: 100%;
+  transform: translate(0, -50%);
+  color: #66ba14;
+}
+
+.content-colm {
+  border: none;
+  font-weight: 600;
+  color: $bank-gray;
+  padding: 5px;
+  position: relative;
+  font-size: 12px;
+  &:last-of-type {
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  &:first-of-type {
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+  }
+
+  .link {
+    cursor: pointer;
+    color: $blue;
+  }
+}
+
+.icon {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 24px;
+  font-family: Manrope, sans-serif !important;
+}
+
+.header-colm {
+  font-size: 12px;
+  font-weight: 600;
+  color: $outer-space-triple;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: none;
+  font-family: Manrope, sans-serif !important;
+}
+
+:host ::ng-deep {
+  .content-table {
+    thead {
+      background-color: $table-header;
+    }
+  }
+
+  .header-title-center {
+    .mat-sort-header-container {
+      justify-content: center;
+    }
+  }
+
+  .mat-sort-header-button {
+    text-align: left;
+  }
+}
+
+.make-gray {
+  td {
+    background-color: $extra_light_blue;
+  }
+}
+
+.disabled-row {
+  .content-colm,
+  .icon {
+    color: $gainsboro;
+  }
+}
+
+.height-row {
+  height: 100%;
+
+  .icon {
+    color: $ash-grey;
+    cursor: pointer;
+  }
+
+  .icon-check {
+    color: $kelly-green;
+  }
+
+  .icon-close {
+    color: $cg-red;
+  }
+}
+
+.hover-table-blue:hover {
+  cursor: pointer;
+
+  td {
+    background-color: $blue;
+  }
+
+  .content-colm,
+  .icon {
+    color: #fff;
+  }
+}
+
+.hover-table-gray:hover {
+  td {
+    background-color: $cadet-grey;
+  }
+
+  .content-colm,
+  .icon {
+    color: #fff;
+  }
+}
+
+.no-data-title {
+  padding-top: 0.5rem;
+  margin-left: 2.5rem;
+  color: $bank-gray;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: Manrope, sans-serif !important;
+}
+
+.icon-close {
+  color: $cg-red;
+}
+
+.icon-check {
+  color: $kelly-green;
+}
+
+.icon-doc {
+  font-size: 19px;
+  height: 100%;
+}
+
+.button-deactivation {
+  outline: none;
+  border: none;
+  background: none;
+}
+
+.button-invalid-decision {
+  mat-icon {
+    color: $ku-crimson !important;
+  }
+}
+
+.save-button {
+  padding-left: 20px;
+}
+
+.input-value {
+  font-weight: 600;
+  color: $outer-space-triple;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  line-height: 30px;
+  vertical-align: initial;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid $gainsboro;
+  width: 100%;
+  font-family: Manrope, sans-serif !important;
+}
+
+.textarea {
+  font-weight: 600;
+  color: $outer-space-triple;
+  background-color: rgba(251, 251, 251, 1);
+  border: 1px solid rgba(201, 206, 212, 1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: inline-block;
+  outline: none;
+  width: 100%;
+  font-family: Manrope, sans-serif !important;
+
+  &:focus {
+    border-color: rgba(28, 127, 239, 0.6);
+    border-width: 2px;
+  }
+}
+
+.m-b {
+  margin-bottom: 0;
+}
+
+.btn-inactive {
+  pointer-events: none;
+}
+
+tr.mat-header-row {
+  height: 40px;
+  border-bottom: 1px solid #afbddf;
+}
+
+.font-std {
+  font-size: 12px;
+  font-weight: 600;
+  font-family: Manrope, sans-serif !important;
+}

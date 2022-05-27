@@ -1,0 +1,131 @@
+@import "colors";
+
+.mat-form-field {
+  background: $snow;
+  width: 100%;
+  height: 42px;
+  padding: 5px 0 0 16px;
+  border: 1px solid $border-blue;
+  border-radius: 8px;
+  font-family: Manrope, sans-serif !important;
+  overflow: hidden;
+  &.mat-form-field-disabled {
+    border: none;
+    //background: $white;
+    input,
+    .mat-select-value-text > span {
+      color: $dark-jungle-green;
+    }
+  }
+  .mat-form-field-underline {
+    width: 0;
+  }
+
+  .mat-form-field-label-wrapper {
+    padding: 0;
+    top: 0;
+    .mat-form-field-label {
+      padding-top: 2px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: Manrope, sans-serif !important;
+    }
+  }
+
+  & .mat-select-arrow {
+    opacity: 0;
+  }
+
+  &.mat-focused {
+    border: 2px solid $dodger-blue;
+  }
+}
+
+// .form-field-wrapper {
+//   .mat-form-field {
+//     .mat-form-field-wrapper {
+//       .mat-form-field-flex {
+//         padding: 0;
+//         background: transparent;
+//         .mat-form-field-infix {
+//           border: none;
+//           color: $border-blue;
+//         }
+//       }
+//     }
+//   }
+// }
+
+// form field fixes
+
+.form-field-wrapper {
+  .mat-form-field {
+    padding: 0 0 0 16px;
+    .mat-form-field-wrapper {
+      padding: 0;
+
+      .mat-form-field-flex {
+        padding: 0;
+        background: transparent;
+
+        .mat-form-field-infix {
+          padding: 0;
+          border: none;
+          color: $border-blue;
+
+          input {
+            line-height: 55px;
+            margin: 0;
+          }
+
+          // select {
+          // }
+
+          // textarea {
+          // }
+
+          .mat-form-field-label-wrapper {
+            top: -1px;
+          }
+        }
+      }
+    }
+
+    &.mat-form-field-should-float {
+      .mat-form-field-label-wrapper {
+        top: 5px !important;
+      }
+    }
+
+    &.mat-focused {
+      .mat-form-field-label-wrapper {
+        top: 5px !important;
+      }
+    }
+  }
+}
+
+.search-select {
+  .mat-form-field {
+    padding: 0 0 0 16px;
+
+    &.mat-form-field-should-float {
+      .mat-form-field-wrapper {
+        top: 5px !important;
+      }
+    }
+
+    &.mat-focused {
+      .mat-form-field-wrapper {
+        top: 5px !important;
+      }
+    }
+  }
+}
+
+.error-color {
+  color: $cg-red;
+  font-size: 12px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}

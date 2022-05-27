@@ -1,0 +1,52 @@
+@import "../../../theme/styles/common";
+
+:host {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  height: 50px;
+  position: relative;
+  display: block;
+  width: 180px;
+  font-size: 12px;
+  text-align: center;
+  float: left;
+  padding: 0;
+  border-radius: 0 0 7px 7px;
+
+  &-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  &:not(:last-child)::after {
+    content: "";
+    background: $light_gray;
+    position: absolute;
+    bottom: 10px;
+    left: 179px;
+    height: 61%;
+    width: 1px;
+  }
+
+  span {
+    font-weight: 600;
+    color: $bank-gray;
+  }
+
+  &.active {
+    background: $light_blue;
+    font-size: 12px;
+    right: 1px;
+    span {
+      color: #fff;
+    }
+  }
+}

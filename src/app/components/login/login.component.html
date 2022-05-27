@@ -1,0 +1,41 @@
+<!--app-main-container moved to shared module-->
+<app-main-container>
+  <div class="login-container">
+    <h4 class="card-title  text-center">
+      {{ 'Login.Title' | translate }}
+    </h4>
+    <form (ngSubmit)="login($event)" [formGroup]="loginForm" novalidate>
+      <div class="form-group">
+        <label class="d-block">
+          <app-form-field
+            [formControlName]="'username'"
+            [placeholder]="'Login.Placeholder.Name'"
+            [ngClass]="{ 'invalid-form': isInvalid }"
+          ></app-form-field>
+        </label>
+        <label class="d-block">
+          <app-form-field
+            [formControlName]="'password'"
+            [type]="'password'"
+            [placeholder]="'Login.Placeholder.Password'"
+            [ngClass]="{ 'invalid-form': isInvalid }"
+          >
+          </app-form-field>
+        </label>
+        <span *ngIf="isInvalid" class="notification">{{ 'ErrorMessage.IncorrectCredentials' | translate }}</span>
+      </div>
+      <mat-app-button
+        [type]="'submit'"
+        [radius]="'semiRound'"
+        [color]="'white'"
+        [backgroundColor]="'blue'"
+        [size]="'medium'"
+        [className]="'custom-button-style'"
+        [disabled]="isLoading$ | async"
+      >
+        <em class="fas fa-cog fa-spin" [hidden]="!(isLoading$ | async)"></em>
+        <span>{{ 'Buttons.Login' | translate }}</span>
+      </mat-app-button>
+    </form>
+  </div>
+</app-main-container>

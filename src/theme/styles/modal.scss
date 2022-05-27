@@ -1,0 +1,10 @@
+::ng-deep {
+  .custom-panel-cls {
+    position: relative !important;
+  }
+  .mat-dialog-container {
+    padding: 0;
+    overflow-x: hidden;
+    z-index: 1;
+  }
+}

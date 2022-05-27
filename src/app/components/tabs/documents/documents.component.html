@@ -1,0 +1,55 @@
+<form class="decision-form" [formGroup]="form">
+  <div class="w-100">
+    <mat-app-table
+      [tableData]="documentsData"
+      [isSotring]="false"
+      [footerIsHide]="true"
+      (linkEvent)="linkEvent($event)"
+      (buttonEvent)="deleteDoc($event)"
+    >
+    </mat-app-table>
+
+    <mat-app-button
+      class="attach-button-root"
+      [className]="'attach-button'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'gray'"
+      [color]="'gray'"
+      [disabled]="isView && !isDSA && !isCreditManager && !isVideoBank && !isArchivist"
+      (clickEvent)="attachFile()"
+    >
+      <span [inlineSVG]="'../../../assets/cloud.svg'" class="icon"></span>
+      {{ 'Documents.Buttons.AttachFile' | translate }}
+    </mat-app-button>
+
+    <div class="m-0 pb-4" [formGroupName]="DocumentsGroupKeys.Info">
+      <ng-container *ngFor="let control of infoConfig">
+        <div [ngClass]="control?.class">
+          <app-form-field
+            *ngIf="
+              control.type === EInputType.Text ||
+              control.type === EInputType.Number ||
+              control.type === EInputType.PhoneNumber
+            "
+            [formControlName]="control.code"
+            [maxLength]="control.maxLength"
+            [placeholder]="control.placeholder"
+            [readonly]="control?.readonly"
+            [type]="control.type"
+          >
+          </app-form-field>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div
+    class="mat-spinner-background"
+    *ngIf="downloadAttachmentLoading || uploadAttachmentLoading || attachmentTypesLoading"
+  >
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <app-tabs-footer [configSrc]="footerConfigSource" (footerButtonClick)="onFooterButtonClick($event)"></app-tabs-footer>
+</form>

@@ -1,0 +1,47 @@
+@import "../../../theme/styles/colors";
+.input-wrap {
+  position: relative;
+  height: 32px;
+  width: 35rem;
+
+  &--large {
+    width: 50rem;
+  }
+
+  .search-icon {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    height: 20px;
+    width: 20px;
+  }
+
+  input {
+    height: 100%;
+    width: 100%;
+    border: 1px solid $gainsboro;
+    border-radius: 7px;
+    padding-left: 40px;
+
+    &:focus {
+      outline: none;
+      border: 2px solid $dodger-blue;
+    }
+  }
+
+  .search-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+.clear-btn {
+  position: absolute;
+  top: 5px;
+  right: 90px;
+  color: $cadet-grey;
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+}

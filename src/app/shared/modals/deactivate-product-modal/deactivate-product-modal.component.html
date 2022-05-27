@@ -1,0 +1,44 @@
+<div class="close-btn-wrapper">
+  <mat-app-button
+    [mat-dialog-close]="'close'"
+    [radius]="'round'"
+    [className]="'custom-style-close-modal'"
+    [backgroundColor]="'white'"
+    [color]="'gray'"
+    [hover]="'gray'"
+    [border]="true"
+  >
+    <div type="" class="close-modal" [inlineSVG]="'../../../assets/close-1.svg'"></div>
+  </mat-app-button>
+</div>
+<div class="deactivate-product-modal">
+  <div class="deactivate-product-modal-content">
+    <span class="deactivate-product-modal-title">Deactivate product?</span>
+  </div>
+  <div class="deactivate-product-modal-footer footer">
+    <div class="buttons-wrapper">
+      <mat-app-button
+        [color]="'gray'"
+        [backgroundColor]="'transparent'"
+        [border]="true"
+        [hover]="'gray'"
+        [radius]="'semiRound'"
+        [className]="'custom-style-download-button'"
+        [mat-dialog-close]="'deactivate'"
+        type=""
+        ><span>Deactivate</span></mat-app-button
+      >
+      <mat-app-button
+        [color]="'gray'"
+        [backgroundColor]="'transparent'"
+        [border]="true"
+        [hover]="'gray'"
+        [radius]="'semiRound'"
+        [className]="'custom-style-cancel-button'"
+        [mat-dialog-close]="'cancel'"
+        type=""
+        ><span>Cancel</span></mat-app-button
+      >
+    </div>
+  </div>
+</div>

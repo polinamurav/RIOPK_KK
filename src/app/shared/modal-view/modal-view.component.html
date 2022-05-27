@@ -1,0 +1,23 @@
+<mat-app-button
+  [mat-dialog-close]="'close'"
+  [radius]="'round'"
+  [className]="'custom-style-close-modal'"
+  [backgroundColor]="'white'"
+  [color]="'gray'"
+  [hover]="'gray'"
+  [border]="true"
+>
+  <div class="close-modal" [inlineSVG]="'../../../assets/close-1.svg'"></div>
+</mat-app-button>
+<div class="modal-view-header">
+  <h3>{{ title }}</h3>
+</div>
+<div class="modal-view-body">
+  <ng-content></ng-content>
+</div>
+<div class="modal-view-actions">
+  <ng-content select="app-modal-view-actions"></ng-content>
+</div>
+<div class="mat-spinner-background" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>

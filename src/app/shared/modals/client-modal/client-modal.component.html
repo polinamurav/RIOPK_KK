@@ -1,0 +1,192 @@
+<div class="client-modal">
+  <span class="close-btn-wrapper" type="" [mat-dialog-close]="'close'">
+    <img src="../../../../assets/PopupCloseDark.png" alt="Close modal" />
+  </span>
+  <div class="name-dialog-wrapper">
+    <h3 class="name-dialog">{{ title | translate }}</h3>
+  </div>
+  <form class="client-modal-form" [formGroup]="clientForm">
+    <div class="client-modal-scroll-wrapper">
+      <perfect-scrollbar class="content-wrapper-scroll">
+        <div class="content-wrapper">
+          <div class="fields-info-wrapper">
+            <ul
+              class="client-modal-form-list"
+              formGroupName="clientInfo"
+              [ngClass]="{ 'custom-style-fields': disabledFields }"
+            >
+              <li>
+                <app-form-field
+                  formControlName="username"
+                  placeholder="{{ 'ClientModal.Placeholder.login' | translate }}"
+                  type="text"
+                ></app-form-field>
+              </li>
+              <li>
+                <app-form-field
+                  formControlName="lastName"
+                  placeholder="{{ 'ClientModal.Placeholder.LastName' | translate }}"
+                  type="text"
+                ></app-form-field>
+              </li>
+              <li>
+                <app-form-field
+                  formControlName="firstName"
+                  placeholder="{{ 'ClientModal.Placeholder.Name' | translate }}"
+                  type="text"
+                ></app-form-field>
+              </li>
+              <li>
+                <app-form-field
+                  formControlName="patronymic"
+                  placeholder="{{ 'ClientModal.Placeholder.MiddleName' | translate }}"
+                  type="text"
+                ></app-form-field>
+              </li>
+              <li>
+                <app-form-field
+                  formControlName="usernameAbs"
+                  placeholder="{{ 'ClientModal.Placeholder.UsernameAbs' | translate }}"
+                  type="text"
+                ></app-form-field>
+              </li>
+              <li>
+                <app-form-field
+                  formControlName="email"
+                  placeholder="{{ 'ClientModal.Placeholder.Email' | translate }}"
+                  type="email"
+                >
+                </app-form-field>
+              </li>
+              <li>
+                <mat-app-search-select
+                  formControlName="dirBranch"
+                  placeholder="{{ 'ClientModal.Placeholder.Branch' | translate }}"
+                  [options]="branches"
+                  [language]="language"
+                >
+                </mat-app-search-select>
+              </li>
+              <li>
+                <mat-app-search-select
+                  formControlName="dirDepartment"
+                  placeholder="{{ 'ClientModal.Placeholder.Department' | translate }}"
+                  [options]="departments"
+                  [language]="language"
+                >
+                </mat-app-search-select>
+              </li>
+              <li>
+                <mat-app-search-select
+                  propertyName="name"
+                  formControlName="dirPartner"
+                  placeholder="{{ 'ClientModal.Placeholder.Partner' | translate }}"
+                  [options]="partners"
+                  [language]="language"
+                >
+                </mat-app-search-select>
+              </li>
+            </ul>
+            <div class="search-select-wrapper">
+              <mat-app-search-select
+                *ngIf="showAdminModal && !disabledFields"
+                (selectChange)="selectionChange($event)"
+                formControlName="rolesControl"
+                placeholder="{{ 'ClientModal.Placeholder.Roles' | translate }}"
+                [options]="ROLES"
+                [language]="language"
+                class="dropdown-select"
+              >
+              </mat-app-search-select>
+            </div>
+          </div>
+          <div class="client-roles" formGroupName="clientInfo">
+            <span *ngIf="disabledFields" class="title">{{ 'ClientModal.Roles' | translate }}</span>
+            <span *ngIf="!disabledFields" class="title">{{ 'ClientModal.AssignRoles' | translate }}</span>
+            <div class="roles" [formArrayName]="'authorities'">
+              <div *ngFor="let role of this.clientForm?.get('clientInfo').get('authorities').value" class="role-item">
+                {{ (language === ELanguage.Ge ? role.nameGe : role.nameRu) || role.authority }}
+                <span *ngIf="!disabledFields" (click)="removeRole(role)" class="clear-role">
+                  {{ 'Buttons.Clear' | translate }}</span
+                >
+              </div>
+            </div>
+            <div
+              *ngIf="!disabledFields && !this.clientForm?.get('clientInfo').get('authorities').value.length"
+              class="default-select"
+            >
+              {{ 'ClientModal.ChooseFromList' | translate }}
+            </div>
+          </div>
+        </div>
+      </perfect-scrollbar>
+    </div>
+    <div class="buttons-wrapper footer">
+      <div class="edit-button-wrapper" *ngIf="showAdminModal && !showEditButtons && !showSendButton">
+        <mat-app-button
+          [backgroundColor]="'blue'"
+          [color]="'white'"
+          [hover]="'blue'"
+          [radius]="'semiRound'"
+          [className]="'custom-style-edit-button'"
+          (clickEvent)="editButtonClick()"
+          ><span>{{ 'Buttons.Edit' | translate }}</span>
+        </mat-app-button>
+        <div *ngIf="showAdminModal && !showSendButton" class="activate-deactivate-button-wrapper">
+          <mat-app-button
+            [color]="'white'"
+            [border]="true"
+            [radius]="'semiRound'"
+            [className]="'custom-style-activate-button'"
+            *ngIf="!isActivateDeactivateBtn"
+            [disabled]="isDisableActivateDeactivateButton"
+            (clickEvent)="activateDeactivateButtonClick('activate')"
+          >
+            <span>{{ 'Buttons.Activate' | translate }}</span>
+          </mat-app-button>
+          <mat-app-button
+            [color]="'white'"
+            [border]="true"
+            [radius]="'semiRound'"
+            [className]="'custom-style-deactivate-button'"
+            *ngIf="isActivateDeactivateBtn"
+            [disabled]="isDisableActivateDeactivateButton"
+            (clickEvent)="activateDeactivateButtonClick('deactivate')"
+          >
+            <span>{{ 'Buttons.Disable' | translate }}</span></mat-app-button
+          >
+        </div>
+      </div>
+      <div class="save-cancel-buttons-wrapper" *ngIf="showEditButtons">
+        <mat-app-button
+          [backgroundColor]="'blue'"
+          [color]="'white'"
+          [hover]="'blue'"
+          [radius]="'semiRound'"
+          [type]="'submit'"
+          (clickEvent)="saveData()"
+          ><span>{{ 'Buttons.Save' | translate }}</span></mat-app-button
+        >
+        <mat-app-button
+          (clickEvent)="cancelButtonClick(true)"
+          [backgroundColor]="'white'"
+          [color]="'gray'"
+          [hover]="'gray'"
+          [radius]="'semiRound'"
+          ><span>{{ 'Buttons.Cancel' | translate }}</span></mat-app-button
+        >
+      </div>
+      <div class="send-button-wrapper" *ngIf="showAdminModal && showSendButton">
+        <mat-app-button
+          [backgroundColor]="'blue'"
+          [color]="'white'"
+          [hover]="'blue'"
+          [type]="'submit'"
+          [radius]="'semiRound'"
+          (clickEvent)="sendButtonClick()"
+          ><span>{{ 'Buttons.Save' | translate }}</span></mat-app-button
+        >
+      </div>
+    </div>
+  </form>
+</div>

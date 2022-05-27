@@ -1,0 +1,157 @@
+<form [formGroup]="creditAppForm">
+  <div class="content-block">
+    <perfect-scrollbar>
+      <div class="wrapper">
+        <div class="w-100">
+          <div class="row m-0 p-b">
+            <ng-container *ngFor="let control of formConfig">
+              <div class="header-block mt-2 mb-2" *appFormSubTitle="[control.code, formSubTitles]">
+                <div>
+                  {{ formSubTitles[control.code] | translate }}
+                </div>
+              </div>
+              <div [ngClass]="control?.class">
+                <mat-app-slide-toggle
+                  class="m-b"
+                  *ngIf="control.type === EInputType.Checkbox"
+                  [labelPosition]="'before'"
+                  [formControlName]="control.code"
+                  [label]="control.placeholder"
+                >
+                </mat-app-slide-toggle>
+
+                <app-form-field
+                  *ngIf="control.type === EInputType.Text || control.type === EInputType.Number"
+                  [formControlName]="control.code"
+                  [placeholder]="control.placeholder"
+                  [maxLength]="control.maxLength"
+                  [required]="control.required"
+                  [type]="control.type"
+                >
+                </app-form-field>
+
+                <app-form-field
+                  *ngIf="control.type === EInputType.PhoneNumber"
+                  [formControlName]="control.code"
+                  [placeholder]="control.placeholder"
+                  [maxLength]="control.maxLength"
+                  [required]="control.required"
+                  [type]="control.type"
+                  [prefix]="phonePrefix"
+                  [phoneMask]="phoneMask"
+                >
+                </app-form-field>
+
+                <mat-app-search-select-lazy
+                  *ngIf="control.type === EInputType.Select"
+                  [formControlName]="control.code"
+                  [placeholder]="control.placeholder"
+                  [options]="optionsList[control.optionsListName]"
+                  [propertyName]="control?.propertyName"
+                  [language]="language"
+                  [valueType]="control.selectEmittedValueType || ValueType.Id"
+                  [required]="control.required"
+                >
+                </mat-app-search-select-lazy>
+
+                <app-date-picker
+                  *ngIf="control.type === EInputType.Date"
+                  [formControlName]="control.code"
+                  [placeholder]="control.placeholder"
+                  [maxDate]="control.maxDate"
+                  [minDate]="control.minDate"
+                  [required]="control.required"
+                ></app-date-picker>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="bottom-block">
+          <div
+            class="row ml-0 mr-0 mt-1"
+            *ngIf="
+              currentRoles.isCreditManager ||
+              currentRoles.isVideoBank ||
+              currentRoles.isDSA ||
+              currentRoles.isCallCenter
+            "
+          >
+            <div class="btn-block">
+              <mat-app-button
+                [type]="'button'"
+                [radius]="'semiRound'"
+                [backgroundColor]="'blue'"
+                [color]="'white'"
+                (clickEvent)="sendSms()"
+                [disabled]="creditAppForm.get('mobilePhone').invalid || isSmsExist"
+              >
+                {{ 'Buttons.SendSms' | translate }}
+              </mat-app-button>
+              <div class="col-5 pt-2">
+                <app-form-field
+                  formControlName="SMSCode"
+                  [maxLength]="4"
+                  [placeholder]="'ShortForm.EnterCode'"
+                  type="text"
+                >
+                </app-form-field>
+              </div>
+              <div class="align-self-center col-3 sms-code-svg">
+                <span *ngIf="codeIsTrue" [inlineSVG]="'../../../../../../assets/done.svg'"></span>
+                <span
+                  *ngIf="!codeIsTrue && !!creditAppForm.get('SMSCode').value"
+                  [inlineSVG]="'../../../../../../assets/close-round.svg'"
+                ></span>
+              </div>
+            </div>
+            <div class="btn-block">
+              <div class="mt-1">
+                <mat-app-button
+                  [type]="'submit'"
+                  [radius]="'semiRound'"
+                  [backgroundColor]="'blue'"
+                  [color]="'white'"
+                  [disabled]="isLoading || isConsentDownloaded || !codeIsTrue"
+                  (clickEvent)="getFilledAgreement()"
+                >
+                  {{ 'Buttons.PrintConsent' | translate }}
+                </mat-app-button>
+              </div>
+              <div class="ml-1 toggle-block-center blue-toggle">
+                <mat-app-slide-toggle
+                  formControlName="isConsentExists"
+                  [label]="'ShortForm.AgreementSigned'"
+                  [isDisabled]="!isConsentDownloaded"
+                >
+                </mat-app-slide-toggle>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </perfect-scrollbar>
+  </div>
+
+  <div class="btn-wrapper">
+    <mat-app-button
+      [radius]="'semiRound'"
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      (clickEvent)="createApp()"
+      [disabled]="isLoading || !isAgreementSigned"
+    >
+      {{ 'Buttons.CreateRequest' | translate }}
+    </mat-app-button>
+    <mat-app-button
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [color]="'gray'"
+      [border]="true"
+      [hover]="null"
+      (clickEvent)="cancelApp()"
+    >
+      {{ 'Buttons.Cancel' | translate }}
+    </mat-app-button>
+  </div>
+</form>

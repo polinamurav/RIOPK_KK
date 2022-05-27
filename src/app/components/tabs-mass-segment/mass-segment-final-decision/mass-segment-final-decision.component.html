@@ -1,0 +1,174 @@
+<form class="form" [formGroup]="finalDecForm">
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="'Предварительно выбранные условия'"
+    [headerNumb]="1"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="m-b">
+        <mat-app-table
+          [isSotring]="false"
+          [footerIsHide]="true"
+          [totalCount]="totalCount"
+          [tableData]="preapprovedCreditColmInfoData"
+          [itemLimit]="itemLimit"
+        >
+        </mat-app-table>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="'Утвержденные условия кредитования'"
+    [headerNumb]="2"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="m-b">
+        <mat-app-table
+          [isSotring]="false"
+          [footerIsHide]="true"
+          [totalCount]="totalCount"
+          [tableData]="approvedCreditColmInfoData"
+          [itemLimit]="itemLimit"
+          [isButtonColmShouldBeDisabled]="readonlyForm || isChangesAccepted"
+          (buttonEvent)="chooseApprovedCredit($event)"
+        >
+        </mat-app-table>
+      </div>
+
+      <h5>Калькулятор предложения</h5>
+      <div class="row m-0 p-b">
+        <div class="col">
+          <app-form-field formControlName="creditSum" placeholder="Сумма кредита" type="number"> </app-form-field>
+        </div>
+        <div class="col">
+          <app-form-field formControlName="creditTerm" placeholder="Срок кредита" type="number"> </app-form-field>
+        </div>
+        <div class="col padding-top">
+          <mat-app-button
+            [className]="'ml-2'"
+            [size]="'medium'"
+            [border]="true"
+            [radius]="'semiRound'"
+            [backgroundColor]="'blue'"
+            [color]="'white'"
+            [disabled]="readonlyForm || isCalculateButtonDisabled || isChangesAccepted"
+            (clickEvent)="calculate()"
+          >
+            рассчитать
+          </mat-app-button>
+        </div>
+      </div>
+
+      <div *ngIf="isRefAcbLiabilityExists">
+        <div class="w-100">
+          <h5>
+            Доступные варианты рефинансирования
+          </h5>
+          <div class="w-100">
+            <div class="m-b">
+              <mat-app-table
+                [isSotring]="false"
+                [footerIsHide]="true"
+                [totalCount]="totalCount"
+                [tableData]="availRefinanceColmInfoData"
+                [itemLimit]="itemLimit"
+                [isReadonly]="readonlyForm"
+                [isToggleColmShouldBeDisabled]="readonlyForm || isChangesAccepted"
+                (toggleSwitchEvent)="toggleClick($event)"
+              >
+              </mat-app-table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-100">
+        <h5>
+          Рассчитанные условия кредитования
+        </h5>
+        <div class="w-100">
+          <div class="m-b">
+            <mat-app-table
+              [isSotring]="false"
+              [footerIsHide]="true"
+              [totalCount]="totalCount"
+              [tableData]="calculatedCreditColmInfoData"
+              [itemLimit]="itemLimit"
+            >
+            </mat-app-table>
+          </div>
+          <div class="row m-0 p-b">
+            <div class="col-4 padding-top">
+              <mat-app-button
+                [type]="'button'"
+                [className]="'ml-2'"
+                [size]="'medium'"
+                [border]="true"
+                [radius]="'semiRound'"
+                [backgroundColor]="'blue'"
+                [color]="'white'"
+                [disabled]="readonlyForm || isAcceptButtonDisabled"
+                (clickEvent)="acceptChanges()"
+              >
+                подтвердить
+              </mat-app-button>
+            </div>
+            <div class="col-4 padding-top">
+              <mat-app-button
+                [type]="'button'"
+                [className]="'ml-2'"
+                [size]="'medium'"
+                [border]="true"
+                [radius]="'semiRound'"
+                [backgroundColor]="'white'"
+                [color]="'gray'"
+                [hover]="'gray'"
+                [disabled]="readonlyForm"
+                (clickEvent)="cancelChanges()"
+              >
+                отменить
+              </mat-app-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-100">
+        <h5 [ngClass]="{ 'credit-info-green': isChangesAccepted, 'credit-info-red': !isChangesAccepted }">
+          Выбранные условия кредитования
+        </h5>
+        <div class="w-100">
+          <div class="m-b">
+            <mat-app-table
+              [isSotring]="false"
+              [footerIsHide]="true"
+              [totalCount]="totalCount"
+              [tableData]="choosedCreditColmInfoData"
+              [itemLimit]="itemLimit"
+            >
+            </mat-app-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <div *ngIf="isDeclineReasonVisible" class="row m-0">
+    <div class="col-8">
+      <app-form-field formControlName="declineReason" placeholder="Причина отказа *" [type]="EInputType.Text">
+      </app-form-field>
+    </div>
+  </div>
+
+  <app-tabs-footer
+    [configSrc]="footerConfigSource"
+    [hideButtons]="readonlyForm"
+    [isDeclineRoleAvailable]="true"
+    [buttonsDisabled]="isLoading"
+    (footerButtonClick)="onFooterButtonClick($event)"
+  ></app-tabs-footer>
+</form>

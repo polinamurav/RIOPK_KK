@@ -1,0 +1,425 @@
+<form class="form" [formGroup]="fullForm">
+
+  <div *ngIf="isCalculatePreapproveCredit" class="spinner-box blackout">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="data-form-block">
+    <ng-container *ngFor="let fullFormConfigKey of fullFormConfigKeys; let i = index; let last = last">
+      <app-layout-for-steps
+        *ngIf="fullFormConfigKey !== FullFormGroupKeys.DeclineReasons"
+        [id]="fullFormConfigKey"
+        [isPanelDescHidden]="true"
+        [headerText]="titles[fullFormConfigKey]"
+        [headerNumb]="i + 1"
+        [isNotAccordion]="true"
+      >
+        <div class="w-100">
+          <div class="mt-2" [formGroupName]="fullFormConfigKey">
+            <div class="row m-0 p-b">
+              <ng-container *ngFor="let control of fullFormConfig[fullFormConfigKey]">
+                <div [ngClass]="control?.class">
+                  <mat-app-slide-toggle
+                    class="m-b"
+                    *ngIf="control.type === EInputType.Checkbox"
+                    [formControlName]="control.code"
+                    [label]="control.placeholder"
+                  >
+                  </mat-app-slide-toggle>
+
+                  <app-form-field
+                    *ngIf="
+                      control.type === EInputType.Text ||
+                      control.type === EInputType.Number ||
+                      control.type === EInputType.PhoneNumber
+                    "
+                    [formControlName]="control.code"
+                    [maxLength]="control.maxLength"
+                    [placeholder]="control.placeholder"
+                    [readonly]="control?.readonly"
+                    [type]="control.type"
+                  >
+                  </app-form-field>
+
+                  <mat-app-search-select-lazy
+                    *ngIf="control.type === EInputType.Select"
+                    [formControlName]="control.code"
+                    [placeholder]="control.placeholder"
+                    [options]="optionsList[control.optionsListName]"
+                    [propertyName]="control.propertyName"
+                    [language]="language"
+                    [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+                  >
+                  </mat-app-search-select-lazy>
+
+                  <app-date-picker
+                    *ngIf="control.type === EInputType.Date"
+                    [formControlName]="control.code"
+                    [placeholder]="control.placeholder"
+                    [maxDate]="control.maxDate"
+                    [minDate]="control.minDate"
+                    [required]="control.required"
+                  ></app-date-picker>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </app-layout-for-steps>
+    </ng-container>
+
+    <app-layout-for-steps
+      [id]="FullFormGroupKeys.IncomeInfo"
+      [isPanelDescHidden]="true"
+      [headerText]="titles[FullFormGroupKeys.IncomeInfo]"
+      [headerNumb]="6"
+      [isNotAccordion]="true"
+    >
+      <div class="w-100">
+        <mat-app-button
+          [className]="'ml-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'blue'"
+          [color]="'white'"
+          [disabled]="readonlyForm"
+          (clickEvent)="addCompany()"
+        >
+          {{ 'Buttons.AddCompany' | translate }}
+        </mat-app-button>
+        <div class="pb-4">
+          <perfect-scrollbar>
+            <nv-editable-table
+              [canEditRows]="!readonlyForm"
+              [canAddRows]="!readonlyForm"
+              [canDeleteRows]="!readonlyForm"
+              [tableHeaders]="applicantIncomeTableHeaders"
+              [isDeleteObjLink]="true"
+              [tableRows]="applicantIncomePostDto"
+              [selectData]="optionsList"
+              [buttonsLeftPosition]="'30%'"
+              [language]="language"
+              [pageForSelect]="pageForSelect"
+              [toggleDependentChecked]="toggleIsBasicChecked"
+              (getNextPartEvent)="nextPartEvent($event)"
+              (getSortPartEvent)="sortPartEvent($event)"
+              (savedRow)="saveRow($event, FullFormGroupKeys.IncomeInfo)"
+              (editedRow)="editedRow($event, FullFormGroupKeys.IncomeInfo)"
+              (removedRow)="removeRow($event, FullFormGroupKeys.IncomeInfo)"
+            >
+            </nv-editable-table>
+          </perfect-scrollbar>
+        </div>
+        <div class="row m-0 pb-4" [formGroupName]="FullFormGroupKeys.IncomeInfo">
+          <ng-container *ngFor="let control of incomeConfig">
+            <div [ngClass]="control?.class">
+              <app-form-field
+                *ngIf="
+                  control.type === EInputType.Text ||
+                  control.type === EInputType.Number ||
+                  control.type === EInputType.PhoneNumber
+                "
+                [formControlName]="control.code"
+                [maxLength]="control.maxLength"
+                [placeholder]="control.placeholder"
+                [readonly]="control?.readonly"
+                [type]="control.type"
+              >
+              </app-form-field>
+
+              <div
+                class="error-color"
+                *ngIf="control.code === 'numberOfEnrolment'
+                && fullForm.get(FullFormGroupKeys.IncomeInfo).invalid
+                && !fullForm.get(FullFormGroupKeys.IncomeInfo).get('numberOfEnrolment').errors.required"
+              >
+                {{ 'ErrorMessage.OnlyNumbers' | translate }}
+              </div>
+
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </app-layout-for-steps>
+
+    <app-layout-for-steps
+      [id]="FullFormGroupKeys.CreditDetails"
+      [isPanelDescHidden]="true"
+      [headerText]="titles[FullFormGroupKeys.CreditDetails]"
+      [headerNumb]="7"
+      [isNotAccordion]="true"
+    >
+      <perfect-scrollbar>
+        <nv-editable-table
+          [canEditRows]="!readonlyForm"
+          [canAddRows]="!readonlyForm"
+          [canDeleteRows]="!readonlyForm"
+          [tableHeaders]="applicantLoanTableHeaders"
+          [isDeleteObjLink]="true"
+          [tableRows]="applicantLoanPostDto"
+          [selectData]="optionsList"
+          [buttonsLeftPosition]="'30%'"
+          [language]="language"
+          (getNextPartEvent)="nextPartEvent($event)"
+          (getSortPartEvent)="sortPartEvent($event)"
+          (savedRow)="saveRow($event, FullFormGroupKeys.CreditDetails)"
+          (editedRow)="editedRow($event, FullFormGroupKeys.CreditDetails)"
+          (removedRow)="removeRow($event, FullFormGroupKeys.CreditDetails)"
+        >
+        </nv-editable-table>
+      </perfect-scrollbar>
+    </app-layout-for-steps>
+
+    <app-layout-for-steps
+      [id]="FullFormGroupKeys.Guarantee"
+      [isPanelDescHidden]="true"
+      [headerText]="titles[FullFormGroupKeys.Guarantee]"
+      [headerNumb]="8"
+      [isNotAccordion]="true"
+    >
+      <perfect-scrollbar>
+        <nv-editable-table
+          [canEditRows]="!readonlyForm"
+          [canAddRows]="!readonlyForm"
+          [canDeleteRows]="!readonlyForm"
+          [tableHeaders]="applicantGuarantorLoanTableHeaders"
+          [isDeleteObjLink]="true"
+          [tableRows]="applicantGuarantorLoanPostDto"
+          [selectData]="optionsList"
+          [buttonsLeftPosition]="'30%'"
+          [language]="language"
+          (getNextPartEvent)="nextPartEvent($event)"
+          (getSortPartEvent)="sortPartEvent($event)"
+          (savedRow)="saveRow($event, FullFormGroupKeys.Guarantee)"
+          (editedRow)="editedRow($event, FullFormGroupKeys.Guarantee)"
+          (removedRow)="removeRow($event, FullFormGroupKeys.Guarantee)"
+        >
+        </nv-editable-table>
+      </perfect-scrollbar>
+    </app-layout-for-steps>
+
+    <app-layout-for-steps
+      [id]="FullFormGroupKeys.PreApprovedConditions"
+      [isPanelDescHidden]="true"
+      [headerText]="titles[FullFormGroupKeys.PreApprovedConditions]"
+      [headerNumb]="9"
+      [isNotAccordion]="true"
+      [formGroupName]="'brms2'"
+    >
+      <div class="w-100">
+        <!--<mat-app-button
+          [className]="'ml-2 mb-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'blue'"
+          [color]="'white'"
+          [disabled]="readonlyForm"
+          (clickEvent)="reCalculate()"
+        >
+          {{ 'Buttons.ReCalculate' | translate }}
+        </mat-app-button>-->
+
+        <div class="row">
+          <div class="col-2">
+            <mat-app-slide-toggle
+              class="m-b"
+              [label]="'FullForm.Placeholder.IsWithRef'"
+              (isToggleChecked)="changeIsWithRef($event)"
+            >
+            </mat-app-slide-toggle>
+          </div>
+          <div *ngIf="this.isWithRef" class="col-4">
+            <mat-app-search-select-lazy
+              placeholder="{{ 'ShortForm.ProductType' | translate }}"
+              [options]="optionsList['product']"
+              [language]="language"
+              [required]="false"
+              (selectChange)="changeIsWithProduct($event)"
+            >
+            </mat-app-search-select-lazy>
+          </div>
+        </div>
+        <div class="pb-4">
+          <mat-app-table
+            [isSotring]="false"
+            [footerIsHide]="true"
+            [totalCount]="totalCount"
+            [tableData]="preapprove2CreditColInfoData"
+            [itemLimit]="itemLimit"
+            [isVerticalScroll]="true"
+            [isButtonColmShouldBeDisabled]="readonlyForm || isChangesAccepted"
+            (buttonEvent)="choosePreapprove2Credit($event)"
+          >
+          </mat-app-table>
+        </div>
+
+        <h5>{{ 'FullForm.Calculator' | translate }}</h5>
+        <div class="row m-0 pb-4">
+          <ng-container *ngFor="let control of matrixConfig">
+            <div *ngIf="control.type !== EInputType.Inner" [ngClass]="control?.class">
+              <app-form-field
+                *ngIf="
+                  control.type === EInputType.Text ||
+                  control.type === EInputType.Number ||
+                  control.type === EInputType.PhoneNumber
+                "
+                [formControlName]="control.code"
+                [maxLength]="control.maxLength"
+                [placeholder]="control.placeholder"
+                [readonly]="control?.readonly"
+                [type]="control.type"
+              >
+              </app-form-field>
+
+              <mat-app-slide-toggle
+                class="m-b"
+                *ngIf="isGraceInterestToggleVisible && control.type === EInputType.Checkbox"
+                formControlName="isGraceInterest"
+                [label]="'FullForm.Placeholder.IsGraceInterest'"
+              >
+              </mat-app-slide-toggle>
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="col padding-top pb-4">
+          <mat-app-button
+            [type]="'submit'"
+            [className]="'ml-2'"
+            [size]="'medium'"
+            [border]="true"
+            [radius]="'semiRound'"
+            [backgroundColor]="'blue'"
+            [color]="'white'"
+            [disabled]="readonlyForm || isCalculateButtonDisabled || isChangesAccepted"
+            (clickEvent)="calculatePreapproveCredit()"
+          >
+            {{ 'Buttons.Calculate' | translate }}
+          </mat-app-button>
+        </div>
+
+        <!--<ng-container *ngIf="isRefAcbLiabilityExists">
+          <h5>{{ 'FullForm.Refinance' | translate }}</h5>
+          <div class="pb-4">
+            <mat-app-table
+              [isSotring]="false"
+              [footerIsHide]="true"
+              [totalCount]="totalCount"
+              [tableData]="refinanceColumnTableData"
+              [itemLimit]="itemLimit"
+              [isReadonly]="readonlyForm"
+              [isToggleColmShouldBeDisabled]="readonlyForm || isChangesAccepted"
+              (toggleSwitchEvent)="refinanceToggleClick($event)"
+            >
+            </mat-app-table>
+          </div>
+        </ng-container>-->
+
+        <h5>{{ 'FullForm.Calculated' | translate }}</h5>
+        <div class="pb-4">
+          <mat-app-table
+            [isSotring]="false"
+            [footerIsHide]="true"
+            [totalCount]="totalCount"
+            [tableData]="calcProductColumnTableData"
+            [itemLimit]="itemLimit"
+          >
+          </mat-app-table>
+        </div>
+        <div class="row m-0 pb-4">
+          <div class="col-4 padding-top">
+            <mat-app-button
+              [type]="'button'"
+              [className]="'ml-2'"
+              [size]="'medium'"
+              [border]="true"
+              [radius]="'semiRound'"
+              [backgroundColor]="'blue'"
+              [color]="'white'"
+              [disabled]="readonlyForm || isAcceptButtonDisabled"
+              (clickEvent)="acceptChanges()"
+            >
+              {{ 'Buttons.Confirm' | translate }}
+            </mat-app-button>
+          </div>
+          <div class="col-4 padding-top">
+            <mat-app-button
+              [type]="'button'"
+              [className]="'ml-2'"
+              [size]="'medium'"
+              [border]="true"
+              [radius]="'semiRound'"
+              [backgroundColor]="'white'"
+              [color]="'gray'"
+              [hover]="'gray'"
+              [disabled]="readonlyForm"
+              (clickEvent)="cancelChanges()"
+            >
+              {{ 'Buttons.Cancel' | translate }}
+            </mat-app-button>
+          </div>
+        </div>
+
+        <h5 [ngClass]="{ 'credit-info-green': isProductAccepted, 'credit-info-red': !isProductAccepted }">
+          {{ 'FullForm.Chosen' | translate }}
+        </h5>
+        <div formcontrol="chosenProduct" class="pb-4">
+          <mat-app-table
+            [isSotring]="false"
+            [footerIsHide]="true"
+            [totalCount]="totalCount"
+            [tableData]="chosenProductColumnTableData"
+            [itemLimit]="itemLimit"
+          >
+          </mat-app-table>
+        </div>
+        <div *ngIf="isChosenProductError" class="error-message pb-4">{{ 'ErrorMessage.NoProduct' | translate }}</div>
+      </div>
+    </app-layout-for-steps>
+
+    <app-layout-for-steps
+      [id]="FullFormGroupKeys.DeclineReasons"
+      [formGroupName]="FullFormGroupKeys.DeclineReasons"
+      [isPanelDescHidden]="true"
+      [headerText]="titles[FullFormGroupKeys.DeclineReasons]"
+      [headerNumb]="10"
+      [isNotAccordion]="true"
+      *ngIf="isDeclineReasonVisible"
+    >
+      <div class="w-100">
+        <div class="row m-0 pb-4">
+          <ng-container *ngFor="let control of fullFormConfig[FullFormGroupKeys.DeclineReasons]">
+            <div [ngClass]="control?.class">
+              <mat-app-search-select-lazy
+                *ngIf="control.type === EInputType.Select"
+                [formControlName]="control.code"
+                [placeholder]="control.placeholder"
+                [options]="optionsList[control.optionsListName]"
+                [propertyName]="control.propertyName"
+                [language]="language"
+                [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+              >
+              </mat-app-search-select-lazy>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </app-layout-for-steps>
+
+    <app-tabs-footer
+      [configSrc]="footerConfigSource"
+      [hideButtons]="readonlyForm"
+      [buttonsDisabled]="isLoading"
+      [isDeclineRoleAvailable]="isCancelRoleAvail"
+      [userData]="userData"
+      [commentList]="{
+        chatUnderManagerList: chatUnderManagerList
+      }"
+      [commentsReadonly]="readonlyForm"
+      [isNewMessageExists]="isNewMessageExists"
+      (footerButtonClick)="onFooterButtonClick($event)"
+    ></app-tabs-footer>
+  </div>
+</form>

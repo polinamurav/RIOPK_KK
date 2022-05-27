@@ -1,0 +1,87 @@
+<form [formGroup]="form">
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="titles[HistoryResponseGroupKeys.ScoringInformation]"
+    [headerNumb]="1"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="row m-0 pb-4" [formGroupName]="HistoryResponseGroupKeys.ScoringInformation">
+        <ng-container *ngFor="let control of scoringInfoConfig">
+          <div [ngClass]="control?.class">
+            <app-form-field
+              *ngIf="
+                control.type === EInputType.Text ||
+                control.type === EInputType.Number ||
+                control.type === EInputType.PhoneNumber
+              "
+              [formControlName]="control.code"
+              [maxLength]="control.maxLength"
+              [placeholder]="control.placeholder"
+              [readonly]="control?.readonly"
+              [type]="control.type"
+            >
+            </app-form-field>
+          </div>
+        </ng-container>
+      </div>
+
+      <h5>{{ 'HistoryResponse.TableTitles.CreditHistoryRequests' | translate }}</h5>
+      <div class="padding-bottom pt-2">
+        <mat-app-table
+          [tableData]="creditInfoColTableData"
+          [isSotring]="false"
+          [footerIsHide]="true"
+        >
+        </mat-app-table>
+      </div>
+
+      <h5 *ngIf="arrayCreditInfoContractColTableData.length">
+        {{ 'HistoryResponse.TableTitles.CreditInfoContract' | translate }}
+      </h5>
+      <div class="pt-2">
+        <ng-container *ngFor="let data of arrayCreditInfoContractColTableData; let i = index">
+          <div class="wrapper">
+            <span></span>
+            <app-layout-for-steps-col
+              [subHeaderNumb]="i+1"
+            >
+              <div class="pb-2">
+                <mat-app-table
+                  [tableData]="data"
+                  [isSotring]="false"
+                  [footerIsHide]="true"
+                >
+                </mat-app-table>
+              </div>
+              <div class="pb-2">
+                <mat-app-table
+                  [tableData]="arrayCreditInfoContractTwoColTableData[i]"
+                  [isSotring]="false"
+                  [footerIsHide]="true"
+                >
+                </mat-app-table>
+              </div>
+              <div class="pb-2">
+                <h5>{{ 'HistoryResponse.TableTitles.ContractGuarantee' | translate }}</h5>
+                <mat-app-table
+                  [tableData]="arrayCreditInfoContractGuaranteeColTableData[i]"
+                  [isSotring]="false"
+                  [footerIsHide]="true"
+                >
+                </mat-app-table>
+              </div>
+              <h5>{{ 'HistoryResponse.TableTitles.SubjectInformation' | translate }}</h5>
+              <mat-app-table
+                [tableData]="arrayCreditInfoContractSubjectColTableData[i]"
+                [isSotring]="false"
+                [footerIsHide]="true"
+              >
+              </mat-app-table>
+            </app-layout-for-steps-col>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </app-layout-for-steps>
+</form>

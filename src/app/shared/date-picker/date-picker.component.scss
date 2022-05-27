@@ -1,0 +1,57 @@
+@import "../../../theme/styles/common";
+
+::ng-deep {
+  .mat-form-field {
+    .mat-form-field-wrapper {
+      .mat-form-field-flex {
+        .mat-form-field-infix {
+          //border-top: 1.05em solid transparent;
+          border-top: 0;
+
+          input {
+            line-height: 37px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.submitted :host(.ng-invalid) {
+  .mat-form-field {
+    border: 2px solid $cg-red;
+  }
+}
+
+* {
+  font-weight: 600;
+  font-family: Manrope, sans-serif !important;
+}
+
+.date-picker-wrapper {
+  position: relative;
+  display: flex;
+  margin-bottom: 10px;
+}
+:host ::ng-deep mat-app-button .size-medium {
+  width: 33px;
+}
+
+:host ::ng-deep mat-app-button .date-picker-label {
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.icon svg {
+  position: relative;
+  top: 8px;
+  left: 8px;
+}
+
+:host ::ng-deep .mat-datepicker-toggle {
+  .mat-icon-button {
+    display: none;
+  }
+}

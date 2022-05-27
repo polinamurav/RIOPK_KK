@@ -1,0 +1,25 @@
+@import "../../../../theme/styles/colors";
+
+h5 {
+  font-weight: 600;
+  font-size: 14px;
+  color: $bank-gray;
+  font-family: Manrope, sans-serif !important;
+}
+
+.padding-bottom {
+  padding-bottom: 40px;
+}
+
+span{
+  display: block;
+  position: relative;
+  border-bottom: 2px solid $cadet-grey;
+  top: 12px;
+  margin-left: 80px;
+}
+
+.wrapper {
+  padding-bottom: 40px;
+}
+

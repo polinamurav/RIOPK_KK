@@ -1,0 +1,50 @@
+<div class="wrapper">
+  <div class="comment-list">
+    <perfect-scrollbar>
+      <div *ngIf="commentList && commentList.length; else noComments">
+        <div *ngFor="let comment of commentList">
+          <div class="comment-block">
+            <div
+              *ngIf="comment.icon; else noIcon"
+              class="icon-wrapper"
+              [ngStyle]="{ background: 'url(' + comment.icon + ')' }"
+            ></div>
+            <ng-template #noIcon>
+              <div class="icon-wrapper" [ngStyle]="{ background: 'url(' + '../../../assets/about.png' + ')' }"></div>
+            </ng-template>
+            <div class="comment-info">
+              <p>{{ comment.changedByFio }}</p>
+              <p class="date-text">{{ comment.createdDate | customDate: 'dd-MM-yyyy HH:mm' }}</p>
+              <p class="comment-text-view">{{ comment.comment }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noComments>
+        <p class="no-comments-block">{{ 'Modals.InfoMessage.NoComments' | translate }}</p>
+      </ng-template>
+    </perfect-scrollbar>
+  </div>
+  <div class="comment-input">
+    <input
+      type="text"
+      [placeholder]="'Modals.Placeholder.EnterComment' | translate"
+      class="comment-text"
+      [(ngModel)]="comment"
+      (keyup.enter)="onSendComment()"
+      [disabled]="readonly"
+    />
+    <mat-app-button
+      [className]="'comment-btn'"
+      [disabled]="readonly"
+      [radius]="'round'"
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      [size]="'xsmall'"
+      [type]="'button'"
+      (clickEvent)="onSendComment()"
+    >
+      <span>&#10004;</span>
+    </mat-app-button>
+  </div>
+</div>

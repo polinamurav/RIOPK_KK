@@ -1,0 +1,39 @@
+export enum StageType {
+  FULL_FORM = 'FULL_FORM',
+  FULL_FORM_RETURN = 'FULL_FORM_RETURN',
+  VERIFICATION = 'VERIFICATION',
+  VERIFICATION_RETURN = 'VERIFICATION_RETURN',
+  DECISION_MAKING = 'DECISION_MAKING',
+  DECISION_FINAL = 'DECISION_FINAL',
+  DECISION_FINAL_RETURN = 'DECISION_FINAL_RETURN',
+  PAPERWORK = 'PAPERWORK',
+  PAPERWORK_RETURN = 'PAPERWORK_RETURN',
+  ACCEPTANCE = 'ACCEPTANCE',
+  BUSINESS_INSPECTION = 'BUSINESS_INSPECTION',
+  OTP = 'ENTER_OTP'
+}
+
+export enum PathForStage {
+  FULL_FORM = 'full-form',
+  VERIFICATION = 'verification',
+  DECISION_MAKING = 'decision-making',
+  DECISION_FINAL = 'decision-final',
+  PAPERWORK = 'paperwork',
+  ACCEPTANCE = 'acceptance',
+  VIEW = 'view',
+  INSPECTION = 'inspection'
+}
+
+export const STAGES_PATH: { [key: string]: PathForStage } = {
+  [StageType.FULL_FORM]: PathForStage.FULL_FORM,
+  [StageType.FULL_FORM_RETURN]: PathForStage.FULL_FORM,
+  [StageType.VERIFICATION]: PathForStage.VERIFICATION,
+  [StageType.VERIFICATION_RETURN]: PathForStage.VERIFICATION,
+  [StageType.DECISION_MAKING]: PathForStage.DECISION_MAKING,
+  [StageType.DECISION_FINAL]: PathForStage.DECISION_FINAL,
+  [StageType.DECISION_FINAL_RETURN]: PathForStage.DECISION_FINAL,
+  [StageType.PAPERWORK]: PathForStage.PAPERWORK,
+  [StageType.PAPERWORK_RETURN]: PathForStage.PAPERWORK,
+  [StageType.ACCEPTANCE]: PathForStage.ACCEPTANCE,
+  [StageType.BUSINESS_INSPECTION]: PathForStage.INSPECTION
+};

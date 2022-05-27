@@ -1,0 +1,47 @@
+<div class="form-field-wrapper">
+  <mat-form-field [ngSwitch]="type">
+    <input
+      *ngSwitchCase="'phoneNumber'"
+      [prefix]="prefix"
+      [mask]="phoneMask"
+      (blur)="onBlur()"
+      (focus)="onTouched()"
+      [maxlength]="maxLength"
+      [formControl]="fc"
+      [(ngModel)]="value"
+      [required]="required"
+      matInput
+      [placeholder]="placeholder | translate"
+    />
+    <input
+      *ngSwitchCase="'date'"
+      (blur)="onBlur()"
+      (focus)="onTouched()"
+      [maxlength]="maxLength"
+      [formControl]="fc"
+      [(ngModel)]="value"
+      [value]="value | date: 'dd-MM-yyyy HH:mm:ss'"
+      [required]="required"
+      matInput
+      [placeholder]="placeholder | translate"
+    />
+
+    <input
+      *ngSwitchDefault
+      (blur)="onBlur()"
+      (focus)="onTouched()"
+      [maxlength]="maxLength"
+      [formControl]="fc"
+      [(ngModel)]="value"
+      [required]="required"
+      matInput
+      [placeholder]="placeholder | translate"
+      [type]="type"
+      [readonly]="readonly"
+    />
+  </mat-form-field>
+  <div class="form-field-doable-label" *ngIf="isShowDoableLabel">
+    <div (click)="iterateNext()" class="form-field-top-label" [inlineSVG]="'../../../assets/drop-1.svg'"></div>
+    <div (click)="iteratePrev()" class="form-field-down-label" [inlineSVG]="'../../../assets/drop-20.svg'"></div>
+  </div>
+</div>

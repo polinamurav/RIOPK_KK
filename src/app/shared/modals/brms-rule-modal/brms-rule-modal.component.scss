@@ -1,0 +1,93 @@
+@import "../../../../theme/styles/common";
+
+.add-product-modal-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  form {
+    height: 100%;
+  }
+}
+
+.add-product-modal-scroll-wrapper {
+  height: calc(100% - 87px);
+}
+
+.add-product-modal-header {
+  text-align: center;
+  margin-right: 50px;
+  padding-top: 40px;
+  padding-bottom: 10px;
+  span {
+    display: inline-block;
+    height: 22px;
+    margin: 0;
+  }
+}
+
+.add-product-modal-title {
+  font-size: 1.75rem;
+  color: $dark-jungle-green;
+  margin-top: 16px;
+  letter-spacing: -0.01em;
+}
+
+.add-product-modal-form-wrapper {
+  height: 100%;
+  //width: calc(100% - 15px);
+  padding-right: 50px;
+
+  .add-product-modal-form-list {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 10px;
+  }
+
+  .add-product-modal-form-item {
+    list-style-type: none;
+  }
+}
+
+.add-product-modal-footer {
+  background-color: $munsell;
+  border-top: 1px solid #cbcbcb;
+  height: 80px;
+  margin-top: 20px;
+  padding-left: 50px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  .buttons-wrapper.hard-width-container {
+    width: 370px;
+  }
+  .save-cancel-buttons-wrapper {
+    display: flex;
+    width: 100%;
+    padding-left: 10px;
+    justify-content: space-around;
+  }
+  .edit-button-wrapper {
+    padding-left: 25px;
+  }
+  .send-button-wrapper {
+    padding-left: 20px;
+  }
+}
+
+:host ::ng-deep {
+  .close-modal {
+    margin-left: 2px;
+
+    svg {
+      fill: $cadet-grey;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.p-t {
+  padding-top: 16px;
+}

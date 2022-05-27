@@ -1,0 +1,143 @@
+@import "../../../theme/styles/common";
+
+.button-name {
+  font-family: Manrope, sans-serif !important;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.filter-ico {
+  height: 15px;
+  margin-top: -4px;
+  margin-right: 5px;
+}
+
+.display-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dropdown-wrap {
+  padding: 5px 0 0 23px;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  font-weight: 600;
+  color: $cadet-grey;
+  font-family: Manrope, sans-serif !important;
+  align-items: center;
+  position: relative;
+  width: 385px;
+  .label {
+    width: 100%;
+    color: $cadet-grey;
+    font-weight: 600;
+    font-size: 12px;
+    font-family: Manrope, sans-serif !important;
+  }
+}
+
+.btns-wrap {
+  padding: 7px 10px;
+  background-color: $munsell;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.width-date {
+  width: 306px;
+}
+
+.mt-cancel-date {
+  margin-top: 11px;
+}
+
+::ng-deep {
+  .dropdown-list .mat-menu-content:not(:empty) {
+    padding-bottom: 0 !important;
+  }
+
+  .mat-menu-panel {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    width: 400px !important;
+    max-width: none !important;
+    max-height: calc(100% - 50px) !important;
+  }
+
+  .mat-select-panel-wrap {
+    width: 100%;
+  }
+
+  .dropdown-wrap mat-app-search-select {
+    width: 306px;
+  }
+
+  .dropdown-wrap mat-app-search-select .search-select .mat-form-field {
+    &.mat-focused {
+      border: 1px solid $light-gray;
+      box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.08), 0 3px 9px 0 rgba(0, 0, 0, 0.16);
+    }
+  }
+
+  .dropdown-wrap mat-app-search-select .search-select .search-select-label {
+    background-color: $munsell;
+  }
+
+  .dropdown-select.search-select-custom {
+    .form-field {
+      .mat-form-field-wrapper {
+        .mat-form-field-flex {
+          .mat-form-field-infix {
+            border-top: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+.cancel-icon-button {
+  position: absolute;
+  background: 0 0;
+  border: none;
+  height: 50px;
+  right: 6px;
+  top: 0;
+
+  &:focus {
+    outline: none;
+  }
+
+  & .mat-icon {
+    //position: absolute;
+    //top: 6px;
+    //left: 20px;
+    //width: 20px;
+    //height: 20px;
+    color: $ku-crimson;
+    cursor: pointer;
+  }
+
+  &:disabled .mat-icon {
+    color: $cadet-grey;
+  }
+}
+
+.cancel-button {
+  background: none;
+  color: $cadet-grey;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: inherit;
+
+  &:hover {
+    color: $light-gray;
+  }
+}
+
+.mat-badge-content {
+  background: $blue;
+}

@@ -1,0 +1,117 @@
+<form class="aml-form" [formGroup]="amlForm">
+  <div class="w-100">
+    <div class="mt-4 mb-4 ml-4 p-2">
+      <mat-app-slide-toggle
+        class="m-b"
+        [formControlName]="EAmlControlsKeys.IsAmlNeeded"
+        [labelPosition]="'before'"
+        [label]="'Aml.Labels.MandatoryConducting'"
+      >
+      </mat-app-slide-toggle>
+    </div>
+  </div>
+  <ng-container *ngIf="isAmlNeeded">
+    <app-layout-for-steps
+      [isPanelDescHidden]="true"
+      [headerText]="'Aml.Titles.FATCASelfCertification'"
+      [headerNumb]="1"
+      [isNotAccordion]="true"
+    >
+      <div class="flex flex-column">
+        <ng-container *ngFor="let item of applicantFatcaInfo" [formGroupName]="EAmlControlsKeys.FATCASelfCertification">
+          <div class="mt-4 fatca-group">
+            <mat-app-slide-toggle
+              [formControlName]="item.id"
+              [labelObj]="item.dirFatca"
+              [labelPosition]="'before'"
+              [language]="language"
+              (isToggleChecked)="item.result = $event; saveToggleValue(item, EAmlControlsKeys.FATCASelfCertification)"
+            ></mat-app-slide-toggle>
+          </div>
+        </ng-container>
+        <div class="w-100">
+          <div class="mt-5 us-resident">
+            <mat-app-slide-toggle
+              class="m-b"
+              [formControlName]="EAmlControlsKeys.IsUsaResident"
+              [labelPosition]="'before'"
+              [label]="'Aml.Labels.IsUSTaxResident'"
+            >
+            </mat-app-slide-toggle>
+          </div>
+        </div>
+      </div>
+    </app-layout-for-steps>
+
+    <app-layout-for-steps
+      [isPanelDescHidden]="true"
+      [headerText]="'Aml.Titles.KYC'"
+      [headerNumb]="2"
+      [isNotAccordion]="true"
+    >
+      <div class="w-100">
+        <div class="mt-2">
+          <div class="flex flex-column">
+            <h5>{{ 'Aml.Titles.BankBusinessRelationshipPurpose' | translate }}</h5>
+            <div class="flex flex-column" [formGroupName]="EAmlControlsKeys.BankBusinessRelationshipPurpose">
+              <ng-container *ngFor="let item of applicantOperationInfo">
+                <div class="mt-2 kyc-group">
+                  <mat-app-slide-toggle
+                    [formControlName]="item.id"
+                    [labelObj]="item.dirOperationType"
+                    [labelPosition]="'before'"
+                    [language]="language"
+                    (isToggleChecked)="
+                      item.result = $event; saveToggleValue(item, EAmlControlsKeys.BankBusinessRelationshipPurpose)
+                    "
+                  ></mat-app-slide-toggle>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="flex flex-column mt-4">
+            <h5>{{ 'Aml.Titles.ExpectedOperations' | translate }}</h5>
+            <div class="flex flex-column" [formGroupName]="EAmlControlsKeys.ExpectedOperations">
+              <ng-container *ngFor="let item of applicantOperationFreqInfo">
+                <div class="mt-2 kyc-group">
+                  <mat-app-slide-toggle
+                    [formControlName]="item.id"
+                    [labelObj]="item.dirOperationFreqType"
+                    [labelPosition]="'before'"
+                    [language]="language"
+                    (isToggleChecked)="item.result = $event; saveToggleValue(item, EAmlControlsKeys.ExpectedOperations)"
+                  ></mat-app-slide-toggle>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-layout-for-steps>
+
+    <app-layout-for-steps
+      [isPanelDescHidden]="true"
+      [headerText]="'Aml.Titles.AML'"
+      [headerNumb]="3"
+      [isNotAccordion]="true"
+    >
+      <div class="mt-2 aml">
+        <mat-app-slide-toggle
+          class="m-b"
+          [formControlName]="EAmlControlsKeys.IsIpdl"
+          [labelPosition]="'before'"
+          [label]="'Aml.Labels.PublicOfficialsBelonging'"
+        >
+        </mat-app-slide-toggle>
+      </div>
+    </app-layout-for-steps>
+  </ng-container>
+
+  <app-tabs-footer
+    *ngIf="isAmlNeeded"
+    [configSrc]="footerConfigSource"
+    [hideButtons]="readonlyForm"
+    [buttonsDisabled]="isLoading"
+    (footerButtonClick)="onFooterButtonClick($event)"
+  ></app-tabs-footer>
+</form>

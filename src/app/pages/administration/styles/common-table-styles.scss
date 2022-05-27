@@ -1,0 +1,13 @@
+@import "../../../../theme/styles/common";
+
+.filter-wrapper {
+  @extend .filter-container;
+}
+
+.table-block {
+  height: calc(100% - 62px);
+
+  .button-block {
+    padding: 16px 0 0 20px;
+  }
+}

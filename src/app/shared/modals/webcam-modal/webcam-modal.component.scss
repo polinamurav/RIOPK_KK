@@ -1,0 +1,60 @@
+@import "../../../../theme/styles/colors.scss";
+
+.upload-modal-content {
+  position: relative;
+  padding: 14px 16px;
+}
+
+.btn-min-width {
+  min-width: 115px;
+}
+
+.full-width {
+  width: 386px;
+}
+
+.upload-modal-content .avatar-edit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 16px 0 16px;
+}
+.upload-modal-content .avatar-edit-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid #ccc;
+  & > label {
+    border-radius: 0;
+    margin: 0;
+  }
+  & > input {
+    display: none;
+  }
+  & > .title {
+    padding: 10px;
+  }
+}
+
+.error {
+  color: $ku-crimson;
+  margin-left: 5px;
+  font-size: 11px;
+}
+
+.snapshot {
+  text-align: center;
+  img {
+    max-width: 498px;
+    max-height: 498px;
+  }
+}
+
+ul.links {
+  padding-bottom: 20px;
+}

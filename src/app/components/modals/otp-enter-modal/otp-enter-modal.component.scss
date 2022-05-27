@@ -1,0 +1,11 @@
+@import "../../../../theme/styles/common";
+
+.header-title {
+  display: flex;
+  width: 260px;
+  font-size: 16px;
+  font-weight: 600;
+  color: $bank-gray;
+  align-items: center;
+  font-family: Manrope, sans-serif !important;
+}

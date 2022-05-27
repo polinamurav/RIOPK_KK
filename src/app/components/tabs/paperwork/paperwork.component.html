@@ -1,0 +1,118 @@
+<form [formGroup]="paperworkForm">
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="titles[PaperworkGroupKeys.FinalCreditInfo]"
+    [headerNumb]="1"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="pb-4 pt-2">
+        <mat-app-table [tableData]="finalCreditInfoColTableData" [isSotring]="false" [footerIsHide]="true">
+        </mat-app-table>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="titles[PaperworkGroupKeys.AdditionalParameters]"
+    [headerNumb]="2"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="row m-0 pb-4" [formGroupName]="PaperworkGroupKeys.AdditionalParameters">
+        <ng-container *ngFor="let control of additionalParametersConfig">
+          <div [ngClass]="control?.class">
+            <div
+              *ngIf="
+                (control.placeholder !== 'Paperwork.Placeholders.PaymentDay' || isVisiblePaymentDay) &&
+                (control.placeholder !== 'Paperwork.Placeholders.SecondPaymentDay' || isVisibleSecondPaymentDay) &&
+                (control.placeholder !== 'Paperwork.Placeholders.CalculationDay' || isVisibleCalculationDay)
+              "
+            >
+              <mat-app-search-select-lazy
+                *ngIf="control.type === EInputType.Select || control.type === EInputType.CustomSelect"
+                [formControlName]="control.code"
+                [placeholder]="control.placeholder"
+                [options]="optionsList[control.optionsListName]"
+                [propertyName]="control.propertyName"
+                [language]="language"
+                [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+              >
+              </mat-app-search-select-lazy>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="titles[PaperworkGroupKeys.AccountName]"
+    [headerNumb]="3"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="row m-0 pb-4" [formGroupName]="PaperworkGroupKeys.AccountName">
+        <ng-container *ngFor="let control of accountNameConfig">
+          <div
+            [ngClass]="control?.class"
+            *ngIf="
+              (control.code !== 'cardAccNum' || !paperworkForm.get(PaperworkGroupKeys.AccountName).get('cardAccountIban').value) &&
+              (paperworkForm.get(PaperworkGroupKeys.AccountName).get(control.code).value)
+            "
+          >
+            <app-form-field
+              *ngIf="
+                control.type === EInputType.Text ||
+                control.type === EInputType.Number ||
+                control.type === EInputType.PhoneNumber
+              "
+              [formControlName]="control.code"
+              [maxLength]="control.maxLength"
+              [placeholder]="control.placeholder"
+              [readonly]="control?.readonly"
+              [type]="control.type"
+            >
+            </app-form-field>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <div class="wrapper">
+    <div class="w-100">
+      <div class="row m-0 pb-4" [formGroupName]="PaperworkGroupKeys.Result">
+        <ng-container *ngFor="let control of resultConfig">
+          <div [ngClass]="control?.class">
+            <mat-app-search-select-lazy
+              *ngIf="control.type === EInputType.Select"
+              [formControlName]="control.code"
+              [placeholder]="control.placeholder"
+              [options]="optionsList[control.optionsListName]"
+              [propertyName]="control.propertyName"
+              [language]="language"
+              [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+            >
+            </mat-app-search-select-lazy>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <app-tabs-footer
+    [configSrc]="footerConfigSource"
+    [hideButtons]="readonlyForm"
+    [buttonsDisabled]="isLoading"
+    [isDeclineRoleAvailable]="true"
+    [userData]="userData"
+    [commentList]="{
+      chatCradminManagerList: chatCradminManagerList
+    }"
+    [commentsReadonly]="readonlyForm"
+    [isNewMessageExists]="isNewMessageExists"
+    (footerButtonClick)="onFooterButtonClick($event)"
+  ></app-tabs-footer>
+</form>

@@ -1,0 +1,74 @@
+<footer [ngClass]="isRootItemTab ? 'tabs-footer' : 'dialog-footer'" *ngIf="hideFooterCondition()">
+  <ng-container *ngIf="!hideButtons">
+    <ng-container *ngFor="let button of tabFooterConfig.footerButtons">
+      <mat-app-button
+        *ngIf="hideDeclineButtonCondition(button.eventType)"
+        [className]="'mr-2'"
+        [radius]="'semiRound'"
+        [disabled]="buttonsDisabled"
+        [type]="button.type ? button.type : 'button'"
+        [size]="button.size ? button.size : 'medium'"
+        [backgroundColor]="button.backgroundColor ? button.backgroundColor : 'blue'"
+        [color]="button.color ? button.color : 'white'"
+        [hover]="button.hover ? button.hover : 'blue'"
+        [border]="button.border ? button.border : false"
+        (clickEvent)="onButtonClick($event, button.eventType)"
+      >
+        {{ button.title | translate }}
+      </mat-app-button>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="tabFooterConfig.showCommentsButton">
+    <div ngbDropdown placement="top-left">
+      <div class="comment-wrap">
+        <mat-app-button
+          [size]="'medium'"
+          [radius]="'semiRound'"
+          [backgroundColor]="'gray'"
+          [color]="'white'"
+          [hover]="'gray'"
+          [disabled]="buttonsDisabled"
+          id="dropdown-comment"
+          (clickEvent)="onButtonClick($event, 'openComments')"
+          ngbDropdownToggle
+        >
+          {{ 'Buttons.Comments' | translate }}
+        </mat-app-button>
+        <mat-icon
+          [ngStyle]="{ display: isNewMessageExists ? 'block' : 'none' }"
+          class="icon"
+          svgIcon="notification"
+        ></mat-icon>
+
+        <div ngbDropdownMenu aria-labelledby="dropdown-comment">
+          <ng-container *ngIf="!isCommentSectionMultiple()">
+            <ng-container *ngFor="let commentSection of tabFooterConfig.commentsConfig">
+              <app-comment-box
+                [userData]="userData"
+                [readonly]="commentsReadonly"
+                [commentList]="commentList[commentSection.commentListKey]"
+                (emitComnent)="onButtonClick($event, commentSection.eventType)"
+              ></app-comment-box>
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngIf="isCommentSectionMultiple()">
+            <mat-tab-group class="chat-tabs">
+              <ng-container *ngFor="let commentSection of tabFooterConfig.commentsConfig">
+                <mat-tab [label]="commentSection.labelForTab">
+                  <app-comment-box
+                    [userData]="userData"
+                    [readonly]="commentsReadonly"
+                    [commentList]="commentList[commentSection.commentListKey]"
+                    (emitComnent)="onButtonClick($event, commentSection.eventType)"
+                  ></app-comment-box>
+                </mat-tab>
+              </ng-container>
+            </mat-tab-group>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</footer>

@@ -1,0 +1,13 @@
+<div class="filter-wrapper"></div>
+<div class="table-block">
+  <mat-app-table
+    [objColNameProps]="objColNameProps"
+    [tableData]="dataSource"
+    (iconButtonEvent)="selectedItem($event)"
+    (selectedPage)="selectedPageEvent($event)"
+    [isSotring]="false"
+    [totalCount]="totalCount"
+    [itemLimit]="itemLimit"
+  >
+  </mat-app-table>
+</div>

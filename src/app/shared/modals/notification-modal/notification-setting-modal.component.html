@@ -1,0 +1,68 @@
+<div class="notification-modal">
+  <span class="close-btn-wrapper" type="" [mat-dialog-close]="'close'">
+    <img src="../../../../assets/PopupCloseDark.png" alt="Close modal" />
+  </span>
+  <div class="notification-modal-scroll-wrapper">
+    <perfect-scrollbar>
+      <div class="notification-modal-content">
+        <div class="notification-modal-parameter">
+          <p>{{ 'Administration.TableHeaders.Key' | translate }}:</p>
+          <span>{{ setting.key }}</span>
+        </div>
+
+        <div class="notification-modal-parameter">
+          <p>{{ 'Administration.TableHeaders.Parameter' | translate }}:</p>
+          <span>{{ setting.nameRu }}</span>
+        </div>
+
+        <form [formGroup]="settingForm">
+          <app-text-field
+            formControlName="valueGe"
+            [label]="'Administration.Placeholders.Value' | translate: { type: 'GE' }"
+            [autosize]="'set-autosize'"
+            [maxlength]="5000"
+            [rows]="4"
+          >
+          </app-text-field>
+          <app-text-field
+            formControlName="valueRu"
+            [label]="'Administration.Placeholders.Value' | translate: { type: 'RU' }"
+            [autosize]="'set-autosize'"
+            [maxlength]="5000"
+            [rows]="4"
+          >
+          </app-text-field>
+          <app-text-field
+            formControlName="valueEn"
+            [label]="'Administration.Placeholders.Value' | translate: { type: 'EN' }"
+            [autosize]="'set-autosize'"
+            [maxlength]="5000"
+            [rows]="4"
+          >
+          </app-text-field>
+          <app-text-field
+            formControlName="extErrorMsg"
+            [label]="'Administration.TableHeaders.AdditionalValue' | translate"
+            [autosize]="'set-autosize'"
+            [maxlength]="5000"
+            [rows]="4"
+          >
+          </app-text-field>
+        </form>
+      </div>
+    </perfect-scrollbar>
+  </div>
+  <div class="notification-modal-footer">
+    <mat-app-button
+      [color]="'white'"
+      [backgroundColor]="'blue'"
+      [border]="true"
+      [hover]="'blue'"
+      [radius]="'semiRound'"
+      [disabled]="isParamError"
+      (clickEvent)="onSave()"
+      type="'submit'"
+      ><span>{{ 'Buttons.Save' | translate }}</span></mat-app-button
+    >
+  </div>
+</div>

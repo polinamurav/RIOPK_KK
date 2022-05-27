@@ -1,0 +1,62 @@
+<div class="modal-content h-100">
+  <span class="close-btn-wrapper" type="" [mat-dialog-close]="'close'">
+    <img src="../../../../assets/PopupCloseDark.png" alt="Close modal" />
+  </span>
+  <form [formGroup]="formGroup" class="full-width h-100">
+    <div class="d-flex  h-75 align-items-center">
+      <div class="col-12">
+        <div class="row m-0 p-b align-items-center justify-content-between">
+          <div class="col-11">
+            <div class="header-title">
+              {{ 'Otp.CodeTitle' | translate }}
+            </div>
+          </div>
+          <div class="col-6">
+            <div>
+              {{ 'Otp.CodeDescription' | translate }}
+            </div>
+          </div>
+          <div class="col-6">
+            <div>
+              {{ 'Otp.SMSButtonDescription' | translate }}
+            </div>
+          </div>
+
+          <div class="col-4">
+            <app-form-field
+              type="text"
+              formControlName="code"
+              [placeholder]="'Otp.CodeInput'"
+              [required]="true"
+              [maxLength]="codeMaxLength"
+            >
+            </app-form-field>
+          </div>
+          <div class="col-6">
+            <mat-app-button
+              [type]="'button'"
+              [radius]="'semiRound'"
+              [backgroundColor]="'white'"
+              [color]="'gray'"
+              [hover]="'gray'"
+              [border]="true"
+              (clickEvent)="sendSms()"
+              [disabled]="isSubmitted"
+            >
+              {{ 'Buttons.SMS' | translate }}
+            </mat-app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-tabs-footer
+      [configSrc]="footerConfigSource"
+      [hideButtons]="false"
+      [isRootItemTab]="false"
+      [isDeclineRoleAvailable]="isCancelRoleAvail"
+      [buttonsDisabled]="isLoading || isSubmitted"
+      (footerButtonClick)="onFooterButtonClick($event)"
+    ></app-tabs-footer>
+  </form>
+</div>

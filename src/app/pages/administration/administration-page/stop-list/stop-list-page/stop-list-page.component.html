@@ -1,0 +1,61 @@
+<div class="filter-wrapper">
+  <app-search-field
+    class="input-wrapper"
+    [placeholder]="'НАИМЕНОВАНИЕ  |  ФИН  |  ИНН'"
+    (searchEvent)="onSearchEvent($event)"
+    (clearEvent)="onClearEvent($event)"
+  >
+  </app-search-field>
+
+  <mat-app-button
+    *ngIf="
+      !!this.isAdmin ||
+      !!this.isVerifier ||
+      !!this.isDecisionMaker ||
+      !!this.isVerifierBoss ||
+      !!this.isDecisionMakerBoss
+    "
+    [className]="'mr-2'"
+    [size]="'medium'"
+    [border]="true"
+    [radius]="'semiRound'"
+    [backgroundColor]="'white'"
+    [color]="'gray'"
+    [hover]="'gray'"
+    (clickEvent)="updateStopList()"
+  >
+    Обновить из АБС
+  </mat-app-button>
+  <mat-app-button
+    *ngIf="
+      !!this.isAdmin ||
+      !!this.isVerifier ||
+      !!this.isDecisionMaker ||
+      !!this.isVerifierBoss ||
+      !!this.isDecisionMakerBoss
+    "
+    [className]="'mr-2'"
+    [size]="'medium'"
+    [border]="true"
+    [radius]="'semiRound'"
+    [backgroundColor]="'white'"
+    [color]="'gray'"
+    [hover]="'gray'"
+    (clickEvent)="downloadExel()"
+  >
+    выгрузить в excel
+  </mat-app-button>
+</div>
+<div class="table-block">
+  <mat-app-table
+    [changePage]="changePage"
+    [totalCount]="totalCount"
+    [tableData]="dataSource"
+    [itemLimit]="itemLimit"
+    [isSotring]="false"
+    [isSelectsItem]="false"
+    (selectedPage)="selectedPageEvent($event)"
+  >
+    <div class="button-block"></div>
+  </mat-app-table>
+</div>

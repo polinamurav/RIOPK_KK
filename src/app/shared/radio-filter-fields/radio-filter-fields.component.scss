@@ -1,0 +1,61 @@
+@import "../../../theme/styles/common";
+
+.wrapper {
+  display: flex;
+}
+
+mat-radio-group {
+  width: 306px;
+}
+
+::ng-deep {
+  .radio-btn {
+    .mat-radio-label {
+      display: flex;
+      flex-direction: column-reverse;
+
+      .mat-radio-container {
+        .mat-radio-outer-circle {
+          border: 1px solid $light-gray;
+        }
+
+        .mat-radio-inner-circle {
+          background-color: $dodger-blue;
+        }
+
+        .mat-radio-ripple {
+          display: none;
+        }
+      }
+
+      .mat-radio-label-content {
+        color: $cadet-grey;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-family: Manrope, sans-serif !important;
+      }
+    }
+  }
+}
+
+.cancel-icon-button {
+  position: relative;
+  background: none;
+  border: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  & .mat-icon {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    color: $ku-crimson;
+    cursor: pointer;
+  }
+
+  &:disabled .mat-icon {
+    color: $cadet-grey;
+  }
+}

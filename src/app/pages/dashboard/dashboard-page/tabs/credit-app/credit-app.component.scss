@@ -1,0 +1,149 @@
+@import "../../../../../../theme/styles/colors";
+
+.logo {
+  width: 100px;
+}
+
+q {
+  font-style: italic;
+  font-size: 1.2rem;
+  quotes: "« " " »";
+}
+
+.content-block {
+  width: 100%;
+  height: calc(100% - 80px);
+  border-radius: 12px;
+}
+
+.wrapper {
+  //max-width: 560px;
+  margin: 0 0 20px 20px;
+  border-radius: 12px;
+  background-color: $white;
+  box-shadow: 0 7px 17px rgba(127, 150, 230, 0.15);
+}
+
+.flex-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.flex-wrapper .item-wrapper {
+  width: calc(50% - 5px);
+}
+
+.sub-header {
+  position: relative;
+  height: 30px;
+  margin-bottom: 10px;
+
+  span {
+    font-size: 14px;
+    font-weight: 600;
+    color: $bank-gray;
+    margin-top: 5px;
+    position: absolute;
+    bottom: 3px;
+    font-family: Manrope, sans-serif !important;
+  }
+}
+
+.margin-bottom {
+  margin-bottom: 30px;
+}
+
+.btn-wrapper {
+  padding: 15px 0 20px 40px;
+  // background-color: $munsell;
+  height: 80px;
+
+  mat-app-button:first-child {
+    margin-right: 10px;
+  }
+}
+
+.btn-block {
+  display: flex;
+  align-items: center;
+}
+
+form {
+  height: 100%;
+}
+
+.margin-btm {
+  margin-bottom: 27px;
+}
+
+.toggle-block {
+  flex: 0 0 70px;
+  max-width: 70px;
+}
+
+.toggle-block-center {
+  align-self: center;
+  margin-top: 8px;
+}
+
+.toggle-ml {
+  margin-left: 22px;
+}
+
+.sms-code-svg {
+  width: 36px;
+  right: 0;
+  position: relative;
+}
+
+:host ::ng-deep {
+  mat-app-slide-toggle {
+    mat-slide-toggle {
+      label {
+        color: $cadet-grey;
+      }
+    }
+
+    .mat-checked.blue-toggle {
+      label {
+        .mat-slide-toggle-bar {
+          background-color: $light_blue;
+        }
+      }
+    }
+  }
+}
+
+.fin-error {
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: $ku-crimson;
+}
+
+:host ::ng-deep .invalid-field .form-field-wrapper mat-form-field {
+  border: 2px solid $ku-crimson;
+}
+
+.header-block {
+  padding: 0 20px 0 10px;
+}
+
+.bottom-block {
+  padding: 0 20px 10px 10px;
+  background-color: $extra_light_gray;
+  border-radius: 0 0 12px 12px;
+  border-top: 2px solid $border-gray;
+}
+
+.flex-no-wrap {
+  flex-wrap: nowrap;
+}
+
+.width-40 {
+  width: 40%;
+}
+
+.line-height {
+  line-height: 35px;
+}

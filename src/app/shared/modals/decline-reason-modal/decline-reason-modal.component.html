@@ -1,0 +1,42 @@
+<div class="modal-content">
+  <span class="close-modal" type="" [mat-dialog-close]="'close'"
+    ><img src="../../../../assets/PopupCloseDark.png" alt=""
+  /></span>
+  <div class="modal-name-wrapper">
+    <label class="label-name">{{ title | translate}}</label>
+  </div>
+  <div class="modal-form-wrapper">
+    <form class="modal-form" [formGroup]="declineForm">
+      <mat-app-search-select
+        *ngIf="!!declineReasons.length; else spinner"
+        formControlName="declineReasonControl"
+        [placeholder]="'Modals.Placeholder.DeclineReason'"
+        [options]="declineReasons"
+        [language]="language"
+      >
+      </mat-app-search-select>
+
+      <ng-template #spinner class="d-flex align-items-center justify-content-center h-100">
+        <div class="d-flex align-items-center justify-content-center h-100">
+          <mat-spinner class="text-center" [diameter]="30"></mat-spinner>
+        </div>
+      </ng-template>
+    </form>
+    <div class="button-wrapper">
+      <mat-app-button
+        [type]="'button'"
+        [className]="'mt-2'"
+        [size]="'big'"
+        [disabled]="!declineForm.valid"
+        [radius]="'semiRound'"
+        [backgroundColor]="'transparent'"
+        [border]="true"
+        [hover]="'blue'"
+        [color]="'blue'"
+        (clickEvent)="sendButtonConfirm()"
+      >
+        {{ confirmBtnName | translate }}
+      </mat-app-button>
+    </div>
+  </div>
+</div>

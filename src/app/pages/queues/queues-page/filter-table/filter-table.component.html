@@ -1,0 +1,54 @@
+<div class="filter-wrapper" [ngClass]="{ 'd-none': isMonitoringQueue }">
+  <mat-app-button
+    *ngIf="restartAllBtn.visible"
+    class="save-button mr-3"
+    [radius]="'semiRound'"
+    [backgroundColor]="'blue'"
+    [color]="'white'"
+    [disabled]="isBtnRestartAllInactive"
+    (click)="restartAll($event)"
+  >
+    {{ restartAllBtn.name | translate }}
+  </mat-app-button>
+
+  <app-search-field
+    class="input-wrapper"
+    [searchValue]="searchInputValue"
+    (searchEvent)="onSearchEvent($event)"
+    (clearEvent)="onClearEvent($event)"
+  >
+  </app-search-field>
+
+  <app-dropdown-filter
+    [filterFields]="dashboardFilter"
+    [currentFilterValues]="currentFilterValues"
+    (selectedFilterFields)="selectedFilterFieldsEvent($event)"
+  >
+  </app-dropdown-filter>
+</div>
+
+<div
+  *ngIf="isRefreshBtnInactive || isBtnRestartAllInactive"
+  class="d-flex align-items-center justify-content-center spinner"
+>
+  <mat-spinner class="text-center"></mat-spinner>
+</div>
+
+<div [class]="!isRefreshBtnInactive || !isBtnRestartAllInactive ? 'table-block' : 'table-block-opacity'">
+  <mat-app-table
+    [isSotring]="false"
+    [changePage]="changePage"
+    [totalCount]="totalCount"
+    [tableData]="dataSource"
+    [isSelectsItem]="true"
+    [itemLimit]="itemLimit"
+    [isStaticIconButtonInactive]="isRefreshBtnInactive"
+    (selectedPage)="selectedPageEvent($event)"
+    (sortingData)="sortingDataEvent($event)"
+    (selectedItem)="selectedItemEvent($event)"
+    (buttonEvent)="functionForButtonEvent($event)"
+    (userReassignEvent)="onUserReassign($event)"
+    (declineAdminEvent)="functionForDeclineAdminEvent($event)"
+  >
+  </mat-app-table>
+</div>

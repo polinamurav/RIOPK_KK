@@ -1,0 +1,198 @@
+@import "../../../theme/styles/common";
+
+* {
+  font-size: 12px;
+  font-weight: 600;
+  color: $cadet-grey;
+  font-family: Manrope, sans-serif !important;
+}
+
+.search-select {
+  display: flex;
+  position: relative;
+  margin-bottom: 10px;
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 80px;
+    z-index: 1001;
+  }
+}
+
+.icon svg {
+  position: relative;
+  top: 7px;
+  left: 7px;
+}
+
+::ng-deep {
+  .search-select-label {
+    display: flex;
+    cursor: pointer;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    width: 42px;
+    border-radius: 0 8px 8px 0;
+    position: absolute;
+    & svg {
+      display: block;
+      margin: auto;
+    }
+
+    &:hover {
+      background: $dodger-blue;
+      path {
+        fill: $snow;
+      }
+    }
+  }
+
+  .mat-form-field-disabled ~ .search-select-label {
+    display: none;
+  }
+
+  .mat-form-field-disabled {
+    .mat-select-value-text > span {
+      color: red;
+    }
+  }
+
+  .form-field {
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+      .mat-form-field-flex {
+        .mat-form-field-infix {
+          border-top: 0;
+          //border-top: 1.05em solid transparent;
+        }
+      }
+    }
+  }
+
+  .mat-select-panel-wrap {
+    .mat-select-search-panel {
+      overflow: hidden;
+    }
+  }
+
+  // for dropdown filtering and narrow selects:
+  .selectNarrow {
+    .form-field {
+      border-color: $light-gray;
+    }
+
+    .search-select-label {
+      height: 40px;
+      border-left: 0.03125rem solid $light-gray;
+    }
+  }
+
+  .selectWide {
+    .search-select-label {
+      height: 41px;
+      border-left: 0.03125rem solid $gainsboro;
+
+      &:hover {
+        background: $dodger-blue;
+        path {
+          fill: $snow;
+        }
+      }
+    }
+  }
+
+  .option-search {
+    position: relative;
+
+    .mat-icon {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      z-index: 999;
+    }
+  }
+
+  .mat-select-panel.mat-select-search-panel {
+    .mat-option-disabled {
+      position: relative;
+      height: 50px;
+      .mat-select-search-clear.mat-button {
+        display: none;
+      }
+    }
+  }
+
+  .mat-select {
+    width: calc(100% - 25px) !important;
+    font-family: Manrope, sans-serif !important;
+
+    .mat-select-trigger {
+      .mat-select-value {
+        color: $bank-gray;
+      }
+    }
+  }
+
+  .mat-option {
+    font-family: Manrope, sans-serif !important;
+
+    .mat-option-text {
+      color: $bank-gray;
+    }
+    .mat-select-search-inside-mat-option {
+      .mat-select-search-inner.mat-tab-header {
+        border-bottom: none;
+      }
+      input.mat-select-search-input {
+        margin-top: 7px;
+        height: 36px;
+        border: 1px solid $gainsboro;
+        border-radius: 18px;
+        width: calc(100% - 16px);
+        margin-left: 8px;
+        margin-right: 8px;
+
+        &:focus {
+          border: 1px solid $dodger-blue;
+        }
+        &::placeholder {
+          color: transparent;
+        }
+      }
+    }
+  }
+
+  .mat-menu-content:not(:empty) {
+    padding-top: 8px;
+    padding-bottom: 0 !important;
+  }
+}
+
+// for wide selects:
+
+:host ::ng-deep mat-app-button .search-select-gender-label {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.select-search ::ng-deep .mat-select-search-input {
+  padding-left: 40px;
+}
+
+.select-search ::ng-deep .mat-select-search-inner {
+  border: 1px solid transparent;
+  border-radius: 18px;
+}
+
+.submitted :host(.ng-invalid) {
+  .mat-form-field {
+    border: 2px solid $cg-red;
+  }
+}
+
+.scroll-wrap {
+  max-height: 200px;
+}

@@ -1,0 +1,357 @@
+<form class="decision-form" [formGroup]="form">
+
+  <div *ngIf="isReCalculate" class="spinner-box blackout">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="'DecisionMaking.Titles.IncomeInformation' | translate"
+    [headerNumb]="1"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <mat-app-button
+        [className]="'ml-2'"
+        [size]="'medium'"
+        [border]="true"
+        [radius]="'semiRound'"
+        [backgroundColor]="'blue'"
+        [color]="'white'"
+        [disabled]="readonlyForm"
+        (clickEvent)="addCompany()"
+      >
+        {{ 'Buttons.AddCompany' | translate }}
+      </mat-app-button>
+      <div class="mb-4">
+        <perfect-scrollbar>
+          <nv-editable-table
+            [canEditRows]="!readonlyForm"
+            [canAddRows]="!readonlyForm"
+            [tableHeaders]="incomeInformationEditableTableHeaders"
+            [isDeleteObjLink]="true"
+            [tableRows]="applicantIncomePostDto"
+            [selectData]="optionsList"
+            [buttonsLeftPosition]="'30%'"
+            [language]="language"
+            [pageForSelect]="pageForSelect"
+            [buttonName]="'DecisionMaking.Buttons.Add' | translate"
+            [toggleDependentChecked]="toggleIsBasicChecked"
+            (getNextPartEvent)="nextPartEvent($event)"
+            (getSortPartEvent)="sortPartEvent($event)"
+            (savedRow)="saveRow($event, DecisionMakingGroupKeys.ApplicantIncome)"
+            (editedRow)="editedRow($event, DecisionMakingGroupKeys.ApplicantIncome)"
+            (removedRow)="removeRow($event, DecisionMakingGroupKeys.ApplicantIncome)"
+          >
+          </nv-editable-table>
+        </perfect-scrollbar>
+      </div>
+
+      <div class="row m-0 pb-4" [formGroupName]="DecisionMakingGroupKeys.ApplicantIncome">
+        <ng-container *ngFor="let control of incomeConfig">
+          <div [ngClass]="control?.class">
+            <app-form-field
+              *ngIf="
+                control.type === EInputType.Text ||
+                control.type === EInputType.Number ||
+                control.type === EInputType.PhoneNumber
+              "
+              [formControlName]="control.code"
+              [maxLength]="control.maxLength"
+              [placeholder]="control.placeholder"
+              [readonly]="control?.readonly"
+              [type]="control.type"
+            >
+            </app-form-field>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="'DecisionMaking.Titles.Obligations' | translate"
+    [headerNumb]="2"
+    [isNotAccordion]="true"
+  >
+    <perfect-scrollbar>
+      <nv-editable-table
+        [canEditRows]="!readonlyForm"
+        [canAddRows]="!readonlyForm"
+        [canDeleteRows]="!readonlyForm"
+        [tableHeaders]="applicantLoanTableHeaders"
+        [isDeleteObjLink]="true"
+        [tableRows]="applicantLoanPostDto"
+        [selectData]="optionsList"
+        [buttonsLeftPosition]="'30%'"
+        [language]="language"
+        [buttonName]="'DecisionMaking.Buttons.Add' | translate"
+        (savedRow)="saveRow($event, DecisionMakingGroupKeys.ApplicantLoan)"
+        (editedRow)="editedRow($event, DecisionMakingGroupKeys.ApplicantLoan)"
+        (removedRow)="removeRow($event, DecisionMakingGroupKeys.ApplicantLoan)"
+      >
+      </nv-editable-table>
+    </perfect-scrollbar>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="'DecisionMaking.Titles.GuarantorObligations' | translate"
+    [headerNumb]="3"
+    [isNotAccordion]="true"
+  >
+    <perfect-scrollbar>
+      <nv-editable-table
+        [canEditRows]="!readonlyForm"
+        [canAddRows]="!readonlyForm"
+        [canDeleteRows]="!readonlyForm"
+        [tableHeaders]="applicantGuarantorLoanTableHeaders"
+        [isDeleteObjLink]="true"
+        [tableRows]="applicantGuarantorLoanPostDto"
+        [selectData]="optionsList"
+        [buttonsLeftPosition]="'30%'"
+        [language]="language"
+        [buttonName]="'DecisionMaking.Buttons.Add' | translate"
+        (savedRow)="saveRow($event, DecisionMakingGroupKeys.ApplicantGuarantorLoan)"
+        (editedRow)="editedRow($event, DecisionMakingGroupKeys.ApplicantGuarantorLoan)"
+        (removedRow)="removeRow($event, DecisionMakingGroupKeys.ApplicantGuarantorLoan)"
+      >
+      </nv-editable-table>
+    </perfect-scrollbar>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="'DecisionMaking.Titles.PreApprovedLoanTerms' | translate"
+    [headerNumb]="4"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="mb-4">
+        <perfect-scrollbar>
+          <mat-app-table
+            [isSotring]="false"
+            [footerIsHide]="true"
+            [totalCount]="totalCount"
+            [tableData]="preApprovedLoanTermsInfoData"
+            [itemLimit]="itemLimit"
+          >
+          </mat-app-table>
+        </perfect-scrollbar>
+      </div>
+
+      <div class="m-0 pb-4" [formGroupName]="DecisionMakingGroupKeys.CreditInfo">
+        <ng-container *ngFor="let control of creditInfoConfig">
+          <div [ngClass]="control?.class">
+            <div *ngIf="isVisibleProvisionRate">
+              <mat-app-slide-toggle
+                *ngIf="control.type === EInputType.Checkbox"
+                [formControlName]="control.code"
+                [label]="control.placeholder"
+              >
+              </mat-app-slide-toggle>
+            </div>
+
+            <app-form-field
+              *ngIf="
+                control.type === EInputType.Text ||
+                control.type === EInputType.Number ||
+                control.type === EInputType.PhoneNumber
+              "
+              [formControlName]="control.code"
+              [maxLength]="control.maxLength"
+              [placeholder]="control.placeholder"
+              [readonly]="control?.readonly"
+              [type]="control.type"
+            >
+            </app-form-field>
+
+            <mat-app-search-select-lazy
+              *ngIf="control.type === EInputType.Select || control.type === EInputType.CustomSelect"
+              [formControlName]="control.code"
+              [placeholder]="control.placeholder"
+              [options]="optionsList[control.optionsListName]"
+              [propertyName]="control.propertyName"
+              [language]="language"
+            >
+            </mat-app-search-select-lazy>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="row m-0 pb-4" [formGroupName]="DecisionMakingGroupKeys.LimitUnder">
+        <ng-container *ngFor="let control of limitUnderConfig">
+          <div [ngClass]="control?.class">
+            <app-form-field
+              *ngIf="
+                control.type === EInputType.Text ||
+                control.type === EInputType.Number ||
+                control.type === EInputType.PhoneNumber
+              "
+              [formControlName]="control.code"
+              [maxLength]="control.maxLength"
+              [placeholder]="control.placeholder"
+              [readonly]="control?.readonly"
+              [type]="control.type"
+            >
+            </app-form-field>
+          </div>
+        </ng-container>
+        <mat-app-button
+          [type]="'submit'"
+          [className]="'ml-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'blue'"
+          [color]="'white'"
+          [disabled]="readonlyForm"
+          (clickEvent)="reCalculate()"
+        >
+          {{ 'Buttons.ReCalculate' | translate }}
+        </mat-app-button>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="'DecisionMaking.Titles.CreditConditionsForConfirmedIncome' | translate"
+    [headerNumb]="5"
+    [isNotAccordion]="true"
+  >
+    <div class="row">
+      <div class="col-2">
+        <mat-app-slide-toggle
+          class="m-b"
+          [label]="'FullForm.Placeholder.IsWithRef'"
+          (isToggleChecked)="changeIsWithRef($event)"
+        >
+        </mat-app-slide-toggle>
+      </div>
+      <div *ngIf="this.isWithRef" class="col-4">
+        <mat-app-search-select-lazy
+          placeholder="{{ 'ShortForm.ProductType' | translate }}"
+          [options]="optionsList['product']"
+          [language]="language"
+          [required]="false"
+          (selectChange)="changeIsWithProduct($event)"
+        >
+        </mat-app-search-select-lazy>
+      </div>
+    </div>
+    <perfect-scrollbar>
+      <mat-app-table
+        [isSotring]="false"
+        [footerIsHide]="true"
+        [totalCount]="totalCount"
+        [isVerticalScroll]="true"
+        [tableData]="creditConditionsForConfirmedIncomeInfoData"
+        [itemLimit]="itemLimit"
+      >
+      </mat-app-table>
+    </perfect-scrollbar>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [headerText]="'DecisionMaking.Titles.EmployerVerification' | translate"
+    [isPanelDescHidden]="true"
+    [headerNumb]="6"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="mb-4">
+        <perfect-scrollbar>
+          <nv-editable-table
+            [canEditRows]="!readonlyForm"
+            [canAddRows]="false"
+            [tableHeaders]="verificationEmploymentsTableHeaders"
+            [tableRows]="verificationData?.verificationEmployments"
+            [selectData]="optionsList"
+            [language]="language"
+            [pageForSelect]="pageForSelect"
+            (editedRow)="saveVerificationEmployments($event)"
+            (getNextPartEvent)="nextPartEvent($event)"
+            (getSortPartEvent)="sortPartEvent($event)"
+          >
+          </nv-editable-table>
+        </perfect-scrollbar>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [headerText]="'DecisionMaking.Titles.Decision' | translate"
+    [isPanelDescHidden]="true"
+    [headerNumb]="7"
+    [isNotAccordion]="true"
+  >
+    <div [formGroupName]="DecisionMakingGroupKeys.DecisionMakerDecision">
+      <ng-container *ngFor="let control of decisionMakerDecisionConfig">
+        <div [ngClass]="control?.class">
+          <mat-app-search-select-lazy
+            *ngIf="control.type === EInputType.Select"
+            [formControlName]="control.code"
+            [placeholder]="control.placeholder"
+            [options]="optionsList[control.optionsListName]"
+            [propertyName]="control.propertyName"
+            [language]="language"
+          >
+          </mat-app-search-select-lazy>
+        </div>
+      </ng-container>
+    </div>
+
+    <div [formGroupName]="DecisionMakingGroupKeys.DeclineReason">
+      <ng-container *ngFor="let control of declineReasonConfig">
+        <div [ngClass]="control?.class">
+          <div *ngIf="isVisibleDeclineReason || control.code !== 'dirDecisionMakerDeclineReason'">
+            <mat-app-search-select-lazy
+              *ngIf="control.type === EInputType.Select"
+              [formControlName]="control.code"
+              [placeholder]="control.placeholder"
+              [options]="optionsList[control.optionsListName]"
+              [propertyName]="control.propertyName"
+              [language]="language"
+            >
+            </mat-app-search-select-lazy>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="row m-0 pb-4" [formGroupName]="DecisionMakingGroupKeys.Comment">
+      <ng-container *ngFor="let control of commentConfig">
+        <div [ngClass]="control?.class">
+          <app-form-field
+            *ngIf="
+              control.type === EInputType.Text ||
+              control.type === EInputType.Number ||
+              control.type === EInputType.PhoneNumber
+            "
+            [formControlName]="control.code"
+            [maxLength]="control.maxLength"
+            [placeholder]="control.placeholder"
+            [readonly]="control?.readonly"
+            [type]="control.type"
+          >
+          </app-form-field>
+        </div>
+      </ng-container>
+    </div>
+  </app-layout-for-steps>
+
+  <app-tabs-footer
+    [configSrc]="footerConfigSource"
+    [hideButtons]="readonlyForm"
+    [buttonsDisabled]="isLoading"
+    [userData]="userData"
+    [commentList]="{
+      chatUnderManagerList: chatUnderManagerList
+    }"
+    [commentsReadonly]="readonlyForm"
+    [isNewMessageExists]="isNewMessageExists"
+    (footerButtonClick)="onFooterButtonClick($event)"
+  ></app-tabs-footer>
+</form>

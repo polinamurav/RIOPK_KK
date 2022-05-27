@@ -1,0 +1,47 @@
+<div class="close-btn-wrapper">
+  <mat-app-button
+    [mat-dialog-close]="'close'"
+    [radius]="'round'"
+    [className]="'custom-style-close-modal'"
+    [backgroundColor]="'white'"
+    [color]="'gray'"
+    [hover]="'gray'"
+    [border]="true"
+  >
+    <div type="" class="close-modal" [inlineSVG]="'../../../../../../../assets/close-1.svg'"></div>
+  </mat-app-button>
+</div>
+<div class="client-modal">
+  <div class="name-dialog-wrapper">
+    <h3 class="name-dialog">Панель сравнения</h3>
+  </div>
+  <div class="client-modal-scroll-wrapper">
+    <perfect-scrollbar class="content-wrapper-scroll">
+      <div class="content-wrapper">
+        <div>
+          <mat-app-table
+            [isSotring]="false"
+            [footerIsHide]="true"
+            [totalCount]="totalCount"
+            (selectedItem)="selectedItem($event)"
+            [tableData]="applicationsInfoData"
+            [itemLimit]="itemLimit"
+            (buttonEvent)="compare($event)"
+            [isSelectsItem]="true"
+          >
+          </mat-app-table>
+        </div>
+        <div class="mt-5">
+          <mat-app-table
+            [isSotring]="false"
+            [footerIsHide]="true"
+            [totalCount]="totalCount"
+            [tableData]="comparisonPanelInfoData"
+            [itemLimit]="itemLimit"
+          >
+          </mat-app-table>
+        </div>
+      </div>
+    </perfect-scrollbar>
+  </div>
+</div>
