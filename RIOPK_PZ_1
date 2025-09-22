@@ -1,0 +1,268 @@
+// 1
+// Пример некачественного кода:
+
+function processUserData(users) {
+    // фильтрация
+    const filteredUsers = users.filter(user => user.age > 18 && user.isActive);
+    
+    // сортировка
+    const sortedUsers = filteredUsers.sort((a, b) => a.name.localeCompare(b.name));
+    
+    // группировка
+    const result = {
+        activeUsers: formattedUsers.filter(user => user.isActive),
+        inactiveUsers: formattedUsers.filter(user => !user.isActive),
+        totalCount: formattedUsers.length
+    };
+    return result;
+}
+
+// Пример исправленного кода:
+
+function filterAdultActiveUsers(users) {
+    return users.filter(user => user.age > 18 && user.isActive);
+}
+
+function sortUsersByName(users) {
+    return users.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function groupUsersByActivity(users) {
+    return {
+        activeUsers: users.filter(user => user.isActive),
+        inactiveUsers: users.filter(user => !user.isActive),
+        totalCount: users.length
+    };
+}
+
+function processUserData(users) {
+    const filteredUsers = filterAdultActiveUsers(users);
+    const sortedUsers = sortUsersByName(filteredUsers);
+    const formattedUsers = formatUserData(sortedUsers);
+    return groupUsersByActivity(formattedUsers);
+}
+
+// 2
+// Пример некачественного кода:
+
+function calculateCircleArea(radius) {
+    return Math.PI * radius * radius;
+}
+
+function calculateCirclePerimeter(radius) {
+    return 2 * Math.PI * radius;
+}
+
+function calculateRectangleArea(length, width) {
+    return length * width;
+}
+
+function calculateRectanglePerimeter(length, width) {
+    return 2 * (length + width);
+}
+
+// Пример исправленного кода:
+
+class Circle {
+    constructor(radius) {
+        this.radius = radius;
+    }
+    
+    area() {
+        return Math.PI * this.radius * this.radius;
+    }
+    
+    perimeter() {
+        return 2 * Math.PI * this.radius;
+    }
+}
+
+class Rectangle {
+    constructor(length, width) {
+        this.length = length;
+        this.width = width;
+    }
+    
+    area() {
+        return this.length * this.width;
+    }
+    
+    perimeter() {
+        return 2 * (this.length + this.width);
+    }
+}
+
+// 3
+// Пример некачественного кода:
+
+function calc(a, b, c) {
+    return a * b + c;
+}
+
+const x = 5;
+const y = 10;
+const z = 2;
+const r = calc(x, y, z);
+
+// Пример исправленного кода:
+
+function calculateTotalPrice(unitPrice, quantity, tax) {
+    return unitPrice * quantity + tax;
+}
+
+const unitPrice = 5;
+const quantity = 10;
+const tax = 2;
+const totalPrice = calculateTotalPrice(unitPrice, quantity, tax);
+
+// 4
+// Пример некачественного кода:
+
+function getFullName(user) {
+    const firstName = user.firstName;
+    const lastName = user.lastName;
+    const fullName = firstName + ' ' + lastName;
+    return fullName;
+}
+
+// Пример исправленного кода:
+
+function getFullName(user) {
+    return `${user.firstName} ${user.lastName}`;
+}
+
+// 5
+// Пример некачественного кода:
+
+function createHeavyObject() {
+    const largeArray = new Array(1000000).fill('data');
+    return function() {
+        console.log('Size:', largeArray.length);
+    };
+}
+
+const heavyFunction = createHeavyObject();
+
+// Пример исправленного кода:
+
+function createLightweightObject() {
+    const largeArray = new Array(1000000).fill('data');
+    
+    return {
+        getSize: function() {
+            return largeArray.length;
+        },
+        cleanup: function() {
+            largeArray.length = 0;
+        }
+    };
+}
+
+const obj = createLightweightObject();
+console.log('Size:', obj.getSize());
+obj.cleanup();
+
+// 6
+// Пример некачественного кода:
+
+function processLargeArraySync(array) {
+    // синхронная обработка большого массива
+    return array.map(item => heavyComputation(item))
+               .filter(result => result !== null)
+               .sort((a, b) => a - b);
+}
+// блокирует Event Loop на время выполнения
+const result = processLargeArraySync(largeArray);
+
+// Пример исправленного кода:
+
+async function processLargeArrayAsync(array) {
+    const results = [];
+    
+    for (let i = 0; i < array.length; i++) {
+        // Event Loop может обрабатывать другие события
+        if (i % 1000 === 0) {
+            await new Promise(resolve => setTimeout(resolve, 0));
+        }
+        
+        const result = await heavyComputationAsync(array[i]);
+        if (result !== null) {
+            results.push(result);
+        }
+    }
+    
+    return results.sort((a, b) => a - b);
+}
+// не блокирует Event Loop
+const result = await processLargeArrayAsync(largeArray);
+
+// 7
+// Пример некачественного кода:
+
+function fetchUserData(userId, callback) {
+    getUser(userId, function(user) {
+        getOrders(user.id, function(orders) {
+            getOrderDetails(orders[0].id, function(details) {
+                calculateTotal(details, function(total) {
+                    callback(total);
+                });
+            });
+        });
+    });
+}
+
+// Пример исправленного кода:
+
+async function fetchUserData(userId) {
+    try {
+        const user = await getUser(userId);
+        const orders = await getOrders(user.id);
+        const details = await getOrderDetails(orders[0].id);
+        const total = await calculateTotal(details);
+        return total;
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        throw error;
+    }
+}
+
+//8
+//Пример некачественного кода:
+
+function calculateDiscount(price, userType) {
+    if (userType === 1) { // Что 1?
+        return price * 0.9; // Что 0.9?
+    } else if (userType === 2) {
+        return price * 0.8; // Что 0.8?
+    }
+    return price;
+}
+
+function isPasswordValid(password) {
+    return password.length >= 8;
+}
+
+// Пример исправленного кода:
+
+const USER_TYPES = {
+    REGULAR: 1,
+    PREMIUM: 2,
+    ADMIN: 3
+};
+
+const DISCOUNT_RATES = {
+    [USER_TYPES.REGULAR]: 0.9,
+    [USER_TYPES.PREMIUM]: 0.8,
+    [USER_TYPES.ADMIN]: 0.5
+};
+
+const MIN_PASSWORD_LENGTH = 8;
+
+function calculateDiscount(price, userType) {
+    const discountRate = DISCOUNT_RATES[userType] || 1;
+    return price * discountRate;
+}
+
+function isPasswordValid(password) {
+    return password.length >= MIN_PASSWORD_LENGTH;
+}
