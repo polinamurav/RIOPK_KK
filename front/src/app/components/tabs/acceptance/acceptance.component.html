@@ -1,0 +1,126 @@
+<form [formGroup]="acceptanceForm">
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="titles[AcceptanceGroupKeys.FinalCreditInfo]"
+    [headerNumb]="1"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="pb-4 pt-2">
+        <mat-app-table [tableData]="finalCreditInfoColTableData" [isSorting]="false" [footerIsHide]="true">
+        </mat-app-table>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="titles[AcceptanceGroupKeys.AdditionalParameters]"
+    [headerNumb]="2"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="row m-0 pb-4" [formGroupName]="AcceptanceGroupKeys.AdditionalParameters">
+        <ng-container *ngFor="let control of additionalParametersConfig">
+          <div [ngClass]="control?.class">
+            <!-- *ngIf="
+                (control.placeholder !== 'Acceptance.Placeholders.PaymentDay' || isVisiblePaymentDay) &&
+                (control.placeholder !== 'Acceptance.Placeholders.SecondPaymentDay' || isVisibleSecondPaymentDay) &&
+                (control.placeholder !== 'Acceptance.Placeholders.CalculationDay' || isVisibleCalculationDay)
+              "-->
+            <div>
+              <mat-app-search-select-lazy
+                *ngIf="control.type === EInputType.Select || control.type === EInputType.CustomSelect"
+                [formControlName]="control.code"
+                [placeholder]="control.placeholder"
+                [options]="optionsList[control.optionsListName]"
+                [propertyName]="control.propertyName"
+                [language]="language"
+                [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+              >
+              </mat-app-search-select-lazy>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="titles[AcceptanceGroupKeys.AccountName]"
+    [headerNumb]="3"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="m-b">
+        <mat-app-table [isSorting]="false" [footerIsHide]="true" [tableData]="chosenAccountData"></mat-app-table>
+      </div>
+    </div>
+
+    <div class="w-100 mt-4" [formGroupName]="AcceptanceGroupKeys.loanAgreement">
+      <div class="row">
+        <ng-container *ngFor="let control of loanAgreement">
+          <div [ngClass]="control?.class">
+            <app-form-field
+              *ngIf="control.type === EInputType.Text"
+              [formControlName]="control.code"
+              [maxLength]="control.maxLength"
+              [placeholder]="control.placeholder"
+              [readonly]="control?.readonly"
+              [type]="control.type"
+            >
+            </app-form-field>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <div class="wrapper">
+    <div class="w-100">
+      <div class="row m-0 pb-4" [formGroupName]="AcceptanceGroupKeys.Result">
+        <ng-container *ngFor="let control of resultConfig">
+          <div [ngClass]="control?.class">
+            <mat-app-search-select-lazy
+              *ngIf="control.type === EInputType.Select"
+              [formControlName]="control.code"
+              [placeholder]="control.placeholder | translate"
+              [options]="optionsList[control.optionsListName]"
+              [propertyName]="control.propertyName"
+              [language]="language"
+              [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+              (selectChange)="validationOfCommentFields($event)"
+            >
+            </mat-app-search-select-lazy>
+
+            <app-text-field
+              *ngIf="control.type === EInputType.Textarea"
+              [formControlName]="control.code"
+              [label]="control.placeholder | translate"
+              [autosize]="'none'"
+              [maxlength]="control.maxLength"
+              [rows]="4"
+            >
+            </app-text-field>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <app-tabs-footer
+    [configSrc]="footerConfigSource"
+    [hideButtons]="readonlyForm"
+    [isDeclineRoleAvailable]="true"
+    [buttonsDisabled]="isLoading || isSubmitting"
+    [historyButtonVisible]="historyButtonVisible"
+    [userData]="userData"
+    [commentList]="{
+      chatCradminManagerList: chatList
+    }"
+    [commentsReadonly]="readonlyForm"
+    [isNewMessageExists]="isNewMessageExists"
+    (footerButtonClick)="onFooterButtonClick($event)"
+  ></app-tabs-footer>
+</form>

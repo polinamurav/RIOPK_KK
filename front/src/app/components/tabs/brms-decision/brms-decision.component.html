@@ -1,0 +1,345 @@
+<form [formGroup]="decisionForm">
+  <div>
+    <div *ngIf="readonlyForm">
+      <app-layout-for-steps
+        [isPanelDescHidden]="true"
+        formGroupName="brms5"
+        [headerText]="'BRMSDecision.Titles.BRMS5' | translate"
+        [headerNumb]="1"
+        [isNotAccordion]="true"
+      >
+        <div class="w-100">
+          <div class="row m-0">
+            <div class="col-4">
+              <mat-app-search-select
+                formControlName="brms5Decision"
+                [placeholder]="'BRMSDecision.Placeholders.Decision' | translate"
+                [options]="decisions"
+                [language]="language"
+              >
+              </mat-app-search-select>
+            </div>
+            <div class="col-4">
+              <div class="form-field-wrapper">
+                <mat-form-field>
+                  <input
+                    matInput
+                    formControlName="created"
+                    [placeholder]="'BRMSDecision.Placeholders.DecisionDateAndTime' | translate"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div *ngIf="showScoringParams" class="col-4 padding-top">
+                <mat-app-button
+                  [type]="'button'"
+                  [className]="'ml-2'"
+                  [size]="'medium'"
+                  [border]="true"
+                  [radius]="'semiRound'"
+                  [backgroundColor]="'blue'"
+                  [color]="'white'"
+                  [disabled]="!appDto?.brms5Response"
+                  (clickEvent)="showParamsBrms('brms5')"
+                >
+                  {{ 'BRMSDecision.Buttons.Params' | translate }}
+                </mat-app-button>
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div *ngIf="showScoringParams" class="col-4 padding-top">
+                <mat-app-button
+                  [type]="'button'"
+                  [className]="'ml-2'"
+                  [size]="'medium'"
+                  [border]="true"
+                  [radius]="'semiRound'"
+                  [backgroundColor]="'blue'"
+                  [color]="'white'"
+                  (clickEvent)="showMatrixLimitDetail('brms5')"
+                >
+                  Лимит
+                </mat-app-button>
+              </div>
+            </div>
+          </div>
+
+          <h5>{{ 'BRMSDecision.TableTitles.ListOfTriggeredVerificationRules' | translate }}</h5>
+          <div class="p-b">
+            <mat-app-table
+              [isSorting]="false"
+              [footerIsHide]="true"
+              [totalCount]="totalCount"
+              [tableData]="brms5resultColmTableData"
+              [itemLimit]="itemLimit"
+            >
+            </mat-app-table>
+          </div>
+        </div>
+      </app-layout-for-steps>
+
+      <app-layout-for-steps
+        [isPanelDescHidden]="true"
+        formGroupName="brms4"
+        [headerText]="'BRMSDecision.Titles.BRMS4' | translate"
+        [headerNumb]="2"
+        [isNotAccordion]="true"
+      >
+        <div class="w-100">
+          <div class="row m-0">
+            <div class="col-4">
+              <mat-app-search-select
+                formControlName="brms23Decision"
+                [placeholder]="'BRMSDecision.Placeholders.Decision' | translate"
+                [options]="decisions"
+                [language]="language"
+              >
+              </mat-app-search-select>
+            </div>
+            <!--<div class="col-4" *ngIf="showScoringParams" >-->
+            <!--<mat-app-button-->
+            <!--[type]="'button'"-->
+            <!--[className]="'ml-2'"-->
+            <!--[size]="'medium'"-->
+            <!--[border]="true"-->
+            <!--[radius]="'semiRound'"-->
+            <!--[backgroundColor]="'blue'"-->
+            <!--[color]="'white'"-->
+            <!--(clickEvent)="showMatrixLimitDetail('brms4')"-->
+            <!--&gt;-->
+            <!--Лимит-->
+            <!--</mat-app-button>-->
+            <!--</div>-->
+          </div>
+
+          <div class="row m-0">
+            <div class="col-4">
+              <mat-app-search-select
+                formControlName="brms4Response"
+                [placeholder]="'BRMSDecision.Placeholders.CheckResult' | translate"
+                [options]="decisions"
+                [language]="language"
+              >
+              </mat-app-search-select>
+            </div>
+            <div class="col-4">
+              <div class="form-field-wrapper">
+                <mat-form-field>
+                  <input
+                    matInput
+                    formControlName="created"
+                    [placeholder]="'BRMSDecision.Placeholders.DecisionDateAndTime' | translate"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <h5>{{ 'BRMSDecision.TableTitles.ListOfTriggeredVerificationRules' | translate }}</h5>
+          <div class="p-b">
+            <mat-app-table
+              [isSorting]="false"
+              [footerIsHide]="true"
+              [totalCount]="totalCount"
+              [tableData]="brms4resultColmTableData"
+              [itemLimit]="itemLimit"
+            >
+            </mat-app-table>
+          </div>
+        </div>
+      </app-layout-for-steps>
+
+      <app-layout-for-steps
+        [isPanelDescHidden]="true"
+        formGroupName="brms3"
+        [headerText]="'BRMSDecision.Titles.BRMS3' | translate"
+        [headerNumb]="3"
+        [isNotAccordion]="true"
+      >
+        <div class="w-100">
+          <div class="row m-0">
+            <div class="col-4">
+              <mat-app-search-select
+                formControlName="brms23Decision"
+                [placeholder]="'BRMSDecision.Placeholders.Decision' | translate"
+                [options]="decisions"
+                [language]="language"
+              >
+              </mat-app-search-select>
+            </div>
+            <div class="col-4" *ngIf="showScoringParams">
+              <mat-app-button
+                [type]="'button'"
+                [className]="'ml-2'"
+                [size]="'medium'"
+                [border]="true"
+                [radius]="'semiRound'"
+                [backgroundColor]="'blue'"
+                [color]="'white'"
+                (clickEvent)="showMatrixLimitDetail('brms3')"
+              >
+                Лимит
+              </mat-app-button>
+            </div>
+          </div>
+
+          <div class="row m-0">
+            <div class="col-4">
+              <mat-app-search-select
+                formControlName="brms3Response"
+                [placeholder]="'BRMSDecision.Placeholders.CheckResult' | translate"
+                [options]="decisions"
+                [language]="language"
+              >
+              </mat-app-search-select>
+            </div>
+            <div class="col-4">
+              <div class="form-field-wrapper">
+                <mat-form-field>
+                  <input
+                    matInput
+                    formControlName="created"
+                    [placeholder]="'BRMSDecision.Placeholders.DecisionDateAndTime' | translate"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <h5>{{ 'BRMSDecision.TableTitles.ListOfTriggeredVerificationRules' | translate }}</h5>
+          <div class="p-b">
+            <mat-app-table
+              [isSorting]="false"
+              [footerIsHide]="true"
+              [totalCount]="totalCount"
+              [tableData]="brms3resultColmTableData"
+              [itemLimit]="itemLimit"
+            >
+            </mat-app-table>
+          </div>
+        </div>
+      </app-layout-for-steps>
+    </div>
+
+    <app-layout-for-steps
+      formGroupName="brms2"
+      [isPanelDescHidden]="true"
+      [headerText]="'BRMSDecision.Titles.BRMS2' | translate"
+      [headerNumb]="4"
+      [isNotAccordion]="true"
+    >
+      <div class="w-100">
+        <div class="row m-0">
+          <div class="col-4">
+            <mat-app-search-select
+              formControlName="brms12Decision"
+              [placeholder]="'BRMSDecision.Placeholders.Decision' | translate"
+              [options]="decisions"
+              [language]="language"
+            >
+            </mat-app-search-select>
+          </div>
+
+          <div *ngIf="showScoringParams" class="col-4 padding-top">
+            <mat-app-button
+              [type]="'button'"
+              [className]="'ml-2'"
+              [size]="'medium'"
+              [border]="true"
+              [radius]="'semiRound'"
+              [backgroundColor]="'blue'"
+              [color]="'white'"
+              [disabled]="!appDto?.brms2Response"
+              (clickEvent)="showParamsBrms('brms2')"
+            >
+              {{ 'BRMSDecision.Buttons.Params' | translate }}
+            </mat-app-button>
+          </div>
+        </div>
+
+        <div class="row m-0 p-b">
+          <div class="col-4">
+            <mat-app-search-select
+              formControlName="brms2Response"
+              [placeholder]="'BRMSDecision.Placeholders.CheckResult' | translate"
+              [options]="decisions"
+              [language]="language"
+            >
+            </mat-app-search-select>
+          </div>
+          <div class="col-4">
+            <div class="form-field-wrapper">
+              <mat-form-field>
+                <input
+                  matInput
+                  formControlName="created"
+                  [placeholder]="'BRMSDecision.Placeholders.DecisionDateAndTime' | translate"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <h5>{{ 'BRMSDecision.TableTitles.ListOfTriggeredVerificationRules' | translate }}</h5>
+        <div class="p-b">
+          <mat-app-table
+            [isSorting]="false"
+            [footerIsHide]="true"
+            [totalCount]="totalCount"
+            [tableData]="brms2resultColmTableData"
+            [itemLimit]="itemLimit"
+          >
+          </mat-app-table>
+        </div>
+      </div>
+    </app-layout-for-steps>
+
+    <app-layout-for-steps
+      formGroupName="brms1"
+      [isPanelDescHidden]="true"
+      [headerText]="'BRMSDecision.Titles.BRMS1'"
+      [headerNumb]="5"
+      [isNotAccordion]="true"
+    >
+      <div class="w-100 p-b-large">
+        <div class="row m-0">
+          <div class="col-4">
+            <mat-app-search-select
+              formControlName="brms1Response"
+              [placeholder]="'BRMSDecision.Placeholders.Decision' | translate"
+              [options]="decisions"
+              [language]="language"
+            >
+            </mat-app-search-select>
+          </div>
+          <div class="col-4">
+            <div class="form-field-wrapper">
+              <mat-form-field>
+                <input
+                  matInput
+                  formControlName="created"
+                  [placeholder]="'BRMSDecision.Placeholders.DecisionDateAndTime' | translate"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <h5>{{ 'BRMSDecision.TableTitles.ListOfTriggeredVerificationRules' | translate }}</h5>
+        <div>
+          <mat-app-table
+            [isSorting]="false"
+            [footerIsHide]="true"
+            [totalCount]="totalCount"
+            [tableData]="brms1resultColmTableData"
+            [itemLimit]="itemLimit"
+          >
+          </mat-app-table>
+        </div>
+      </div>
+    </app-layout-for-steps>
+  </div>
+</form>

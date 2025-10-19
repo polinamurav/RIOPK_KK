@@ -1,0 +1,14 @@
+<div class="main-container bg-light">
+  <div class="login-box">
+    <!--&lt;!&ndash;<div class="card col-md-6  mx-auto">&ndash;&gt; old version -->
+    <div class="mx-auto">
+      <h4 class="card-logo text-center">
+        <span [inlineSVG]="'../assets/img/logo.svg'"></span>
+      </h4>
+      <div class="card-body">
+        <ng-content></ng-content>
+      </div>
+      <span class="version">version: {{ version }}</span>
+    </div>
+  </div>
+</div>

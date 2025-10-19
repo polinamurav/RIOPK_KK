@@ -1,0 +1,68 @@
+@import "../../../../../../../theme/styles/common";
+
+:host ::ng-deep {
+  .close-btn-wrapper {
+    padding-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .close-modal {
+    margin-left: 2px;
+
+    svg {
+      fill: $cadet-grey;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      svg {
+        fill: $snow;
+      }
+    }
+  }
+
+  .pos-modal {
+    height: calc(100% - 65px);
+    position: relative;
+    padding: 0 20px;
+
+    .pos-dialog-wrapper {
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      margin: 10px 0;
+      h3 {
+        font-size: 22px;
+        font-weight: bold;
+        color: $dark-jungle-green;
+        text-align: center;
+      }
+    }
+
+    .subtitle-wrapper {
+      font-size: 16px;
+      font-weight: bold;
+      color: $dark-jungle-green;
+      text-align: center;
+    }
+
+    .pos-modal-scroll-wrapper {
+      height: calc(100% - 40px);
+    }
+  }
+
+  .filter-wrapper {
+    @extend .filter-container;
+  }
+
+  .table-block {
+    // height: calc(100% - 62px);
+    height: 100%;
+
+    .button-block {
+      padding: 16px 0 0 5px;
+    }
+  }
+}

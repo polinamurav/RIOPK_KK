@@ -1,0 +1,101 @@
+.process-container {
+  padding: 0 1rem;
+  position: relative;
+  .top-info {
+    border: 1px solid #c6c6c6;
+    border-radius: 3px;
+    margin-top: 1rem;
+    min-height: 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    .title-process {
+      padding: 1rem;
+      .process-stage {
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+      .base-name {
+        padding-top: 0.5rem;
+      }
+    }
+
+    .base-file-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 1rem;
+      .base-name {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .link {
+        }
+
+        .delete-base {
+          margin-left: 1rem;
+        }
+      }
+    }
+  }
+
+  .process-body {
+    padding: 1rem 0;
+    .process-config-form {
+      padding: 1rem 0;
+      width: 70%;
+
+      &__container {
+        display: flex;
+        gap: 2rem;
+      }
+    }
+  }
+
+  .process-box {
+    position: relative;
+    height: 25rem;
+    .spinner-process {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .calculated-clients {
+    display: grid;
+    align-items: baseline;
+    grid-template-columns: 25rem 1fr;
+  }
+
+  .process-action-container {
+    display: flex;
+
+    .button-action {
+      width: 30%;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.strategy-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+
+  &.green {
+    background-color: #31b432;
+  }
+  &.yellow {
+    background-color: #f9d543;
+  }
+}

@@ -1,0 +1,149 @@
+<div class="filter-wrapper">
+
+  <form [formGroup]="posReportForm" class="filter-form">
+    <div class="form-grid">
+    <div class="datepicker-wrap">
+      <app-date-picker
+        formControlName="dateFrom"
+        [disabled]="isProcessing"
+        [placeholder]="'Report.Placeholder.DateFromPos'"
+        [required]="true"
+      >
+      </app-date-picker>
+    </div>
+
+    <div class="datepicker-wrap">
+      <app-date-picker
+        formControlName="dateTo"
+        [minDate]="this.posReportForm.controls.dateFrom.value"
+        [maxDate]="maxDateTo"
+        [disabled]="isProcessing"
+        [placeholder]="'Report.Placeholder.DateToPos'"
+        [required]="true"
+      >
+      </app-date-picker>
+    </div>
+
+    <div class="datepicker-wrap">
+      <mat-app-search-select-lazy
+        [formControlName]="'applicationStatusId'"
+        [placeholder]="'Report.Placeholder.ApplicationStatus'"
+        [options]="optionsList['applicationStatusId']"
+        [valueType]='ValueType.Object'
+        [language]="language"
+        [allowEmptyValue]="true"
+      >
+      </mat-app-search-select-lazy>
+    </div>
+    <div class="datepicker-wrap">
+      <mat-app-search-select-lazy
+        [formControlName]="'dirTradingCompanyId'"
+        [placeholder]="'Report.Placeholder.TradingCompany'"
+        [propertyName]="'companyName'"
+        [options]="optionsList['dirTradingCompanyId']"
+        [valueType]='ValueType.Object'
+        [language]="language"
+        [allowEmptyValue]="true"
+      >
+      </mat-app-search-select-lazy>
+    </div>
+    <div class="datepicker-wrap">
+      <mat-app-search-select-lazy
+        [formControlName]="'dirTradingCompanyPointId'"
+        [placeholder]="'Report.Placeholder.TradingCompanyPoint'"
+        [options]="optionsList['dirTradingCompanyPointId']"
+        [valueType]='ValueType.Object'
+        [language]="language"
+        [allowEmptyValue]="true"
+      >
+      </mat-app-search-select-lazy>
+    </div>
+    <div class="datepicker-wrap">
+      <mat-app-search-select-lazy
+        [formControlName]="'managerId'"
+        [placeholder]="'Report.Placeholder.Manager'"
+        [options]="optionsList['managerId']"
+        [propertyName]="'fio'"
+        [valueType]='ValueType.Object'
+        [language]="language"
+        [allowEmptyValue]="true"
+      >
+      </mat-app-search-select-lazy>
+    </div>
+    <div class="datepicker-wrap">
+      <mat-app-search-select-lazy
+        [formControlName]="'ttuserId'"
+        [placeholder]="'Report.Placeholder.TTUser'"
+        [options]="optionsList['ttuserId']"
+        [propertyName]="'fio'"
+        [valueType]='ValueType.Object'
+        [language]="language"
+        [allowEmptyValue]="true"
+      >
+      </mat-app-search-select-lazy>
+    </div>
+    </div>
+  </form>
+
+
+  <div class="buttons-box">
+
+
+    <mat-app-button
+      [type]="'button'"
+      [size]="'medium'"
+      [border]="true"
+      [radius]="'semiRound'"
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      [disabled]="isProcessing"
+      (clickEvent)="getReport()"
+    >
+      {{ 'Buttons.Start' | translate }}
+    </mat-app-button>
+
+
+    <mat-app-button
+      [type]="'button'"
+      [className]="'ml-2'"
+      [size]="'medium'"
+      [border]="true"
+      [radius]="'semiRound'"
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      (clickEvent)="refresh()"
+    >
+      {{ 'Buttons.Refresh' | translate }}
+    </mat-app-button>
+
+
+    <mat-app-button
+      [type]="'button'"
+      [className]="'ml-2'"
+      [size]="'medium'"
+      [border]="true"
+      [radius]="'semiRound'"
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      [disabled]="!isCompleted"
+      (clickEvent)="download()"
+    >
+      {{ 'Buttons.Upload' | translate }}
+    </mat-app-button>
+
+
+  </div>
+
+
+</div>
+<div class="status">
+  {{ status?.nameRu }}
+</div>
+
+
+<div class="content-box">
+  <div *ngIf="isLoading || isProcessing" class="spinner-box d-flex align-items-center justify-content-center h-100">
+    <mat-spinner class="text-center"></mat-spinner>
+  </div>
+</div>
+

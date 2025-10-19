@@ -1,0 +1,103 @@
+@import "../../../../theme/styles/common";
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: none !important;
+  -webkit-text-fill-color: inherit !important;
+  box-shadow: 0 0 0 100px transparent inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.submitted :host(.ng-invalid) {
+  .mat-form-field {
+    border: solid $cg-red;
+    border-width: 0 0 1px 0;
+    margin-bottom: 0;
+  }
+}
+
+:host(.validate-error) {
+  .mat-form-field {
+    border: solid $cg-red;
+    border-width: 0 0 1px 0;
+    margin-bottom: 0;
+  }
+}
+
+* {
+  font-weight: 400;
+  font-family: "VTB Group Light" !important;
+}
+
+.form-field-wrapper {
+  display: flex;
+  position: relative;
+
+  .form-field-doable-label {
+    position: absolute;
+    right: 0;
+  }
+}
+
+.form-field-top-label {
+  padding-top: 5px;
+  border-radius: 0 8px 0 0;
+  border-bottom: 0.03125rem solid $gainsboro;
+}
+
+.form-field-down-label {
+  border-radius: 0 0 8px 0;
+  border-top: 0.03125rem solid $gainsboro;
+  ::ng-deep svg {
+    position: relative;
+    top: 12%;
+  }
+}
+
+.form-field-top-label,
+.form-field-down-label {
+  height: 30px;
+  width: 42px;
+  border-left: 0.03125rem solid $gainsboro;
+  text-align: center;
+  cursor: pointer;
+  &:hover {
+    background: $dodger-blue;
+    ::ng-deep path {
+      fill: $snow;
+    }
+  }
+}
+:host {
+  input {
+    line-height: 31px;
+    margin: 5px 0;
+    color: var(--input-basic-text-color);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    font-family: "VTB Group Book" !important;
+  }
+}
+
+input[type="number"] {
+  appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  appearance: none;
+}
+.hide-btn {
+  float: right;
+  margin-top: -50px;
+  outline: none;
+  position: relative;
+  z-index: 2;
+}

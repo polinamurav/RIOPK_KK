@@ -1,0 +1,66 @@
+@import "src/theme/styles/common";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.confirm-modal {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 20px;
+
+  .confirm-modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 30px;
+
+    .confirm-modal-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: $dark-jungle-green;
+    }
+  }
+
+  .confirm-modal-footer {
+    display: flex;
+    justify-content: center;
+
+    .confirm-modal-buttons-wrapper {
+      display: flex;
+      justify-content: space-between;
+      width: 200px;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .custom-style-no-button {
+    background: $munsell;
+    border: 1px solid #cbcbcb;
+  }
+}
+
+.close-modal {
+  position: absolute;
+  cursor: pointer;
+  right: 5px;
+  top: 5px;
+
+  img {
+    transition: all 0.3s ease;
+    opacity: 0.4;
+
+    &:hover {
+      transform: rotate(90deg);
+      opacity: 0.7;
+    }
+  }
+}

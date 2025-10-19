@@ -1,0 +1,17 @@
+<div class="flex-block">
+  <div class="mb-2 align-self-end">
+    <mat-app-button
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      [hover]="'blue'"
+      [radius]="'semiRound'"
+      (clickEvent)="updateList()"
+    >
+      {{ 'Administration.Buttons.UpdateList' | translate }}
+    </mat-app-button>
+  </div>
+  <div class="table-block">
+    <mat-app-table [objColNameProps]="objColNameProps" [tableData]="dataSource" [isSorting]="false" [isReadonly]="true">
+    </mat-app-table>
+  </div>
+</div>

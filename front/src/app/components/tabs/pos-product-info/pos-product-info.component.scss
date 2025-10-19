@@ -1,0 +1,29 @@
+
+.grid-4-gap-1 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.grid-5-gap-1{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  label {
+    color: grey;
+    font-size: 0.7rem;
+  }
+  span {
+
+  }
+}
+
+.total-cost{
+  display: flex;
+  justify-content: end;
+}

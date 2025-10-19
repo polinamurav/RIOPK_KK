@@ -1,0 +1,284 @@
+<div class="process-container d-flex">
+  <div class="col-6">
+    <mat-app-button
+      [className]="'mt-2'"
+      [size]="'big'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+      (clickEvent)="createNew()"
+    >
+      Добавить новую базу
+    </mat-app-button>
+
+    <mat-app-button
+      *ngIf="
+        selectedBase?.isUploadSuccess &&
+        selectedBase.fileName &&
+        selectedBase?.statusId !== PreapproveStatusesEnum.ACTIVATED
+      "
+      [className]="'mt-2'"
+      [size]="'big'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+      (clickEvent)="updateCalculationClients()"
+    >
+      Обновить
+    </mat-app-button>
+  </div>
+
+  <div class="col-6 d-flex justify-content-end">
+    <mat-app-button
+      *ngIf="selectedBase?.statusId !== PreapproveStatusesEnum.ACTIVATED"
+      [className]="'mt-2 mr-3'"
+      [size]="'big'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+      (clickEvent)="stopProcess()"
+    >
+      Остановить обработчик
+    </mat-app-button>
+
+    <table>
+      <tr>
+        <th class="" scope="col">Обработчик</th>
+        <th class="pl-3" scope="col">Состояние</th>
+        <th class="pl-3" scope="col">База</th>
+      </tr>
+      <tr *ngFor="let preapproveExecution of (preapproveExecutionList$ | async)">
+        <td class="">{{ preapproveExecution?.server }}</td>
+        <td class="pl-3">
+          <span class="dot green" *ngIf="preapproveExecution?.state === 'READY'"></span>
+          <span class="dot yellow" *ngIf="preapproveExecution?.state !== 'READY'"></span>
+          {{ preapproveExecution?.state }} - {{ preapproveExecution?.stateName }}
+        </td>
+        <td class="pl-3">{{ preapproveExecution?.baseName }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<hr />
+
+<div class="process-container">
+  <div class="top-info" *ngIf="(selectedBase$ | async) as selectedBase">
+    <div class="title-process">
+      <div class="process-stage">
+        {{ currentStatus$ | async }}
+      </div>
+      <div class="base-name">
+        {{ selectedBase?.name }}
+      </div>
+    </div>
+    <div class="base-file-info">
+      <div class="">
+        <ng-container *ngIf="!selectedBase.isUploadSuccess || !selectedBase.fileName">
+          <app-file-downloader
+            [accept]="acceptAgreement"
+            [attachmentMaxSize]="preApprovedMaxSizeBytes"
+            (fileLoadedEvent)="uploadBase($event, selectedBase)"
+            titleForPreview="Загрузить базу"
+          ></app-file-downloader>
+        </ng-container>
+      </div>
+      <div class="base-name" *ngIf="selectedBase.fileName">
+        <span (click)="downloadBase()" class="link"> {{ selectedBase.fileName }}</span>
+        <span class="delete-base">
+          <mat-app-button
+            *ngIf="selectedBase?.isUploadSuccess"
+            [className]="'mt-2'"
+            [size]="'big'"
+            [radius]="'semiRound'"
+            [backgroundColor]="'transparent'"
+            [border]="true"
+            [hover]="'blue'"
+            [color]="'blue'"
+            (clickEvent)="deleteBase()"
+          >
+            удалить
+          </mat-app-button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="(selectedBase$ | async) as selectedBase">
+    <div class="process-body mt-3 ml-2" *ngIf="selectedBase.isUploadSuccess && selectedBase.fileName">
+      <ng-container
+        *ngIf="
+          selectedBase?.statusId === PreapproveStatusesEnum.CREATED ||
+          selectedBase?.statusId === PreapproveStatusesEnum.CALCULATING_DONE ||
+          selectedBase?.statusId === PreapproveStatusesEnum.STOPPED
+        "
+      >
+        <div class="">Запрашивать:</div>
+        <div class="process-action-container">
+          <div class="process-config-form">
+            <form [formGroup]="baseProcessRunForm">
+              <div class="process-config-form__container">
+                <ng-container *ngFor="let control of baseProcessRunConfig">
+                  <div>
+                    <mat-app-slide-toggle
+                      class="m-b"
+                      *ngIf="control.type === EInputType.Checkbox"
+                      [labelPosition]="control.labelPosition"
+                      [formControlName]="control.code"
+                      [label]="control.placeholder"
+                    >
+                    </mat-app-slide-toggle>
+                  </div>
+                </ng-container>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="button-action">
+          <mat-app-button
+            [className]="'mt-2'"
+            [size]="'medium'"
+            [radius]="'semiRound'"
+            [backgroundColor]="'transparent'"
+            [border]="true"
+            [hover]="'blue'"
+            (clickEvent)="startProcess()"
+            [color]="'blue'"
+            #tooltip="matTooltip"
+            matTooltip="Запускает полный расчет всего списка клиентов"
+          >
+            {{
+              selectedBase?.statusId === PreapproveStatusesEnum.CALCULATING_DONE
+                ? 'Запустить пересчет'
+                : 'Запустить расчет'
+            }}
+          </mat-app-button>
+
+          <!--<mat-app-button
+            *ngIf="selectedBase?.statusId === PreapproveStatusesEnum.CALCULATING_DONE ||
+                   selectedBase?.statusId === PreapproveStatusesEnum.STOPPED"
+            [className]="'mt-2'"
+            [size]="'medium'"
+            [radius]="'semiRound'"
+            [backgroundColor]="'transparent'"
+            [border]="true"
+            [hover]="'blue'"
+            (clickEvent)="startProcess()"
+            [color]="'blue'"
+            #tooltip="matTooltip"
+            matTooltip="Расчитывает клиентов, по которым расчет еще не выполнялся"
+          >
+            {{ 'Дорасчитать' }}
+          </mat-app-button>
+
+          <mat-app-button
+            *ngIf="selectedBase?.statusId === PreapproveStatusesEnum.CALCULATING_DONE ||
+                   selectedBase?.statusId === PreapproveStatusesEnum.STOPPED"
+            [className]="'mt-2'"
+            [size]="'medium'"
+            [radius]="'semiRound'"
+            [backgroundColor]="'transparent'"
+            [border]="true"
+            [hover]="'blue'"
+            (clickEvent)="startProcess()"
+            [color]="'blue'"
+            #tooltip="matTooltip"
+            matTooltip="Расчитывает клиентов, по которым расчет еще не выполнялся, или одна из интеграций не отработала"
+          >
+            {{ 'Дорасчитать + интеграции' }}
+          </mat-app-button>-->
+        </div>
+      </ng-container>
+
+      <div class="calculated-clients mt-5" *ngIf="selectedBase?.statusId !== PreapproveStatusesEnum.CREATED">
+        <div class="">
+          <p>
+            Количество обсчитанных клиентов <span>{{ completedClients$ | async }}</span> из
+            <span>{{ selectedBase?.clientsCount }}</span>
+          </p>
+        </div>
+        <!--<div>-->
+        <!--<mat-app-button-->
+        <!--*ngIf="completedClients$ | async"-->
+        <!--[className]="'mt-2'"-->
+        <!--[size]="'big'"-->
+        <!--[radius]="'semiRound'"-->
+        <!--[backgroundColor]="'transparent'"-->
+        <!--[border]="true"-->
+        <!--[hover]="'blue'"-->
+        <!--[color]="'blue'"-->
+        <!--(clickEvent)="downloadCalculatedClients()"-->
+        <!--&gt;-->
+        <!--Выгрузить-->
+        <!--</mat-app-button>-->
+        <!--</div>-->
+      </div>
+
+      <div class="strategy-container" *ngIf="(completedClients$ | async)">
+        <div class="">
+          <ng-container *ngFor="let btn of (strategyActionsConfig | slice: 0:4)">
+            <mat-app-button
+              *ngIf="btn.show"
+              [className]="'mt-2'"
+              [size]="'big'"
+              [radius]="'semiRound'"
+              [backgroundColor]="'transparent'"
+              [border]="true"
+              [disabled]="btn.disabled"
+              [hover]="'blue'"
+              [color]="'blue'"
+              (clickEvent)="btn.action()"
+            >
+              {{ btn.name }}
+            </mat-app-button>
+
+            <!--<app-file-downloader-->
+            <!--[accept]="acceptAgreement"-->
+            <!--(fileLoadedEvent)="uploadBase($event, selectedBase)"-->
+            <!--titleForPreview="Загрузить базу"-->
+            <!--&gt;</app-file-downloader>-->
+          </ng-container>
+        </div>
+
+        <div class="">
+          <ng-container *ngFor="let btn of (strategyActionsConfig | slice: 4:5)">
+            <mat-app-button
+              *ngIf="btn.show"
+              [className]="'mt-2'"
+              [size]="'big'"
+              [radius]="'semiRound'"
+              [backgroundColor]="'transparent'"
+              [border]="true"
+              [disabled]="btn.disabled"
+              [hover]="'blue'"
+              [color]="'blue'"
+              (clickEvent)="btn.action()"
+            >
+              {{ btn.name }}
+            </mat-app-button>
+          </ng-container>
+        </div>
+      </div>
+
+      <div *ngIf="!!errorMessage" class="d-block mt-5">
+        <h5>Ошибка:</h5>
+        <span> {{ errorMessage }}</span>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="process-box">
+    <mat-spinner
+      class="spinner-process text-center"
+      *ngIf="selectedBase?.statusId === PreapproveStatusesEnum.CALCULATING"
+    ></mat-spinner>
+    <mat-spinner class="spinner-process text-center" *ngIf="isLoading"></mat-spinner>
+  </div>
+</div>

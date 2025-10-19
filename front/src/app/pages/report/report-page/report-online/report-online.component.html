@@ -1,0 +1,95 @@
+
+
+
+<div class="filter-wrapper">
+
+  <form [formGroup]="onlineReportForm" class="filter-wrapper">
+    <div class="datepicker-wrap">
+      <app-date-picker
+        formControlName="dateFrom"
+        [minDate]="datesRanges.minDate"
+        [maxDate]="datesRanges.maxDate"
+        [disabled]="isProcessing"
+        [placeholder]="'Report.Placeholder.DateFrom'"
+      >
+      </app-date-picker>
+    </div>
+
+    <div class="datepicker-wrap">
+      <app-date-picker
+        formControlName="dateTo"
+        [minDate]="dateFromValue"
+        [maxDate]="datesRanges.maxDate"
+        [disabled]="isProcessing"
+        [placeholder]="'Report.Placeholder.DateTo'"
+      >
+      </app-date-picker>
+    </div>
+  </form>
+
+  <div class="buttons-box">
+
+
+
+    <mat-app-button
+      [type]="'button'"
+      [className]="'ml-2'"
+      [size]="'medium'"
+      [border]="true"
+      [radius]="'semiRound'"
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      [disabled]="isProcessing"
+      (clickEvent)="getReport()"
+    >
+      {{ 'Buttons.Start' | translate }}
+    </mat-app-button>
+
+
+    <mat-app-button
+      [type]="'button'"
+      [className]="'ml-2'"
+      [size]="'medium'"
+      [border]="true"
+      [radius]="'semiRound'"
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      (clickEvent)="refresh()"
+    >
+      {{ 'Buttons.Refresh' | translate }}
+    </mat-app-button>
+
+
+    <mat-app-button
+      [type]="'button'"
+      [className]="'ml-2'"
+      [size]="'medium'"
+      [border]="true"
+      [radius]="'semiRound'"
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      [disabled]="!isCompleted"
+      (clickEvent)="download()"
+    >
+      {{ 'Buttons.Upload' | translate }}
+    </mat-app-button>
+
+
+
+
+  </div>
+
+
+
+</div>
+<div class="status">
+  {{status?.nameRu}}
+</div>
+
+
+<div class="content-box">
+  <div *ngIf="isLoading || isProcessing" class="spinner-box d-flex align-items-center justify-content-center h-100">
+    <mat-spinner class="text-center"></mat-spinner>
+  </div>
+</div>
+

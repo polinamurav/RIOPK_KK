@@ -1,0 +1,58 @@
+@import "src/theme/styles/common";
+
+.close-btn-wrapper {
+  padding: 16px;
+  height: 63px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-content {
+  height: 450px;
+  padding-top: 10px;
+  border: none;
+}
+
+.margin-dtm {
+  margin-bottom: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-start;
+  background-color: $munsell;
+  border-top: 1px solid #cbcbcb;
+  height: 80px;
+  margin-top: 20px;
+  padding-left: 50px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.padding {
+  padding: 0 10px;
+}
+
+:host ::ng-deep {
+  .close-modal {
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: $cadet-grey;
+    }
+
+    &:hover {
+      svg {
+        fill: $snow;
+      }
+    }
+  }
+}
+
+.save-cancel-buttons-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 325px;
+}

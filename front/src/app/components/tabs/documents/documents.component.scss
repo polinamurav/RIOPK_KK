@@ -1,0 +1,75 @@
+@import "../../../../theme/styles/colors";
+
+:host {
+  display: block;
+  position: relative;
+
+  ::ng-deep mat-app-button {
+    display: block;
+    margin: 10px 0;
+
+    .attach-button {
+      margin-bottom: 20px;
+
+      .mat-button-wrapper {
+        .icon {
+          margin-right: 10px;
+
+          svg {
+            margin-top: -8px;
+          }
+        }
+      }
+
+      &:hover {
+        .mat-button-wrapper {
+          .icon {
+            svg {
+              path {
+                fill: $white;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .buttons-doc-box {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .otp-control {
+    display: flex;
+    align-items: center;
+    .validation-otp {
+      width: 4rem;
+      display: flex;
+      height: 2.5rem;
+      justify-content: center;
+
+      .icon-check {
+        color: $kelly-green;
+      }
+
+      .icon-close {
+        color: $cg-red;
+      }
+    }
+  }
+}
+
+.attach-button-root {
+  margin-left: 20px;
+}
+
+.e-sign-btn {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+mat-spinner {
+  z-index: 100;
+}

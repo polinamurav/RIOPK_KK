@@ -1,0 +1,16 @@
+<div [@.disabled]="disableAnimation" class="accordion-wrapper">
+  <mat-accordion>
+    <mat-expansion-panel #panel (opened)="onOpenPanel(true, panel)" (closed)="onOpenPanel(false, panel)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ panelTitle }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ panelDescription }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <!--content-->
+      <ng-content></ng-content>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

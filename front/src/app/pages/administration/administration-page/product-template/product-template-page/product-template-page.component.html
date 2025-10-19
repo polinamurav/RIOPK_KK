@@ -1,0 +1,36 @@
+<div class="table-block">
+  <mat-app-table
+    [objColNameProps]="objColNameProps"
+    [tableData]="dataSource"
+    [isSorting]="false"
+    [isSelectsItem]="false"
+  >
+    <div class="button-block" *ngIf="allowSelectItem">
+      <mat-app-button
+        [className]="'mr-2'"
+        [size]="'medium'"
+        [border]="true"
+        [radius]="'semiRound'"
+        [backgroundColor]="'white'"
+        [color]="'gray'"
+        [hover]="'gray'"
+        (clickEvent)="downloadExel()"
+      >
+        {{ 'Administration.Buttons.DownloadExcel' | translate }}
+      </mat-app-button>
+
+      <mat-app-button
+        [className]="'mr-2'"
+        [size]="'medium'"
+        [border]="true"
+        [radius]="'semiRound'"
+        [backgroundColor]="'white'"
+        [color]="'gray'"
+        [hover]="'gray'"
+        (clickEvent)="uploadExel()"
+      >
+        {{ 'Administration.Buttons.UploadExcel' | translate }}
+      </mat-app-button>
+    </div>
+  </mat-app-table>
+</div>

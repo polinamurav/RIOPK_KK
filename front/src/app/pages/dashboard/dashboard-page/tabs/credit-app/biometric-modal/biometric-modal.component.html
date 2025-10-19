@@ -1,0 +1,65 @@
+<app-modal-view [title]="data.title | translate">
+  <div class="biometric-content">
+    <div class="qr-content">
+      <qrcode [qrdata]="generateQr" [width]="220" [errorCorrectionLevel]="'M'"></qrcode>
+    </div>
+
+    <div class="open-web">
+      <div class="title"><h5>{{ 'ShortForm.OpenCamera' | translate }}</h5></div>
+      <mat-app-button
+        [type]="'submit'"
+        [className]="'mt-2'"
+        [size]="'big'"
+        [radius]="'semiRound'"
+        [backgroundColor]="'transparent'"
+        [border]="true"
+        [hover]="'blue'"
+        [color]="'blue'"
+        (clickEvent)="openWebCam()"
+      >
+        {{ 'ShortForm.OpenCamera' | translate }}
+      </mat-app-button>
+      <div class="check-container">
+        <ng-container *ngIf="livenessCheckValid; else biometricInvalid">
+          <mat-icon class="icon icon-check" svgIcon="check"></mat-icon>
+        </ng-container>
+
+        <ng-template #biometricInvalid>
+          <mat-icon class="icon icon-close" svgIcon="cancel"></mat-icon>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <app-modal-view-actions>
+    <mat-app-button
+      [type]="'submit'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [disabled]="disabledBtns"
+      [color]="'blue'"
+      (clickEvent)="confirm()"
+    >
+      {{ 'Buttons.Save' | translate }}
+    </mat-app-button>
+
+    <mat-app-button
+      [disabled]="disabledBtns"
+      [type]="'button'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [mat-dialog-close]="'close'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+    >
+      {{ 'Buttons.Cancel' | translate }}
+    </mat-app-button>
+  </app-modal-view-actions>
+</app-modal-view>

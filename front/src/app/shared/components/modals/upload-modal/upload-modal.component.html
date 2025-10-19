@@ -1,0 +1,45 @@
+<div class="upload-modal-content">
+  <span class="close-btn-wrapper" type="" [mat-dialog-close]="'close'">
+    <img src="./assets/img/PopupCloseDark.png" alt="Close modal" />
+  </span>
+  <div class="avatar-edit">
+    <form *ngIf="!!viewSearchSelect" class="full-width">
+      <mat-app-search-select
+        [formControl]="selectItem"
+        [placeholder]="placeholder"
+        [options]="selectData"
+        [propertyName]="selectPropertyName"
+        (selectChange)="changeType($event)"
+      >
+      </mat-app-search-select>
+    </form>
+    <div class="avatar-edit-wrapper" (click)="fileInput.click()">
+      <label class="btn btn-danger btn-min-width">{{ 'Modals.Buttons.ChooseFile' | translate }}</label>
+      <input type="file" id="image-upload" [accept]="acceptForInput" (change)="uploadFile($event)" #fileInput />
+      <span class="title" *ngIf="fileName; else title">{{ fileName }}</span>
+      <ng-template #title>
+        <span class="title">
+          {{ pathTitle | translate }}
+          {{ 'Modals.InfoMessage.MaxFileSize' | translate: { fileSize: getAttachmentMaxSize } }}
+        </span>
+      </ng-template>
+    </div>
+    <p class="error" *ngIf="isAttachmentSizeInvalid">
+      {{ 'Modals.ErrorMessages.TooLargeFile' | translate: { fileSize: getAttachmentMaxSize } }}
+    </p>
+    <p class="error" *ngIf="isAttachmentTypeInvalid">
+      {{ 'Modals.ErrorMessages.InvalidFileFormat' | translate }}.
+      {{ 'Modals.ErrorMessages.AcceptedFileFormat' | translate }}: pdf, jpg, png, xls, xlsx, doc, docx
+    </p>
+
+    <mat-app-button
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      [hover]="'blue'"
+      [radius]="'semiRound'"
+      [disabled]="!selectItem.valid || isAttachmentSizeInvalid || isAttachmentTypeInvalid || !emitData || !fileName"
+      (clickEvent)="setPathToParent()"
+      ><span>{{ 'Modals.Buttons.UploadFile' | translate }}</span></mat-app-button
+    >
+  </div>
+</div>

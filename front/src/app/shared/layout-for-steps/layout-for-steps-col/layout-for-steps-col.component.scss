@@ -1,0 +1,46 @@
+@import "../../../../theme/styles/colors";
+
+:host {
+  width: 40%;
+  margin-right: 10%;
+}
+
+.circle {
+  display: flex;
+  justify-content: center;
+  height: 22px;
+  width: 40px;
+  margin-right: 5px;
+  //padding-top: 4px;
+  border: 2px solid $blue;
+  border-radius: 5px;
+  background-color: $blue;
+  color: $snow;
+  font-weight: 500; //600
+  font-size: 12px;
+  font-family: "VTB Group Book" !important;
+}
+
+.sub-header-info {
+  display: flex;
+  margin-bottom: 14px;
+  padding-left: 7px;
+}
+
+.content-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-text {
+  padding: 4px 0 0 10px;
+  font-size: 14px;
+  font-weight: 500; //600
+  color: $dark-jungle-green;
+  font-family: "VTB Group Book" !important;
+}
+
+.content-info {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,26 @@
+@import "../../../../../theme/styles/common";
+
+.filter-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  height: 70px;
+  align-items: center;
+  padding-left: 10px;
+  @extend .filter-container;
+
+  .buttons-box {
+    height: 3rem;
+  }
+
+}
+
+.status {
+  padding: 0 1.1rem;
+  font-size: 1rem;
+}
+
+
+.datepicker-wrap {
+  width: 250px;
+  margin-right: 10px;
+}

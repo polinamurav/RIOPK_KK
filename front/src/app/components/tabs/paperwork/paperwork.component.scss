@@ -1,0 +1,43 @@
+@import "../../../../theme/styles/colors";
+
+.wrapper {
+  padding: 20px 40px 64px 40px;
+}
+
+h5 {
+  font-weight: 500; //600
+  font-size: 14px;
+  color: $bank-gray;
+  font-family: "VTB Group Book" !important;
+}
+
+.m-b {
+  margin-bottom: 20px;
+}
+
+.comment-wrap {
+  position: relative;
+
+  .icon {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+  }
+}
+
+footer {
+  bottom: 0;
+  display: flex;
+  height: 64px;
+  position: fixed;
+  z-index: 999;
+  width: calc(100% - 20px);
+  padding-top: 8px;
+  padding-left: 30px;
+  background: $munsell;
+}
+
+// dropdown arrow removing:
+.dropdown-toggle::after {
+  display: none;
+}

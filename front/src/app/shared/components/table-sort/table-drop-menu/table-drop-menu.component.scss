@@ -1,0 +1,28 @@
+@import "../../../../../theme/theme-variables";
+// 3rd party libraries
+@import "~bootstrap/scss/bootstrap";
+// Theme customization
+@import "~src/theme/theme";
+
+::ng-deep {
+  .mat-menu-panel {
+    //left: 0;
+  }
+  .filter-menu {
+    ul {
+      list-style: none;
+      padding: 0;
+      li {
+        padding: 0.5rem 0.5rem;
+        &:hover {
+          background: $blue;
+          color: white;
+        }
+        &.selected {
+          background: $blue;
+          color: white;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+@import "src/theme/styles/common";
+
+.client-modal {
+  height: 100%;
+}
+
+.name-dialog-wrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 38px;
+  padding-bottom: 10px;
+  h3 {
+    height: 1.75rem;
+  }
+}
+.content-wrapper {
+  height: calc(100% - 84px);
+  overflow: hidden;
+  // padding: 0 20px;
+}
+
+.content-wrapper .close-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 10px;
+}
+
+:host ::ng-deep {
+  .table-block-scroll {
+    height: 100%;
+  }
+
+  .close-modal {
+    margin-left: 2px;
+
+    svg {
+      fill: $cadet-grey;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

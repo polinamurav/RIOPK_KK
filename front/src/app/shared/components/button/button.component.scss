@@ -1,0 +1,158 @@
+@import "../../../../theme/styles/colors";
+
+$border-hover-blue: $blue;
+
+.mat-button {
+  //font-family: Open Sans, sans-serif !important;
+}
+
+button {
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 0 15px;
+  min-width: 10px;
+  line-height: normal;
+  font-family: "VTB Group Book" !important;
+
+  &:disabled {
+    color: var(--button-filled-basic-disabled-text-color) !important;
+    background-color: var(--button-filled-basic-disabled-background-color) !important;
+    border-color: var(--button-filled-basic-disabled-border-color) !important;
+  }
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.08), 0 3px 9px 0 rgba(0, 0, 0, 0.16);
+  }
+
+  &:hover:disabled {
+    cursor: default;
+  }
+
+  &:focus:not(.myBorder) {
+    outline: none;
+    border: 1px solid $gainsboro;
+  }
+}
+
+.semiRound {
+  border-radius: 0.25rem;
+}
+
+.round {
+  border-radius: 0.5rem;
+  padding: 0;
+}
+
+.size-big {
+  height: 37px;
+
+  &.round {
+    width: 37px;
+  }
+}
+
+.size-medium {
+  height: 32px;
+  font-size: 0.9375rem;
+  &.round {
+    width: 32px;
+  }
+}
+
+.size-small {
+  height: 32px;
+  font-size: 0.9375rem;
+  &.round {
+    width: 32px;
+  }
+}
+
+.size-xsmall {
+  height: 32px;
+
+  &.round {
+    width: 32px;
+  }
+}
+
+.color-white {
+  color: #fff;
+}
+
+.color-blue {
+  color: $blue;
+}
+
+.color-gray {
+  color: $cadet-grey;
+}
+
+.transparent {
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+.transparent:hover:not(:focus:disabled.myBorder) {
+  border: 1px solid #969faa;
+}
+
+.white {
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+
+.white:hover:not(:focus:disabled.myBorder) {
+  border: 1px solid #d7dbe0;
+}
+
+.blue {
+  background-color: $blue;
+  border: 1px solid $blue;
+}
+
+.blue:hover:not(:focus:disabled.myBorder) {
+  border: 1px solid $blue;
+}
+
+.light-blue {
+  background-color: $light_blue;
+  border: 1px solid $light_blue;
+}
+
+.light-blue:hover:not(:focus:disabled.myBorder) {
+  border: 1px solid $light_blue;
+}
+
+.gray {
+  background-color: $cadet-grey;
+  border: 1px solid $cadet-grey;
+}
+
+.gray:hover:not(:focus:disabled.myBorder.hover-blue) {
+  border: 1px solid #969faa;
+}
+
+.myBorder {
+  border: 1px solid $gainsboro;
+}
+
+.myBorder:focus {
+  outline: none;
+  border: 1px solid $gainsboro;
+}
+
+.hover-gray:hover:not(:disabled) {
+  color: #fff;
+  background-color: $light_gray;
+  border: 1px solid $light_gray;
+
+  &.myBorder {
+    border: 1px solid $light_gray;
+  }
+}
+
+.hover-blue:hover:not(:disabled) {
+  color: #fff;
+  background-color: $blue;
+  border: 1px solid $blue;
+}

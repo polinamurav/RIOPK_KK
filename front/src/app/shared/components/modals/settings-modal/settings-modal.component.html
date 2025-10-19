@@ -1,0 +1,60 @@
+<div class="settings-modal">
+  <span class="close-btn-wrapper" type="" [mat-dialog-close]="'close'">
+    <img src="./assets/img/PopupCloseDark.png" alt="Close modal" />
+  </span>
+  <div class="settings-modal-scroll-wrapper">
+    <div class="settings-modal-content">
+      <div class="settings-modal-parameter">
+        <p>{{ 'Administration.TableHeaders.Key' | translate }}:</p>
+        <span>{{ setting.key }}</span>
+      </div>
+
+      <div class="settings-modal-parameter">
+        <p>{{ 'Administration.TableHeaders.Parameter' | translate }}:</p>
+        <span>{{ setting.nameRu }}</span>
+      </div>
+      <form [formGroup]="settingForm">
+        <app-form-field
+          formControlName="parameterInt"
+          [placeholder]="'Administration.Placeholders.Value' | translate: { type: 'Int' }"
+          type="number"
+          [ngClass]="{ 'border-error': isParamError ? isParamError : false }"
+        ></app-form-field>
+        <app-form-field
+          formControlName="parameterString"
+          [placeholder]="'Administration.Placeholders.Value' | translate: { type: 'String' }"
+          type="text"
+          [ngClass]="{ 'border-error': isParamError ? isParamError : false }"
+        ></app-form-field>
+        <app-form-field
+          formControlName="parameterDouble"
+          [placeholder]="'Administration.Placeholders.Value' | translate: { type: 'Double' }"
+          type="number"
+          [ngClass]="{ 'border-error': isParamError ? isParamError : false }"
+        ></app-form-field>
+        <mat-app-search-select
+          formControlName="parameterBoolean"
+          [placeholder]="'Administration.Placeholders.Value' | translate: { type: 'Boolean' }"
+          [options]="parameterBooleanList"
+          [propertyName]="'name'"
+          [ngClass]="{ 'border-error': isParamError ? isParamError : false }"
+        >
+        </mat-app-search-select>
+      </form>
+      <p *ngIf="isParamError" class="param-error">Одно из значений должно быть указано</p>
+    </div>
+  </div>
+  <div class="settings-modal-footer">
+    <mat-app-button
+      [color]="'white'"
+      [backgroundColor]="'blue'"
+      [border]="true"
+      [hover]="'blue'"
+      [radius]="'semiRound'"
+      [disabled]="isParamError"
+      (clickEvent)="onSave()"
+      type="'submit'"
+      ><span>{{ 'Buttons.Save' | translate }}</span></mat-app-button
+    >
+  </div>
+</div>

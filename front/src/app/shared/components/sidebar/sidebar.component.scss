@@ -1,0 +1,140 @@
+@import "src/theme/styles/colors";
+
+.sidebar-block {
+  width: 100%;
+  height: calc(100% - 15px);
+  border-radius: 0.25rem;
+  font-weight: 500;
+  background-color: var(--header-background-color);
+  //background-color: white;
+  font-family: "VTB Group Book" !important;
+}
+
+.footer {
+  position: absolute;
+  bottom: 25px;
+  color: var(--footer-text-color);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid $light-gray;
+  height: 46px;
+  padding-left: 20px;
+  font-size: 14px;
+  color: var(--header-text-color);
+  font-weight: 700;
+
+  &.sidebar-scroll {
+    padding: 4px 20px 4px 20px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+  }
+}
+
+::ng-deep {
+  .header-svg svg {
+    margin-bottom: 2px;
+  }
+}
+
+.title-app-number {
+  margin-left: 15px;
+}
+
+.sidebar-content-block {
+  height: calc(100vh - 11rem);
+  //overflow: auto;
+}
+
+.sidebar-content {
+  padding: 0 6px;
+  width: 100%;
+
+  a {
+    color: var(--header-text-color);
+    text-decoration: none;
+  }
+}
+
+.linck {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 15px;
+  border-radius: 8px;
+  margin-top: 5px;
+  font-size: 0.9375rem;
+  &:hover {
+    background-color: $blue;
+    color: #fff;
+    box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.08), 0 3px 9px 0 rgba(0, 0, 0, 0.16);
+  }
+}
+
+.icon-arrow {
+  float: right;
+  display: none;
+  height: 15px;
+  margin-top: -8px;
+}
+
+.active {
+  background-color: $blue;
+  color: #fff;
+  box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.08), 0 3px 9px 0 rgba(0, 0, 0, 0.16);
+
+  .icon-arrow {
+    display: block;
+  }
+}
+
+.button-back {
+  height: 50px;
+  padding: 5px 20px;
+}
+
+:host ::ng-deep mat-app-button .backButtonPadding {
+  padding: 0 15px;
+}
+
+.info-block {
+  font-size: 0.9375rem;
+  min-height: 230px;
+  width: 268px;
+  background: var(--header-background-color);
+  border: 1px solid $gainsboro;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 20px 6px;
+  font-weight: 500;
+  color: var(--header-text-color);
+  font-family: "VTB Group Book" !important;
+
+  .param-block-title {
+    margin-bottom: 0;
+    font-weight: 400;
+    color: $cadet-grey;
+    font-family: "VTB Group Light" !important;
+  }
+
+  .param-block-text {
+    font-weight: 500;
+    color: var(--header-text-color);
+    font-family: "VTB Group Book" !important;
+  }
+
+  &.error-check {
+    min-height: auto;
+    width: auto;
+    border-color: $cg-red;
+    color: $cg-red;
+    .error {
+      word-wrap: break-word;
+    }
+  }
+}

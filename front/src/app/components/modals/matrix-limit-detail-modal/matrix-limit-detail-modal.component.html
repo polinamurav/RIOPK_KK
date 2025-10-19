@@ -1,0 +1,86 @@
+<app-modal-view [title]="'Детализация лимита'">
+
+  <div class=''><b>По заявке</b></div>
+  <br>
+  <ng-container *ngIf="!isPosDetail else posInfo">
+    <div class='info'>
+      <div class='info_item'><span>Income</span><span>{{matrixLimit?.totalIncome}}</span></div>
+      <div class='info_item'><span>CRLINE</span><span>{{matrixLimit?.totalUnsecuredOutCreditCard}}</span></div>
+      <div class='info_item'><span>CrUniv</span><span>{{matrixLimit?.totalUnsecuredOutCashLoan}}</span></div>
+      <div class='info_item'><span></span><span></span></div>
+      <div class='info_item'><span>Еж.платеж АКРА:</span><span>{{matrixLimit?.monthlyPmtACRA}}</span></div>
+      <div class='info_item'><span>Еж.платеж АБС:</span><span>{{matrixLimit?.monthlyPmtABS}}</span></div>
+      <div class='info_item'><span>Лимит КИ:</span><span>{{matrixLimit?.availableLimitSE}}</span></div>
+      <div class='info_item'><span>Еж.платеж ЛКИ:</span><span>{{matrixLimit?.monthlyPmtSE}}</span></div>
+    </div>
+  </ng-container>
+
+  <ng-template #posInfo>
+    <div class='info'>
+      <div class='info_item'><span>Income</span><span>{{matrixLimitPos?.totalIncome}}</span></div>
+      <div class='info_item'><span>CRLINE</span><span>{{matrixLimitPos?.totalUnsecuredOutCreditCard}}</span></div>
+      <div class='info_item'><span>CrUniv</span><span>{{matrixLimitPos?.totalUnsecuredOutCashLoan}}</span></div>
+      <div class='info_item'><span></span><span></span></div>
+      <div class='info_item'><span>Еж.платеж АКРА:</span><span>{{matrixLimitPos?.monthlyPmtACRA}}</span></div>
+      <div class='info_item'><span>Еж.платеж АБС:</span><span>{{matrixLimitPos?.monthlyPmtABS}}</span></div>
+    </div>
+  </ng-template>
+
+  <br>
+
+  <div class='' *ngIf="!isPosDetail else posName"><h5><b>По предложению</b></h5></div>
+  <ng-template #posName>
+    <div class=''><h5><b>POS-акционный</b></h5></div>
+  </ng-template>
+
+  <br>
+
+  <div class='p-b'>
+
+    <ng-container *ngIf="!isPosDetail else posAddInfo">
+      <mat-app-table
+        [isSorting]='false'
+        [footerIsHide]='true'
+        [tableData]='limitTableConfigData'
+      >
+      </mat-app-table>
+    </ng-container>
+
+    <ng-template #posAddInfo>
+      <div class="details">
+
+        <div class="detail-row">
+          <div class=""><h6>Тип лимита</h6></div>
+          <div class=""><h6>База для расчета</h6></div>
+        </div>
+        <div class="detail-row" *ngFor="let item of matrixLimitPos?.usedLimits">
+          <div class="detail-row-item">
+            <div class="name">{{ currentLang === 'ru' ? item?.dirLimitType?.nameRu : item?.dirLimitType?.nameAm}} :
+              {{ currentLang === 'ru' ? item?.dirLimitSubType?.nameRu : item?.dirLimitSubType?.nameAm}}</div>
+            <b class="sum">{{item?.usedAmount | number:"2.1-2"}}</b>
+          </div>
+          <div class="detail-row-item">
+            <ng-container *ngIf="item?.monthlyPmtSE !== null"  >
+              <div class="name">Еж. платеж ЛКИ:</div>
+              <b class="sum">{{item?.monthlyPmtSE}}</b></ng-container>
+            <ng-container *ngIf="item?.posLoanAmount !== null"  >
+              <div class="name">Сумма договора:</div>
+              <b class="sum">{{item?.posLoanAmount}}</b></ng-container>
+          </div>
+
+          <div class="detail-row-item">
+            <ng-container *ngIf="item?.posLoanBalance !== null"  >
+              <div class="name">Остаток кредита:</div>
+              <b class="sum">{{item?.posLoanBalance}}</b></ng-container>
+          </div>
+
+
+        </div>
+
+
+      </div>
+    </ng-template>
+
+  </div>
+
+</app-modal-view>

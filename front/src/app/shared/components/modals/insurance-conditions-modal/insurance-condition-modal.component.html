@@ -1,0 +1,131 @@
+<div class="add-product-modal-container">
+  <span class="close-btn-wrapper" type="" [mat-dialog-close]="'close'">
+    <img src="./assets/img/PopupCloseDark.png" alt="Close modal" />
+  </span>
+  <form [formGroup]="addConditionForm">
+    <div class="add-product-modal-header">
+      <span class="add-product-modal-title">{{ title | translate }}</span>
+    </div>
+    <div class="add-product-modal-scroll-wrapper  scroll-wrapper">
+      <div class="add-product-modal-form-wrapper">
+        <ul class="add-product-modal-form-list">
+          <li class="add-product-modal-form-item">
+            <mat-app-search-select
+              formControlName="insuranceTypeId"
+              [placeholder]="'Administration.TableHeaders.InsuranceParams.InsuranceType'"
+              [options]="types"
+              class="dropdown-select"
+              [language]="language"
+            >
+            </mat-app-search-select>
+          </li>
+          <li class="add-product-modal-form-item">
+            <mat-app-search-select
+              formControlName="insuranceCompanyId"
+              [placeholder]="'Administration.TableHeaders.InsuranceParams.InsuranceCompany'"
+              [propertyName]="'name'"
+              [options]="companies"
+              class="dropdown-select"
+              [language]="language"
+            ></mat-app-search-select>
+          </li>
+          <li class="add-product-modal-form-item">
+            <mat-app-search-select
+              formControlName="productId"
+              [placeholder]="'Administration.TableHeaders.Product'"
+              [options]="products"
+              class="dropdown-select"
+              [language]="language"
+            >
+            </mat-app-search-select>
+          </li>
+          <li class="add-product-modal-form-item">
+            <app-form-field
+              formControlName="minTerm"
+              [placeholder]="'Administration.TableHeaders.InsuranceParams.MinTerm'"
+              type="number"
+            >
+            </app-form-field>
+          </li>
+          <li class="add-product-modal-form-item">
+            <app-form-field
+              formControlName="maxTerm"
+              [placeholder]="'Administration.TableHeaders.InsuranceParams.MaxTerm'"
+              type="number"
+            >
+            </app-form-field>
+          </li>
+          <li class="add-product-modal-form-item">
+            <app-form-field
+              formControlName="rate"
+              [placeholder]="'Administration.TableHeaders.InsuranceParams.Rate'"
+              type="number"
+            >
+            </app-form-field>
+          </li>
+          <li class="add-product-modal-form-item">
+            <app-form-field
+              formControlName="minAmount"
+              [placeholder]="'Administration.TableHeaders.InsuranceParams.MinAmount'"
+              type="number"
+            >
+            </app-form-field>
+          </li>
+          <li class="add-product-modal-form-item p-t">
+            <mat-app-slide-toggle formControlName="active" [label]="'Administration.TableHeaders.Active'">
+            </mat-app-slide-toggle>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="add-product-modal-footer footer">
+      <div class="buttons-wrapper hard-width-container">
+        <div class="edit-button-wrapper" *ngIf="showEditButton && !showSendButton">
+          <mat-app-button
+            [backgroundColor]="'blue'"
+            [color]="'white'"
+            [hover]="'blue'"
+            [radius]="'semiRound'"
+            [className]="'custom-style-edit-button'"
+            (clickEvent)="editButtonClick()"
+            ><span>{{ 'Buttons.Edit' | translate }}</span>
+          </mat-app-button>
+        </div>
+        <div class="save-cancel-buttons-wrapper" *ngIf="!showEditButton && !showSendButton">
+          <mat-app-button
+            [color]="'white'"
+            [backgroundColor]="'blue'"
+            [border]="true"
+            [hover]="'blue'"
+            [radius]="'semiRound'"
+            (clickEvent)="saveButtonClick()"
+            type="'submit'"
+            ><span>{{ 'Buttons.Save' | translate }}</span>
+          </mat-app-button>
+          <mat-app-button
+            [color]="'gray'"
+            [backgroundColor]="'transparent'"
+            [border]="true"
+            [hover]="'gray'"
+            [radius]="'semiRound'"
+            [className]="'custom-style-cancel-button'"
+            (clickEvent)="cancelButtonClick()"
+            type=""
+            ><span>{{ 'Buttons.Cancel' | translate }} </span>
+          </mat-app-button>
+        </div>
+        <div class="send-button-wrapper" *ngIf="showSendButton">
+          <mat-app-button
+            [backgroundColor]="'blue'"
+            [color]="'white'"
+            [hover]="'blue'"
+            [radius]="'semiRound'"
+            type="'submit'"
+            (clickEvent)="sendButtonClick()"
+            ><span>{{ 'Buttons.Save' | translate }}</span></mat-app-button
+          >
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

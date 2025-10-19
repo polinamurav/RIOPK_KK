@@ -1,0 +1,77 @@
+<app-layout-for-steps
+  [isPanelDescHidden]="true"
+  [headerText]="'Торговая точка'"
+  [headerNumb]="1"
+  [isNotAccordion]="true"
+>
+  <div class="grid-4-gap-1">
+
+    <div class="info-item">
+      <label for="">Торговая точка</label>
+      <span>{{ language === ELanguageType.ru ?
+        posRkkDataDto?.dirTradingCompanyPoint?.nameRu : posRkkDataDto?.dirTradingCompanyPoint?.nameAm}}
+      {{posRkkDataDto?.dirTradingCompanyPoint?.address}}
+      </span>
+    </div>
+
+    <div class="info-item">
+      <label for="">Кредитная программа</label>
+      <span>{{ posRkkDataDto?.creditProgram?.name }}</span>
+    </div>
+
+  </div>
+</app-layout-for-steps>
+<app-layout-for-steps
+  [isPanelDescHidden]="true"
+  [headerText]="'Товары'"
+  [headerNumb]="2"
+  [isNotAccordion]="true"
+>
+  <div class="flex flex-column">
+    <div class="grid-5-gap-1">
+    <ng-container *ngFor="let good of posRkkDataDto?.goods">
+
+
+        <div class="info-item">
+          <label for="">Группа товара</label>
+          <span>{{ language === ELanguageType.ru ?
+            good?.dirGoodsGroup?.nameRu : good?.dirGoodsGroup?.nameAm}}</span>
+
+        </div>
+
+        <div class="info-item">
+          <label for="">Вид товара</label>
+          <span>{{ language === ELanguageType.ru ?
+            good?.dirGoods?.nameRu : good?.dirGoods?.nameAm}}</span>
+        </div>
+        <div class="info-item">
+          <label for="">Марка</label>
+          <span>{{ good?.brand }}</span>
+        </div>
+        <div class="info-item">
+          <label for="">Количество</label>
+          <span>{{ good?.quantity }}</span>
+        </div>
+        <div class="info-item">
+          <label for="">Стоимость товара</label>
+          <span>{{ good?.cost }}</span>
+        </div>
+
+
+    </ng-container>
+
+
+    </div>
+    <br>
+
+    <div class="total-cost">
+      <span>
+        Общая стоимость: <b>{{ totalCost }}</b>
+      </span>
+
+    </div>
+
+
+
+  </div>
+</app-layout-for-steps>

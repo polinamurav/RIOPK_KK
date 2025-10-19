@@ -1,0 +1,34 @@
+@import "../../../../theme/styles/colors";
+
+h5 {
+  font-weight: 500; //600
+  font-size: 14px;
+  color: $bank-gray;
+  font-family: "VTB Group Book" !important;
+}
+
+.filter-table-container {
+  h5 {
+    font-weight: auto;
+  }
+
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
+
+.padding-bottom {
+  padding-bottom: 40px;
+}
+
+span {
+  display: block;
+  position: relative;
+  border-bottom: 2px solid $cadet-grey;
+  top: 12px;
+  margin-left: 80px;
+}
+
+.wrapper {
+  padding-bottom: 40px;
+}

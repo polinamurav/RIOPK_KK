@@ -1,0 +1,42 @@
+<app-modal-view [title]="title">
+  <div class="table-container">
+    <mat-app-table
+      [isSorting]="false"
+      [footerIsHide]="true"
+      [tableData]="innCompanyTableConfig"
+      [isVerticalScroll]="true"
+      (buttonEvent)="choose($event)"
+    >
+    </mat-app-table>
+  </div>
+
+  <!--<app-modal-view-actions>-->
+  <!--<mat-app-button-->
+  <!--[type]="'submit'"-->
+  <!--[className]="'mt-2'"-->
+  <!--[size]="'big'"-->
+  <!--[radius]="'semiRound'"-->
+  <!--[backgroundColor]="'transparent'"-->
+  <!--[border]="true"-->
+  <!--[hover]="'blue'"-->
+  <!--[color]="'blue'"-->
+  <!--(clickEvent)="choose()"-->
+  <!--&gt;-->
+  <!--{{ 'Buttons.Save' | translate }}-->
+  <!--</mat-app-button>-->
+
+  <!--<mat-app-button-->
+  <!--[type]="'button'"-->
+  <!--[className]="'mt-2'"-->
+  <!--[size]="'big'"-->
+  <!--[mat-dialog-close]="'close'"-->
+  <!--[radius]="'semiRound'"-->
+  <!--[backgroundColor]="'transparent'"-->
+  <!--[border]="true"-->
+  <!--[hover]="'blue'"-->
+  <!--[color]="'blue'"-->
+  <!--&gt;-->
+  <!--{{ 'Buttons.Cancel' | translate }}-->
+  <!--</mat-app-button>-->
+  <!--</app-modal-view-actions>-->
+</app-modal-view>

@@ -1,0 +1,15 @@
+.message {
+  font-size: 1.2rem;
+  padding-bottom: 1rem;
+}
+.offer-date {
+  font-size: 1rem;
+  padding-bottom: 1rem;
+  font-weight: bold;
+}
+
+.date-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}

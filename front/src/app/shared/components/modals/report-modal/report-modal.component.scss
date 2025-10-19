@@ -1,0 +1,70 @@
+@import "src/theme/styles/common";
+
+.report-modal-container {
+  padding: 16px 0 0 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.close-btn-wrapper {
+  margin-right: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.report-modal-header {
+  text-align: center;
+  margin-right: 50px;
+  margin-top: 50px;
+}
+
+.report-modal-title {
+  font-size: 22px;
+  font-weight: 500; //600
+  color: $dark-jungle-green;
+  margin-top: 16px;
+  letter-spacing: -0.01em;
+  font-family: "VTB Group Book" !important;
+}
+
+.report-modal-form-wrapper {
+  padding: 0 128px 0 64px;
+  .date-picker-wrapper,
+  .search-select-wrapper {
+    margin-top: 10px;
+  }
+}
+
+.report-modal-footer {
+  background-color: $munsell;
+  border-top: 1px solid #cbcbcb;
+  height: 80px;
+  margin-top: 20px;
+  padding-left: 50px;
+  .buttons-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: 280px;
+  }
+}
+
+:host ::ng-deep {
+  .custom-style-download-button,
+  .custom-style-cancel-button {
+    border: 1px solid #cbcbcb;
+  }
+
+  .close-modal {
+    margin-left: 2px;
+
+    svg {
+      fill: $cadet-grey;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

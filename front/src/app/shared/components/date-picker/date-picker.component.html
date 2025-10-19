@@ -1,0 +1,35 @@
+<div class="date-picker-wrapper">
+  <mat-form-field>
+    <input
+      #dateInput
+      appTextMask
+      [fedMask]="dateMask"
+      matInput
+      [matDatepicker]="dp"
+      placeholder="{{ placeholder | translate }}"
+      [formControl]="fc"
+      [min]="minDate"
+      [max]="maxDate"
+      [required]="required"
+      (focus)="onTouched()"
+      (blur)="saveRange(dateInput.value)"
+    />
+    <mat-datepicker #dp></mat-datepicker>
+  </mat-form-field>
+
+  <mat-app-button
+    [disabled]="fc.disabled"
+    [className]="'date-picker-label'"
+    [radius]="'round'"
+    [hover]="'blue'"
+    [backgroundColor]="'gray'"
+    [size]="'medium'"
+    [border]="false"
+    [type]="'button'"
+    mat-raised-button
+    (clickEvent)="dp.open()"
+  >
+    <!--<span [inlineSVG]="'assets/img/calendar.svg'" class="icon"></span>-->
+    <nb-icon class="calendar-icon" icon="calendar-outline" pack="eva"></nb-icon>
+  </mat-app-button>
+</div>

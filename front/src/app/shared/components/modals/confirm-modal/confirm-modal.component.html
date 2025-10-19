@@ -1,0 +1,42 @@
+<div class="close-btn-wrapper">
+  <mat-app-button
+    [mat-dialog-close]="'close'"
+    [radius]="'round'"
+    [className]="'custom-style-close-modal'"
+    [backgroundColor]="'white'"
+    [color]="'gray'"
+    [hover]="'gray'"
+    [border]="true"
+  >
+    <div type="" class="close-modal" [inlineSVG]="'./assets/img/close-1.svg'"></div>
+  </mat-app-button>
+</div>
+
+<div class="confirm-modal">
+  <span class="confirm-modal-title">{{ title }}</span>
+  <div class="confirm-modal-content"></div>
+  <div class="confirm-modal-footer">
+    <div class="confirm-modal-buttons-wrapper">
+      <mat-app-button
+        [color]="'white'"
+        [backgroundColor]="'blue'"
+        [border]="true"
+        [hover]="'blue'"
+        [radius]="'semiRound'"
+        [mat-dialog-close]="'Yes'"
+        type=""
+        ><span>{{ 'Buttons.Yes' | translate }}</span></mat-app-button
+      >
+      <mat-app-button
+        [color]="'gray'"
+        [border]="true"
+        [hover]="'gray'"
+        [radius]="'semiRound'"
+        [className]="'custom-style-no-button'"
+        [mat-dialog-close]="'No'"
+        type=""
+        ><span>{{ 'Buttons.No' | translate }}</span></mat-app-button
+      >
+    </div>
+  </div>
+</div>

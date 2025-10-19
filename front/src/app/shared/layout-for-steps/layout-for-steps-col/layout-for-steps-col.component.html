@@ -1,0 +1,11 @@
+<div class="content-item">
+  <div *ngIf="subHeaderNumb || subHeaderText" class="sub-header-info">
+    <div class="circle">
+      <p>{{ subHeaderNumb }}</p>
+    </div>
+    <div class="sub-text">{{ subHeaderText }}</div>
+  </div>
+  <div class="content-info">
+    <ng-content></ng-content>
+  </div>
+</div>

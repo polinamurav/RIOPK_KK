@@ -1,0 +1,501 @@
+<app-layout-for-steps
+  [id]="titles[FinalDecisionGroupKeys.ChosenCreditInfo]"
+  [isPanelDescHidden]="true"
+  [headerText]="titles[FinalDecisionGroupKeys.ChosenCreditInfo]"
+  [headerNumb]="1"
+  [isNotAccordion]="true"
+>
+  <form class="form" [formGroup]="finalDecForm" #form>
+    <div *ngIf="isCalculate" class="spinner-box blackout">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <!-- * Предварительно выбранные условия кредитования -->
+    <div class="w-100">
+      <!--<h5>{{ titles[FinalDecisionGroupKeys.ChosenCreditInfo] | translate }}</h5>-->
+      <div class="padding-bottom pt-2">
+        <mat-app-table
+          [isSorting]="false"
+          [footerIsHide]="true"
+          [totalCount]="totalCount"
+          [tableData]="chosenCreditInfoData"
+          [itemLimit]="itemLimit"
+        >
+        </mat-app-table>
+      </div>
+    </div>
+
+    <!-- <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="titles[FinalDecisionGroupKeys.ChosenCreditInfo]"
+    [headerNumb]="1"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="m-b">
+        <mat-app-table
+          [isSorting]="false"
+          [footerIsHide]="true"
+          [totalCount]="totalCount"
+          [tableData]="chosenCreditInfoData"
+          [itemLimit]="itemLimit"
+        >
+        </mat-app-table>
+      </div>
+    </div>
+  </app-layout-for-steps> -->
+
+    <!-- * Обязательства -->
+    <div class="w-100">
+      <h5 class="pt-2">{{ titles[FinalDecisionGroupKeys.CreditDetails] | translate }}</h5>
+      <div class="padding-bottom ">
+        <mat-app-table-sort
+          [isSorting]="true"
+          (toggleFilterEvent)="filterEvent($event)"
+          [tableData]="applicantObligationsTableHeaders"
+          [itemLimit]="itemLimit"
+          [totalCount]="totalCount"
+        ></mat-app-table-sort>
+
+        <!--        <nv-editable-table-->
+        <!--          [canEditRows]='false'-->
+        <!--          [canAddRows]='false'-->
+        <!--          [fixedHeader]='true'-->
+        <!--          [canDeleteRows]='false'-->
+        <!--          [tableHeaders]='applicantObligationsTableHeaders'-->
+        <!--          [isDeleteObjLink]='true'-->
+        <!--          [tableRows]='applicantObligationsDto'-->
+        <!--          [selectData]='optionsList'-->
+        <!--          [buttonsLeftPosition]="'30%'"-->
+        <!--          [language]='language'-->
+        <!--        >-->
+        <!--        </nv-editable-table>-->
+        <!-- (getNextPartEvent)="nextPartEvent($event)"
+      (getSortPartEvent)="sortPartEvent($event)" -->
+        <!-- (savedRow)="saveRow($event, FullFormGroupKeys.CreditDetails)"
+      (editedRow)="editedRow($event, FullFormGroupKeys.CreditDetails)"
+      (removedRow)="removeRow($event, FullFormGroupKeys.CreditDetails)" -->
+      </div>
+    </div>
+
+    <!-- * Утвержденные условия кредитования -->
+    <div class="w-100 mt-4">
+      <h5>{{ titles[FinalDecisionGroupKeys.ApprovedCreditConditions] | translate }}</h5>
+      <div class="padding-bottom pt-2">
+        <div class="row">
+          <div class="col-2">
+            <mat-app-slide-toggle
+              class="m-b"
+              [label]="'FullForm.Placeholder.IsWithRef'"
+              (isToggleChecked)="changeIsWithRef($event)"
+            >
+            </mat-app-slide-toggle>
+          </div>
+          <div *ngIf="this.isWithRef" class="col-4">
+            <mat-app-search-select-lazy
+              placeholder="{{ 'FinalDecision.Placeholders.ProductType' | translate }}"
+              [options]="optionsList['product']"
+              [language]="language"
+              [required]="false"
+              (selectChange)="changeIsWithProduct($event)"
+            >
+            </mat-app-search-select-lazy>
+          </div>
+        </div>
+        <div class="pb-4">
+          <mat-app-table
+            [isSorting]="false"
+            [footerIsHide]="true"
+            [totalCount]="totalCount"
+            [tableData]="approvedCreditConditionsColInfoData"
+            [itemLimit]="itemLimit"
+            [isVerticalScroll]="true"
+            [isButtonColmShouldBeDisabled]="readonlyForm || isChangesAccepted"
+            (buttonEvent)="chooseApprovedCredit($event)"
+          >
+          </mat-app-table>
+        </div>
+      </div>
+    </div>
+
+    <!-- * Калькулятор предложения -->
+    <div class="w-100">
+      <h5>{{ titles[FinalDecisionGroupKeys.Calculator] | translate }}</h5>
+      <div>
+        <div class="row m-0 pb-4" [formGroupName]="FinalDecisionGroupKeys.Calculator">
+          <ng-container *ngFor="let control of calculateFormConfig">
+            <ng-container *ngIf="control.isVisible">
+              <div *ngIf="control.type !== EInputType.Inner" [ngClass]="control?.class">
+                <app-form-field
+                  *ngIf="
+                    control.type === EInputType.Text ||
+                    control.type === EInputType.Number ||
+                    control.type === EInputType.PhoneNumber
+                  "
+                  [formControlName]="control.code"
+                  [maxLength]="control.maxLength"
+                  [placeholder]="control.placeholder"
+                  [readonly]="control?.readonly"
+                  [type]="control.type"
+                >
+                </app-form-field>
+                <mat-app-search-select-lazy
+                  *ngIf="control.type === EInputType.Select"
+                  [formControlName]="control.code"
+                  [placeholder]="control.placeholder"
+                  [options]="optionsList[control.optionsListName]"
+                  [propertyName]="control.propertyName"
+                  [language]="language"
+                  [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+                >
+                </mat-app-search-select-lazy>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- * отлогательные  предложения для выбора-->
+    <div class="w-100">
+      <h5>{{ 'DecisionMaking.Titles.SuspensiveConditions' | translate }}</h5>
+      <div class="padding-bottom pt-2">
+        <nv-editable-table
+          [canEditRows]="!readonlyForm && !isChangesAccepted"
+          [canAddRows]="false"
+          [fixedHeader]="true"
+          [canDeleteRows]="false"
+          [tableHeaders]="suspensiveConditionsMatrixHeaders"
+          [isDeleteObjLink]="true"
+          [tableRows]="suspensiveConditionsListFiltered"
+          [selectData]="optionsList"
+          [buttonsLeftPosition]="'50%'"
+          [language]="language"
+          (editedRow)="editSuspensiveConditions($event)"
+        >
+        </nv-editable-table>
+        <!-- (getNextPartEvent)="nextPartEvent($event)"
+      (getSortPartEvent)="sortPartEvent($event)" -->
+        <!-- (savedRow)="saveRow($event, FullFormGroupKeys.CreditDetails)"
+      (editedRow)="editedRow($event, FullFormGroupKeys.CreditDetails)"
+      (removedRow)="removeRow($event, FullFormGroupKeys.CreditDetails)" -->
+      </div>
+      <div class="col padding-top pb-4">
+        <mat-app-button
+          [type]="'submit'"
+          [className]="'ml-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'blue'"
+          [color]="'white'"
+          [disabled]="readonlyForm || isCalculateButtonDisabled"
+          (clickEvent)="calculatePreapproveCredit()"
+        >
+          {{ 'Buttons.Calculate' | translate }}
+        </mat-app-button>
+      </div>
+    </div>
+
+    <!-- * Рассчитанные условия кредитования -->
+    <div class="w-100">
+      <h5>{{ titles[FinalDecisionGroupKeys.CalculatedCreditConditions] | translate }}</h5>
+      <div class="m-b">
+        <mat-app-table
+          [isSorting]="false"
+          [footerIsHide]="true"
+          [totalCount]="totalCount"
+          [tableData]="calculatedCreditConditionsData"
+          [itemLimit]="itemLimit"
+        >
+        </mat-app-table>
+      </div>
+    </div>
+
+    <div class="row m-0 p-b">
+      <div class="col-4 padding-top">
+        <mat-app-button
+          [type]="'button'"
+          [className]="'ml-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'blue'"
+          [color]="'white'"
+          [disabled]="
+            readonlyForm || isAcceptButtonDisabled || !calculatedCreditConditionsData?.tableContentList?.length
+          "
+          (clickEvent)="acceptChanges()"
+        >
+          {{ 'FinalDecision.Buttons.Confirm' | translate }}
+        </mat-app-button>
+      </div>
+      <div class="col-4 padding-top">
+        <mat-app-button
+          [type]="'button'"
+          [className]="'ml-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'white'"
+          [color]="'gray'"
+          [hover]="'gray'"
+          [disabled]="readonlyForm"
+          (clickEvent)="cancelChanges()"
+        >
+          {{ 'FinalDecision.Buttons.Cancel' | translate }}
+        </mat-app-button>
+      </div>
+    </div>
+
+    <!-- * Выбранные условия кредитования -->
+    <div class="w-100">
+      <h5 [ngClass]="{ 'credit-info-green': isChangesAccepted, 'credit-info-red': !isChangesAccepted }">
+        {{ titles[FinalDecisionGroupKeys.SelectedLoanTerms] | translate }}
+      </h5>
+      <div class="w-100">
+        <div class="m-b">
+          <mat-app-table
+            [isSorting]="false"
+            [footerIsHide]="true"
+            [totalCount]="totalCount"
+            [tableData]="approvedCreditConditionsData"
+            [itemLimit]="itemLimit"
+            [isVerticalScroll]="true"
+            [isButtonColmShouldBeDisabled]="readonlyForm || isChangesAccepted || isLoading"
+            (buttonEvent)="chooseApprovedCredit($event)"
+          >
+          </mat-app-table>
+        </div>
+        <!-- <div *ngIf="isGraceInterest && isChangesAccepted" [formGroupName]="FinalDecisionGroupKeys.GraceInterest">
+        <ng-container *ngFor="let item of graceInterestConfig">
+          <div class="mt-4">
+            <mat-app-slide-toggle
+              [formControlName]="item.code"
+              [label]="item.placeholder"
+              [language]="language"
+            ></mat-app-slide-toggle>
+          </div>
+        </ng-container>
+      </div> -->
+      </div>
+    </div>
+
+    <!-- * Отлагательные условия -->
+    <div class="w-100 " [ngClass]="{ errorSuspensive: suspensiveConditionsListFilteredScroll }">
+      <h5>{{ titles[FinalDecisionGroupKeys.SuspensiveConditions] | translate }}</h5>
+      <div class="padding-bottom pt-2">
+        <nv-editable-table
+          *ngIf="showSuspensiveConditionsTable"
+          [canEditRows]="!readonlyForm"
+          [canAddRows]="false"
+          [fixedHeader]="true"
+          [canDeleteRows]="false"
+          [tableHeaders]="suspensiveConditionsTableHeaders"
+          [isDeleteObjLink]="true"
+          [tableRows]="applicantObligationsDtoWithTypes"
+          [selectData]="optionsList"
+          [buttonsLeftPosition]="'50%'"
+          (editedRow)="editedLoanRow($event)"
+          [language]="language"
+        >
+        </nv-editable-table>
+        <!-- (getNextPartEvent)="nextPartEvent($event)"
+      (getSortPartEvent)="sortPartEvent($event)" -->
+        <!-- (savedRow)="saveRow($event, FullFormGroupKeys.CreditDetails)"
+      (editedRow)="editedRow($event, FullFormGroupKeys.CreditDetails)"
+      (removedRow)="removeRow($event, FullFormGroupKeys.CreditDetails)" -->
+      </div>
+    </div>
+
+    <!-- Дополнительная информация  -->
+    <div class="w-100 pt-2">
+      <h5>{{ titles[FinalDecisionGroupKeys.AdditionalInfo] | translate }}</h5>
+      <div class="row" [formGroupName]="FinalDecisionGroupKeys.Insurance">
+        <ng-container *ngFor="let control of insuranceFormConfig">
+          <div [ngClass]="control?.class">
+            <!--            <mat-app-search-select-->
+            <!--              *ngIf='control.type === EInputType.Select'-->
+            <!--              [formControlName]='control.code'-->
+            <!--              [placeholder]='control.placeholder'-->
+            <!--              [propertyName]='control.propertyName || ELocalNames.NameRu'-->
+            <!--              [language]='language'-->
+            <!--              [options]='optionsList[control.optionsListName]'-->
+            <!--              [isDisabled]='isLoading'-->
+            <!--              [valueType]='control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id'-->
+            <!--              [compareWithProp]='control.compareWithProp'-->
+            <!--              (selectChange)='insuranceSelectChanged($event, control.group)'-->
+            <!--            >-->
+            <!--            </mat-app-search-select>-->
+            <mat-app-search-select-lazy
+              *ngIf="control.type === EInputType.Select"
+              [formControlName]="control.code"
+              [placeholder]="control.placeholder"
+              [options]="optionsList[control.optionsListName]"
+              [propertyName]="control.propertyName"
+              [language]="language"
+              [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+            >
+            </mat-app-search-select-lazy>
+
+            <app-date-picker
+              *ngIf="control.type === EInputType.Date"
+              [formControlName]="control.code"
+              [placeholder]="control.placeholder"
+              [maxDate]="control.maxDate"
+              [minDate]="control.minDate"
+              [required]="control.required"
+            ></app-date-picker>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Связь с клиентом -->
+    <div class="w-100 pt-2">
+      <h5>{{ titles[FinalDecisionGroupKeys.ConnectToClient] | translate }}</h5>
+
+      <ng-container *ngFor="let commConfig of communicationConfig[CommunicationOwnerType.APPLICATION]">
+        <app-communication-form
+          [appDto]="appDto"
+          [readonly]="readonlyForm"
+          [triggerSubmit]="triggerSubmit"
+          [communication]="commConfig.data"
+          [ownerType]="CommunicationOwnerType.APPLICATION"
+          [communicationType]="commConfig.communicationType"
+          (emitCommunicationEvent)="
+            emitCommunicationEvent($event, commConfig.communicationType, CommunicationOwnerType.APPLICATION)
+          "
+          [optionsList]="optionsList"
+          [language]="language"
+        ></app-communication-form>
+      </ng-container>
+    </div>
+
+    <!-- * Выбор счёта/карты -->
+    <div class="w-100 pt-2">
+      <h5>{{ titles[FinalDecisionGroupKeys.SelectingCardAccount] | translate }}</h5>
+      <div class="w-100 m-b">
+        <div class="m-b">
+          <mat-app-table
+            [isSorting]="false"
+            [footerIsHide]="true"
+            [totalCount]="totalCount"
+            [tableData]="selectingCardAccountData"
+            [itemLimit]="itemLimit"
+            [isReadonly]="isNewAccount"
+            [isButtonColmShouldBeDisabled]="readonlyForm || isNewAccount"
+            (buttonEvent)="chooseValidCard($event)"
+          >
+          </mat-app-table>
+        </div>
+      </div>
+    </div>
+
+    <!-- * Выбранная карта/Выбранный счет -->
+    <div class="w-100">
+      <h5>{{ titles[FinalDecisionGroupKeys.AccountForm] | translate }}</h5>
+      <div class="w-100 m-b">
+        <div class="m-b">
+          <mat-app-table
+            [isSorting]="false"
+            [footerIsHide]="true"
+            [totalCount]="totalCount"
+            [tableData]="chosenAccountData"
+            [itemLimit]="itemLimit"
+          >
+          </mat-app-table>
+        </div>
+      </div>
+
+      <!--<div class="mt-4" *ngIf="isConsumerCredit && !isCreditCard && !isOverdraft">-->
+      <!--<mat-app-slide-toggle-->
+      <!--formControlName="isNewAccOrder"-->
+      <!--[label]="'FinalDecision.Labels.NewAccount'"-->
+      <!--[labelPosition]="'before'"-->
+      <!--[language]="language"-->
+      <!--[isDisabled]="isNewInstantCardOrderChecked"-->
+      <!--(isToggleChecked)="chooseNewAccOrder($event)"-->
+      <!--&gt;</mat-app-slide-toggle>-->
+      <!--</div>-->
+    </div>
+
+    <!-- * счет -->
+    <div class="w-100">
+      <div class="w-100">
+        <div class="row">
+          <div class="col-2">
+            <mat-app-slide-toggle
+              class="m-b"
+              [isDisabled]="readonlyForm"
+              [formControl]="newAccount"
+              [label]="'FinalDecision.Placeholders.NewCurrentAccount'"
+            >
+            </mat-app-slide-toggle>
+          </div>
+
+          <div class="col-10" *ngIf="isNewAccount" [formGroupName]="FinalDecisionGroupKeys.NewAccount">
+            <div class="row">
+              <ng-container *ngFor="let control of newAccountFormConfig">
+                <div [ngClass]="control?.class" *ngIf="control.isVisible">
+                  <ng-container>
+                    <mat-app-search-select
+                      *ngIf="control.type === EInputType.Select"
+                      [formControlName]="control.code"
+                      [placeholder]="control.placeholder"
+                      [propertyName]="
+                        control.propertyName || language === 'ru' ? ELocalNames.NameRu : ELocalNames.NameAm
+                      "
+                      [language]="language"
+                      [options]="optionsList[control.optionsListName]"
+                      [isDisabled]="isLoading || readonlyForm"
+                      [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+                      [compareWithProp]="control.compareWithProp"
+                      (selectChange)="insuranceSelectChanged($event, control.group)"
+                    >
+                    </mat-app-search-select>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-100 pt-2" *ngIf="isNewAccount">
+        <div class="w-100 m-b">
+          <ng-container *ngFor="let commConfig of communicationConfig[CommunicationOwnerType.ACCOUNT]">
+            <app-communication-form
+              [appDto]="appDto"
+              [communication]="commConfig.data"
+              [readonly]="readonlyForm"
+              [triggerSubmit]="triggerSubmit"
+              [ownerType]="CommunicationOwnerType.ACCOUNT"
+              [communicationType]="commConfig.communicationType"
+              (emitCommunicationEvent)="
+                emitCommunicationEvent($event, commConfig.communicationType, CommunicationOwnerType.ACCOUNT)
+              "
+              [optionsList]="optionsList"
+              [language]="language"
+            ></app-communication-form>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <app-tabs-footer
+      [configSrc]="footerConfigSource"
+      [hideButtons]="readonlyForm"
+      [buttonsDisabled]="isLoading"
+      [historyButtonVisible]="historyButtonVisible"
+      [isDeclineRoleAvailable]="true"
+      (footerButtonClick)="onFooterButtonClick($event)"
+      [userData]="userData"
+      [commentList]="{
+        chatUnderManagerList: chatUnderManagerList
+      }"
+      [commentsReadonly]="readonlyForm"
+      [isNewMessageExists]="isNewMessageExists"
+    ></app-tabs-footer>
+  </form>
+</app-layout-for-steps>

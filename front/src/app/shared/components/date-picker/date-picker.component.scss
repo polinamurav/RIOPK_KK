@@ -1,0 +1,86 @@
+@import "../../../../theme/styles/common";
+
+::ng-deep {
+  .mat-form-field {
+    margin-bottom: 1rem;
+
+    .mat-form-field-wrapper {
+      .mat-form-field-flex {
+        .mat-form-field-infix {
+          //border-top: 1.05em solid transparent;
+          border-top: 0;
+
+          input {
+            line-height: 50px;
+          }
+        }
+      }
+    }
+  }
+}
+
+:host {
+  input {
+    line-height: 31px;
+    //margin: 5px 0;
+    color: var(--input-basic-text-color);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    font-family: "VTB Group Book" !important;
+  }
+}
+
+.submitted :host(.ng-invalid) {
+  .mat-form-field {
+    border: solid $cg-red;
+    border-width: 0 0 1px 0;
+    margin-bottom: 0;
+  }
+}
+
+:host(.validate-error) {
+  .mat-form-field {
+    border: solid $cg-red;
+    border-width: 0 0 1px 0;
+    margin-bottom: 0;
+  }
+}
+
+* {
+  font-weight: 500;
+  font-family: "VTB Group Book" !important;
+}
+
+.date-picker-wrapper {
+  position: relative;
+  display: flex;
+}
+:host ::ng-deep mat-app-button .size-medium {
+  width: 33px;
+}
+
+:host ::ng-deep mat-app-button .date-picker-label {
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  margin: 0 !important;
+}
+
+.icon svg {
+  position: relative;
+  top: 8px;
+  left: 8px;
+}
+
+.calendar-icon {
+  color: var(--white);
+  width: 24px;
+  height: 24px;
+}
+
+:host ::ng-deep .mat-datepicker-toggle {
+  .mat-icon-button {
+    display: none;
+  }
+}

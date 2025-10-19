@@ -1,0 +1,17 @@
+<div class="table-container">
+  <div class="mat-spinner-background" *ngIf="(baseListLoading$ | async)">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-app-table
+    tableHeight="calc(100vh - 10rem)"
+    [isSelectsItem]="true"
+    [selectedElement]="selectedBase"
+    [isSorting]="false"
+    [footerIsHide]="true"
+    (buttonEvent)="deactivate($event)"
+    [tableData]="tableData"
+    (selectedItem)="selectedItem($event)"
+  >
+  </mat-app-table>
+</div>

@@ -1,0 +1,41 @@
+<div class="table-block">
+  <mat-app-table
+    [changePage]="changePage"
+    [objColNameProps]="objColNameProps"
+    [isSorting]="false"
+    [tableData]="dataSource"
+    [totalCount]="totalCount"
+    [itemLimit]="itemLimit"
+    [tableBlockWidth]="'3000px'"
+    (selectedPage)="selectedPageEvent($event)"
+    (selectedItem)="selectedItem($event)"
+    (sortingData)="sortingDataEvent($event)"
+  >
+    <div class="button-block">
+      <mat-app-button
+        [className]="'mr-2'"
+        [size]="'medium'"
+        [border]="true"
+        [radius]="'semiRound'"
+        [backgroundColor]="'white'"
+        [color]="'gray'"
+        [hover]="'blue'"
+        (clickEvent)="fileServiceSelect('downloadExel')"
+      >
+        {{ 'Administration.Buttons.DownloadExcel' | translate }}
+      </mat-app-button>
+      <mat-app-button
+        [className]="'mr-2'"
+        [size]="'medium'"
+        [border]="true"
+        [radius]="'semiRound'"
+        [backgroundColor]="'white'"
+        [color]="'gray'"
+        [hover]="'gray'"
+        (clickEvent)="fileServiceSelect('uploadExel')"
+      >
+        {{ 'Administration.Buttons.UploadExcel' | translate }}
+      </mat-app-button>
+    </div>
+  </mat-app-table>
+</div>

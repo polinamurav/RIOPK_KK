@@ -1,0 +1,81 @@
+@import "src/theme/styles/colors";
+
+.otp-container {
+  padding: 1rem 0;
+
+  .radio-box {
+    padding: 1rem 0 0;
+
+    .mat-radio-group {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .send-code-again {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    .link {
+      cursor: pointer;
+      color: #0a3cb4;
+
+      &.disabled {
+        pointer-events: none;
+        color:  #cacaca;
+      }
+
+    }
+  }
+
+  .email-confirmation {
+  }
+
+  .phone-code-container {
+    margin-top: 1rem;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 95% 5%;
+
+    .opt-validation {
+      width: 3rem;
+      display: flex;
+      height: 75%;
+      justify-content: center;
+      align-items: center;
+
+      .icon-check {
+        color: $kelly-green;
+      }
+
+      .icon-close {
+        color: $cg-red;
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .send-sms-btn {
+    position: relative;
+
+    .mat-button-wrapper {
+      display: flex;
+      width: 7rem;
+      height: 2rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .mat-spinner {
+      width: 2rem !important;
+      height: 1.6rem !important;
+      svg{
+        width: 2rem !important;
+        height: 1.5rem !important;
+      }
+    }
+  }
+
+}

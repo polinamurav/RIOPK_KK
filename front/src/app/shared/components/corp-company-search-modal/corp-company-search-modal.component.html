@@ -1,0 +1,48 @@
+<app-modal-view [title]="data.title">
+  <form [formGroup]="corpForm">
+    <div class="form-box">
+      <mat-app-search-select-lazy
+        *ngFor="let control of corpFormConfig; let i = index"
+        [formControlName]="control.code"
+        [controlConfig]="control"
+        [placeholder]="control.placeholder"
+        [options]="data.options"
+        (selectChange)="selectVal($event, control.code)"
+        [propertyName]="control.propertyName"
+        [language]="language"
+        [valueType]="control.selectEmittedValueType"
+      >
+      </mat-app-search-select-lazy>
+    </div>
+  </form>
+
+  <app-modal-view-actions>
+    <mat-app-button
+      [type]="'button'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+      (clickEvent)="chooseCompany()"
+    >
+      {{ data.confirmBtnName | translate }}
+    </mat-app-button>
+
+    <mat-app-button
+      [type]="'button'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [mat-dialog-close]="'close'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+    >
+      {{ 'Buttons.Cancel' | translate }}
+    </mat-app-button>
+  </app-modal-view-actions>
+</app-modal-view>

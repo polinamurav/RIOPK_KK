@@ -1,0 +1,46 @@
+<div class="filter-wrapper">
+  <app-search-field
+    class="input-wrapper"
+    [placeholder]="'SearchBar.Search.PosUsers'"
+    (searchEvent)="onSearchEvent($event)"
+    (clearEvent)="onClearEvent($event)">
+  </app-search-field>
+</div>
+
+
+<div class="spinner-box-administration-page" *ngIf="isLoading">
+  <mat-spinner class="text-center"></mat-spinner>
+</div>
+
+<div class="flex-block">
+  <div class="table-block" *ngIf="(selectCurrentUserData$ | async) as userInfo">
+    <mat-app-table
+      [objColNameProps]="tableConfig"
+      [changePage]="changePage"
+      [isSorting]="false"
+      [tableData]="dataSource"
+      [totalCount]="totalCount"
+      [itemLimit]="itemLimit"
+      [tableBlockWidth]="'3000px'"
+      (selectedPage)="selectedPageEvent($event)"
+      (sortingData)="sortingDataEvent($event)"
+      (selectedItem)="selectedItem($event)"
+      [isSelectsItem]="allowSelectItemForPosUsers"
+    >
+      <div class="button-block" *ngIf="allowSelectItemForPos">
+        <mat-app-button
+          [className]="'mr-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'white'"
+          [color]="'gray'"
+          [hover]="'gray'"
+          (clickEvent)="createNew()"
+        >
+          {{ 'Administration.Titles.NewUser' | translate }}
+        </mat-app-button>
+      </div>
+    </mat-app-table>
+  </div>
+</div>

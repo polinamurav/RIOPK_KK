@@ -1,0 +1,23 @@
+<span
+  [inlineSVG]="'./assets/img/arrow_drop_down.svg'"
+  (click)="$event.stopPropagation()"
+  #menuTrigger
+  [matMenuTriggerFor]="menu"
+></span>
+
+<mat-menu #menu="matMenu" class="filter-menu">
+  <ul>
+    <li (click)="toggleFilter.emit(null)">clear</li>
+    <li
+      *ngFor="let item of menuList"
+      [class.selected]="
+        selected === item.value ||
+        ((selected === true ? item.value === 'Այո՛' : item.value === 'Ոչ') && selected !== null) ||
+        ((selected === true ? item.value === 'Да' : item.value === 'Нет') && selected !== null)
+      "
+      (click)="toggleFilter.emit(item.value)"
+    >
+      {{ getTranslate(item?.label) }}
+    </li>
+  </ul>
+</mat-menu>

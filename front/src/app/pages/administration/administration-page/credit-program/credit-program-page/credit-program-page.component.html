@@ -1,0 +1,67 @@
+<div class="filter-wrapper">
+  <app-search-field
+    placeholder="Код  |  Название программы  |  Подтип кредита  |  Товары"
+    class="input-wrapper"
+    (searchEvent)="onSearchEvent($event)"
+    (clearEvent)="onClearEvent($event)"
+  >
+  </app-search-field>
+</div>
+<div class="flex-block">
+  <div class="table-block" *ngIf="(selectCurrentUserData$ | async) as userInfo">
+    <mat-app-table
+      [objColNameProps]="tableConfig"
+      [changePage]="changePage"
+      [isSorting]="false"
+      [tableData]="dataSource"
+      [totalCount]="totalCount"
+      [itemLimit]="itemLimit"
+      [tableBlockWidth]="'3000px'"
+      (selectedPage)="selectedPageEvent($event)"
+      (sortingData)="sortingDataEvent($event)"
+      (selectedItem)="selectedItem($event)"
+      [isSelectsItem]="allowSelectItemForPos"
+    >
+      <div class="button-block" *ngIf="allowSelectItemForPos">
+        <mat-app-button
+          [className]="'mr-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'white'"
+          [color]="'gray'"
+          [hover]="'gray'"
+          (clickEvent)="createNew()"
+        >
+          {{ 'Administration.Buttons.AddToCreditProgramlist' | translate }}
+        </mat-app-button>
+
+        <mat-app-button
+          [className]="'mr-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'white'"
+          [color]="'gray'"
+          [hover]="'gray'"
+          (clickEvent)="downloadExcel()"
+        >
+          {{ 'Administration.Buttons.DownloadExcel' | translate }}
+        </mat-app-button>
+
+        <mat-app-button
+          [className]="'mr-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'white'"
+          [color]="'gray'"
+          [hover]="'gray'"
+          (clickEvent)="uploadExcel()"
+        >
+          {{ 'Administration.Buttons.UploadExcel' | translate }}
+        </mat-app-button>
+      </div>
+    </mat-app-table>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+// themes - our custom or/and out of the box themes
+@import "themes";
+
+// framework component themes (styles tied to theme variables)
+@import "node_modules/@nebular/theme/styles/globals";
+@import "node_modules/@nebular/auth/styles/globals";
+
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/grid";
+
+@import "src/app/theme/styles/material/angular-material";
+
+// loading progress bar theme
+@import "src/app/theme/styles/pace.theme";
+
+@import "src/app/theme/styles/layout";
+@import "src/app/theme/styles/overrides";
+@import "src/app/theme/styles/material/material-overrides";
+
+// install the framework and custom global styles
+@include nb-install() {
+  @include angular-material();
+
+  // framework global styles
+  @include nb-theme-global();
+  @include nb-auth-global();
+
+  @include ngx-layout();
+  // loading progress bar
+  @include ngx-pace-theme();
+
+  @include nb-overrides();
+  @include material-overrides();
+}

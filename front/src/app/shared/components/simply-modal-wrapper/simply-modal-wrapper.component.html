@@ -1,0 +1,33 @@
+<span class="close-btn-wrapper" type="" [mat-dialog-close]="'close'">
+  <img src="./assets/img/PopupCloseDark.png" alt="Close modal" />
+</span>
+
+<div class="confirm-modal">
+  <div class="confirm-modal-content">
+    <ng-content></ng-content>
+  </div>
+  <div class="confirm-modal-footer">
+    <div class="confirm-modal-buttons-wrapper" *ngIf="withActionButton">
+      <app-button
+        [color]="'white'"
+        [backgroundColor]="'blue'"
+        [border]="true"
+        [hover]="'blue'"
+        [radius]="'semiRound'"
+        [mat-dialog-close]="'Yes'"
+        type=""
+        ><span>{{ actionButtonName }}</span></app-button
+      >
+      <app-button
+        [color]="'gray'"
+        [border]="true"
+        [hover]="'gray'"
+        [radius]="'semiRound'"
+        [className]="'custom-style-no-button'"
+        [mat-dialog-close]="'No'"
+        type=""
+        ><span>{{ cancelButtonName }}</span></app-button
+      >
+    </div>
+  </div>
+</div>

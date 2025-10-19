@@ -1,0 +1,40 @@
+<form [formGroup]="form">
+  <button type="submit" hidden #btnSubmit></button>
+  <div class="d-flex">
+    <div class="col-6">
+      <ng-container *ngFor="let control of communicationConfig">
+        <div [ngClass]="control?.class" [hidden]="!control.isVisible">
+          <ng-container>
+            <mat-app-search-select
+              *ngIf="control.type === EInputType.Select"
+              [formControlName]="control.code"
+              [isEmitEvent]="false"
+              [placeholder]="control.placeholder"
+              [propertyName]="control.propertyName || language === 'ru' ? ELocalNames.NameRu : ELocalNames.NameAm"
+              [language]="language"
+              [options]="optionsList[(control?.optionsListName)]"
+              [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+              [compareWithProp]="control.compareWithProp"
+            >
+            </mat-app-search-select>
+
+            <app-form-field
+              *ngIf="control.type === EInputType.Text"
+              [formControlName]="control.code"
+              [maxLength]="control.maxLength"
+              [placeholder]="control.placeholder"
+              [readonly]="control?.readonly || readonly"
+              [type]="control.type"
+              [prefix]="phoneValidation ? phonePrefix : null"
+              [mask]="phoneValidation ? phoneMask : null"
+            >
+            </app-form-field>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+    <div class="col-6" *ngIf="isMail">
+      {{ address }}
+    </div>
+  </div>
+</form>

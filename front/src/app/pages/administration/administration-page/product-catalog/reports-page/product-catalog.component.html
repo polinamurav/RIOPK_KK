@@ -1,0 +1,67 @@
+<div class="filter-wrapper">
+  <app-search-field
+    class="input-wrapper"
+    [placeholder]="'Administration.Placeholders.ProductCatalogSearchBy'"
+    (searchEvent)="onSearchEvent($event)"
+    (clearEvent)="onClearEvent($event)"
+  >
+  </app-search-field>
+</div>
+<div class="flex-block">
+  <div class="table-block">
+    <mat-app-table
+      [changePage]="changePage"
+      [objColNameProps]="objColNameProps"
+      [isSorting]="false"
+      [tableData]="dataSource"
+      [totalCount]="totalCount"
+      [itemLimit]="itemLimit"
+      [tableBlockWidth]="'3000px'"
+      (selectedItem)="selectedItem($event)"
+      (selectedPage)="selectedPageEvent($event)"
+      (sortingData)="sortingDataEvent($event)"
+      [isSelectsItem]="allowSelectItem"
+    >
+      <div class="button-block" *ngIf="allowSelectItem">
+        <!--          <mat-app-button-->
+        <!--            [className]="'mr-2'"-->
+        <!--            [size]="'medium'"-->
+        <!--            [border]="true"-->
+        <!--            [radius]="'semiRound'"-->
+        <!--            [backgroundColor]="'white'"-->
+        <!--            [color]="'gray'"-->
+        <!--            [hover]="'gray'"-->
+        <!--            (clickEvent)="openNewProductDialog()"-->
+        <!--          >-->
+        <!--            {{ 'Buttons.AddProduct' | translate }}-->
+        <!--          </mat-app-button>-->
+        <ng-container>
+          <mat-app-button
+            [className]="'mr-2'"
+            [size]="'medium'"
+            [border]="true"
+            [radius]="'semiRound'"
+            [backgroundColor]="'white'"
+            [color]="'gray'"
+            [hover]="'blue'"
+            (clickEvent)="fileServiceSelect('downloadExel')"
+          >
+            {{ 'Administration.Buttons.DownloadExcel' | translate }}
+          </mat-app-button>
+          <mat-app-button
+            [className]="'mr-2'"
+            [size]="'medium'"
+            [border]="true"
+            [radius]="'semiRound'"
+            [backgroundColor]="'white'"
+            [color]="'gray'"
+            [hover]="'gray'"
+            (clickEvent)="fileServiceSelect('uploadExel')"
+          >
+            {{ 'Administration.Buttons.UploadExcel' | translate }}
+          </mat-app-button>
+        </ng-container>
+      </div>
+    </mat-app-table>
+  </div>
+</div>

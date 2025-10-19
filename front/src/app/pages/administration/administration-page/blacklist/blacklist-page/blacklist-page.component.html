@@ -1,0 +1,41 @@
+<div class="filter-wrapper">
+  <app-search-field
+    class="input-wrapper"
+    [placeholder]="'Administration.Placeholders.BlacklistItemValue/BlacklistComment'"
+    (searchEvent)="onSearchEvent($event)"
+    (clearEvent)="onClearEvent($event)"
+  >
+  </app-search-field>
+</div>
+<div class="flex-block">
+  <div class="table-block">
+    <mat-app-table
+      [objColNameProps]="objColNameProps"
+      [changePage]="changePage"
+      [isSorting]="false"
+      [tableData]="dataSource"
+      [totalCount]="totalCount"
+      [itemLimit]="itemLimit"
+      [tableBlockWidth]="'3000px'"
+      (selectedPage)="selectedPageEvent($event)"
+      (sortingData)="sortingDataEvent($event)"
+      (selectedItem)="selectedItem($event)"
+      [isSelectsItem]="allowSelectItem"
+    >
+      <div class="button-block" *ngIf="allowSelectItem">
+        <mat-app-button
+          [className]="'mr-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'white'"
+          [color]="'gray'"
+          [hover]="'gray'"
+          (clickEvent)="openNewDialog()"
+        >
+          {{ 'Administration.Buttons.AddToBlacklist' | translate }}
+        </mat-app-button>
+      </div>
+    </mat-app-table>
+  </div>
+</div>

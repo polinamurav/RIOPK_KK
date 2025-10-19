@@ -1,0 +1,26 @@
+@import "src/theme/styles/colors";
+
+.biometric-content {
+  display: flex;
+  justify-content: space-evenly;
+
+  .check-container {
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .mat-icon {
+      height: 3rem;
+      width: 3rem;
+    }
+
+    .icon-check {
+      color: $kelly-green;
+    }
+
+    .icon-close {
+      color: $cg-red;
+    }
+  }
+}

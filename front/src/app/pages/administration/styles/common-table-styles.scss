@@ -1,0 +1,21 @@
+@import "../../../../theme/styles/common";
+
+.filter-wrapper {
+  @extend .filter-container;
+}
+
+.spinner-table {
+  position: absolute;
+  z-index: 1;
+  left: 7%;
+  width: 100%;
+  top: -3%;
+}
+
+.table-block {
+  height: calc(100vh - 8rem);
+
+  .button-block {
+    padding: 16px 0 0 20px;
+  }
+}

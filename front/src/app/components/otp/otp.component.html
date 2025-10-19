@@ -1,0 +1,112 @@
+<div class="otp-container">
+  <div class="title" *ngIf="!mode || mode === OtpType.SMS">{{'ShortForm.DataProcessingConsent' | translate}}</div>
+
+  <div class="radio-box" *ngIf="!mode || mode === OtpType.SMS">
+    <mat-radio-group [formControl]="otpRadioControl" (change)="otpTypeEvent.emit($event.value)">
+      <mat-radio-button *ngFor="let elem of radioInfo" [value]="elem.value" [checked]="elem.checked" class="radio-btn">
+        {{ elem.label | translate }}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <ng-container *ngIf="!mode || mode === OtpType.SMS">
+    <div class="check-otp-code-container">
+
+      <mat-app-button
+        *ngIf="!visibleOtpControls.phoneControlVisible"
+          [disabled]="mode ? phoneValidation : blockOtp || isAbsLoading"
+        [type]="'button'"
+        [radius]="'semiRound'"
+        [backgroundColor]="'blue'"
+        [color]="'white'"
+        className="send-sms-btn"
+        (clickEvent)="sendCode(OtpType.SMS); triggerValidation.emit()"
+      >
+        <ng-template #labelBtn>{{ 'ShortForm.SendSMS' | translate }}</ng-template>
+        <mat-spinner *ngIf="isAbsLoading; else labelBtn" class="text-center"></mat-spinner>
+      </mat-app-button>
+
+      <div class="" *ngIf="isAbsLoading">Запрашивается информация ЭКЕНГ...</div>
+
+      <div class="phone-code-container" *ngIf="visibleOtpControls.phoneControlVisible">
+        <app-form-field
+          [disabled]="isCodePhoneSuccess"
+          [readonly]="isCodePhoneSuccess"
+          [formControl]="otpCodePhoneControl"
+          [placeholder]="'ShortForm.EnterOTPCode' | translate"
+          [maxLength]="6"
+          [required]="true"
+          [type]="EInputType.Text"
+        >
+        </app-form-field>
+
+        <div class="opt-validation">
+          <ng-container *ngIf="!isPhoneCodeValid; else otpValid">
+            <mat-icon class="icon icon-close" svgIcon="cancel"></mat-icon>
+          </ng-container>
+
+          <ng-template #otpValid>
+            <mat-icon class="icon icon-check" svgIcon="check"></mat-icon>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <div class="send-code-again" *ngIf="visibleOtpControls.phoneControlVisible && !isCodePhoneSuccess">
+      <span class="link mat-tab-link " [class.disabled]="enableResendSms" (click)="sendCode(OtpType.SMS)">{{ 'ShortForm.ResendCode' | translate }}</span>
+      <span>{{ timer | async }}</span>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!mode || mode === OtpType.EMAIL">
+  <br />
+  <app-form-field
+    [disabled]="isCodeEmailSuccess || blockOtp"
+    [readonly]="isCodeEmailSuccess || blockOtp"
+    [formControl]="otpEmailControl"
+    [placeholder]="'Email'"
+    [type]="EInputType.Emil"
+  >
+  </app-form-field>
+
+  <div class="email-confirmation">
+    <mat-app-button *ngIf="!visibleOtpControls.emailControlVisible"
+      [disabled]="isEmailButtonDisabled"
+      [type]="'button'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      (clickEvent)="sendCode(OtpType.EMAIL)"
+    >
+      {{ 'ShortForm.SendEmail' | translate }}
+    </mat-app-button>
+
+    <div class="phone-code-container" *ngIf="visibleOtpControls.emailControlVisible">
+      <app-form-field
+        [disabled]="isCodeEmailSuccess"
+        [readonly]="isCodeEmailSuccess"
+        [formControl]="otpCodeEmailCodeControl"
+        [placeholder]="'ShortForm.EnterOTPCode' | translate"
+        [maxLength]="6"
+        [required]="true"
+        [type]="EInputType.Text"
+      >
+      </app-form-field>
+
+      <div class="opt-validation">
+        <ng-container *ngIf="!isEmailCodeValid; else otpEmailValid">
+          <mat-icon class="icon icon-close" svgIcon="cancel"></mat-icon>
+        </ng-container>
+
+        <ng-template #otpEmailValid>
+          <mat-icon class="icon icon-check" svgIcon="check"></mat-icon>
+        </ng-template>
+      </div>
+    </div>
+    <div class="send-code-again" *ngIf="visibleOtpControls.emailControlVisible && !isEmailCodeValid">
+      <span class="link mat-tab-link" [class.disabled]="enableResendSms"  (click)="sendCode(OtpType.EMAIL)"> {{ 'ShortForm.ResendCode' | translate }}</span>
+      <span>{{ timer | async }}</span>
+    </div>
+  </div>
+  </ng-container>
+</div>

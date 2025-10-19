@@ -1,0 +1,62 @@
+<form [formGroup]="employmentInfoform">
+  <app-layout-for-steps [isPanelDescHidden]="true" [headerText]="" [headerNumb]="1" [isNotAccordion]="true">
+    <div class="w-100">
+      <h5>{{ 'Employment.GeneralInformation' | translate }}</h5>
+      <div class="row m-0 pb-4" [formGroupName]="employmentResponseGroupKeys.GeneralInformation">
+        <ng-container *ngFor="let control of generalInfoConfig">
+          <div [ngClass]="control?.class">
+            <app-form-field
+              *ngIf="
+                control.type === eInputType.Text ||
+                control.type === eInputType.Number ||
+                control.type === eInputType.PhoneNumber
+              "
+              [formControlName]="control.code"
+              [maxLength]="control.maxLength"
+              [placeholder]="control.placeholder"
+              [readonly]="control?.readonly"
+              [type]="control.type"
+            >
+            </app-form-field>
+          </div>
+        </ng-container>
+      </div>
+
+      <h5>{{ 'Employment.TableTitles.ExperienceInformation' | translate }}</h5>
+      <div class="padding-bottom pt-2">
+        <mat-app-table
+          [tableData]="experienceInfoColTableData"
+          [isSorting]="false"
+          [footerIsHide]="true"
+        ></mat-app-table>
+      </div>
+
+      <h5>{{ 'Employment.TableTitles.NorkIncomeInformation' | translate }}</h5>
+      <div class="padding-bottom pt-2">
+        <mat-app-table
+          [tableData]="norkIncomeInfoColTableData"
+          [isSorting]="false"
+          [footerIsHide]="true"
+        ></mat-app-table>
+      </div>
+
+      <h5>{{ 'Employment.TableTitles.EkengIncomeInformation' | translate }}</h5>
+      <div class="padding-bottom pt-2">
+        <mat-app-table
+          [tableData]="ekengIncomeInfoColTableData"
+          [isSorting]="false"
+          [footerIsHide]="true"
+        ></mat-app-table>
+      </div>
+
+      <h5>{{ 'Employment.TableTitles.SalaryReceiptsInBankInformation' | translate }}</h5>
+      <div class="padding-bottom pt-2">
+        <mat-app-table
+          [tableData]="salaryReceiptsInBankInfoColTableData"
+          [isSorting]="false"
+          [footerIsHide]="true"
+        ></mat-app-table>
+      </div>
+    </div>
+  </app-layout-for-steps>
+</form>

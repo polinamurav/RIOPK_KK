@@ -1,0 +1,85 @@
+<div class="header-container">
+  <div class="brand-container">
+    <a class="navbar-brand p-0" [routerLink]="['/pages']" routerLinkActive="active">
+      <img *ngIf="currentTheme === 'default'" class="w-100 log-custom" src="./assets/img/vtb-logo.png" alt="logo" />
+      <img *ngIf="currentTheme === 'dark'" class="w-100 log-custom" src="./assets/img/vtb-logo-light.png" alt="logo" />
+    </a>
+  </div>
+
+  <div class="menu-container">
+    <ng-content #headerNav></ng-content>
+  </div>
+</div>
+
+<div class="header-container">
+  <div class="user-container">
+    <div class="nav-dropdown profile" ngbDropdown display="dynamic" placement="bottom-right">
+      <div class="logo" ngbDropdownToggle>
+        <img src="./assets/img/avatar-person.svg" alt="User" />
+        <!--<span class="drop-svg" [inlineSVG]="'assets/img/drop-20.svg'"></span>-->
+      </div>
+      <div ngbDropdownMenu aria-labelledby="user-dropdown">
+        <div class="dropdown-header d-flex">
+          <div class="col-12">
+            <div class="col-12 align-center">
+              <div class="logo-big">
+                <img src="./assets/img/avatar-person.svg" alt="User" />
+              </div>
+            </div>
+            <div class="mt-2 col-12 align-center">
+              <span class="user-name" translate>{{ userName$ | async }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="dropdown-item d-flex profile">
+          <div class="navbar-locale-value">
+            {{ 'Header.Language' | translate }}
+          </div>
+          <div class="pl-2">
+            <div class="" (click)="setLanguage(ELanguage.Am)">
+              <input type="radio" [checked]="currentLanguage === ELanguage.Am" />
+              <span>Հայոց լեզու</span>
+            </div>
+            <div class="" (click)="setLanguage(ELanguage.Ru)">
+              <input type="radio" [checked]="currentLanguage === ELanguage.Ru" />
+              <span>Русский</span>
+            </div>
+          </div>
+        </div>
+        <div class="dropdown-item d-flex profile">
+          <div class="mr-2">
+            {{ 'Header.Theme' | translate }}
+          </div>
+
+          <div class="pl-2">
+            <div class="" (click)="changeTheme('default')">
+              <input type="radio" [checked]="currentTheme === 'default'" />
+              <span>Light</span>
+            </div>
+            <div class="" (click)="changeTheme('dark')">
+              <input type="radio" [checked]="currentTheme === 'dark'" />
+              <span>Dark</span>
+            </div>
+          </div>
+
+          <!--<button
+            *ngFor="let theme of themes"
+            nbButton
+            (click)="changeTheme(theme.value)"
+            [status]="theme.value === 'default' ? '' : 'primary'"
+            class="ml-1"
+          >
+            {{ theme.name }}
+          </button>-->
+        </div>
+
+        <div class="dropdown-item d-flex" (click)="openClientDialog()">
+          <span>{{ 'Header.Profile' | translate }}</span>
+        </div>
+        <div class="dropdown-item d-flex logout" (click)="logout()" translate>
+          <span>{{ 'Header.Logout' | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

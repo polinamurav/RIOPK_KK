@@ -1,0 +1,137 @@
+<mat-app-button
+  [matMenuTriggerFor]="menu"
+  [radius]="'semiRound'"
+  [backgroundColor]="'white'"
+  [color]="'gray'"
+  [hover]="'gray'"
+  [border]="true"
+  [size]="'small'"
+  matBadge="{{ selectedOptionsNumber }}"
+  matBadgeHidden="{{ !selectedOptionsNumber }}"
+  matBadgeSize="medium"
+  matBadgePosition="before"
+>
+  <mat-icon svgIcon="filter_list" class="filter-ico"></mat-icon>
+  <span class="button-name">{{ 'Buttons.Filters' | translate }}</span>
+</mat-app-button>
+
+<mat-menu #menu="matMenu" [formGroup]="formField" class="dropdown-list">
+  <div (click)="$event.stopPropagation()" class="display-flex">
+    <div *ngFor="let field of initFields">
+      <div *ngIf="field.type === 'string'" class="dropdown-wrap">
+        <mat-app-search-select
+          [formControlName]="field.fcName"
+          [options]="field.options"
+          [placeholder]="field.label"
+          [propertyName]="field.propertyName"
+          [selectHeight]="'selectNarrow'"
+          class="dropdown-select search-select-custom"
+          [isEmitEvent]="false"
+          [language]="language"
+        >
+        </mat-app-search-select>
+        <button
+          type="button"
+          class="cancel-icon-button"
+          [disabled]="!formField.get(field.fcName).value"
+          (click)="clearSelectedField(field.fcName)"
+        >
+          <mat-icon svgIcon="cancel"></mat-icon>
+        </button>
+      </div>
+
+      <!--      <div *ngIf="field.type === 'Date'" class="dropdown-wrap">-->
+      <!--        <app-date-filter-fields-->
+      <!--          [datesInfo]="field.val"-->
+      <!--          [label]="field.label">-->
+      <!--        </app-date-filter-fields>-->
+      <!--      </div>-->
+
+
+      <div *ngIf="field.type === 'Date'" class="dropdown-wrap">
+        <div class="width-date">
+          <div class="date-picker-wrapper">
+            <mat-form-field>
+              <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate formControlName="start" placeholder="Дата с">
+                <input matEndDate formControlName="end" (dateChange)="dateChange()" placeholder="Дата по">
+              </mat-date-range-input>
+              <!--<mat-hint>DD.MM.YYYY – DD.MM.YYYY</mat-hint>-->
+              <mat-date-range-picker #picker></mat-date-range-picker>
+              <mat-app-button
+                [disabled]="field.disabled"
+                class="date-picker-label"
+                [radius]="'round'"
+                [hover]="'blue'"
+                [backgroundColor]="'gray'"
+                [size]="'medium'"
+                [border]="false"
+                [type]="'button'"
+                (clickEvent)="picker.open()"
+                matSuffix
+              >
+                <nb-icon class="calendar-icon" icon="calendar-outline" pack="eva"></nb-icon>
+              </mat-app-button>
+              <!--              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
+            </mat-form-field>
+          </div>
+          <button
+            type="button"
+            class="cancel-icon-button"
+            [disabled]="!formField.get(field.fcName).value"
+            (click)="clearSelectedField(field.fcName)"
+          >
+            <mat-icon svgIcon="cancel"></mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="field.type === 'singleDate'" class="dropdown-wrap">
+        <div class="width-date">
+          <app-date-picker [formControlName]="field.fcName" [placeholder]="field.label | translate"
+                           [minDate]="getMinDate(field)"
+                           [maxDate]="getMaxDate(field)"
+                           [disabled]="field.fcName === 'dateTo' && !formField.get('dateFrom').value"></app-date-picker>
+          <!--          [minDate]="field.fcName === 'dateTo' ? formField.get('dateFrom').value : null"-->
+        </div>
+        <button
+          type="button"
+          class="cancel-icon-button"
+          [disabled]="!formField.get(field.fcName).value"
+          (click)="clearSelectedField(field.fcName)"
+        >
+          <mat-icon svgIcon="cancel"></mat-icon>
+        </button>
+      </div>
+
+      <div *ngIf="field.type === 'radio'" class="dropdown-wrap">
+        <app-radio-filter-fields [formControlName]="field.fcName" [radioInfo]="field.val"></app-radio-filter-fields>
+      </div>
+    </div>
+
+    <div class="dropdown-wrap btns-wrap">
+      <mat-app-button
+        [radius]="'semiRound'"
+        [backgroundColor]="'blue'"
+        [color]="'white'"
+        (clickEvent)="onApplyBtnClick()"
+      >
+        {{ 'Buttons.Apply' | translate }}
+      </mat-app-button>
+      <mat-app-button
+        [radius]="'semiRound'"
+        [backgroundColor]="'transparent'"
+        [color]="'gray'"
+        [hover]="'gray'"
+        [border]="true"
+        (clickEvent)="onResetBtnClick()"
+      >
+        {{ 'Buttons.Reset' | translate }}
+      </mat-app-button>
+
+      <button class="cancel-button" type="reset" (click)="onCancelBtnClick()">
+        {{ 'Buttons.Cancel' | translate }}
+      </button>
+    </div>
+  </div>
+</mat-menu>

@@ -1,0 +1,45 @@
+@import "../../../../../theme/styles/common";
+
+.filter-wrapper {
+  height: 240px;
+  padding-left: 20px;
+  justify-content: flex-start;
+  width: 800px;
+  @extend .filter-container;
+
+  .buttons-box {
+    display: flex;
+    align-items: center;
+    height: 3rem;
+  }
+
+}
+
+.status {
+  padding: 20px 0 0 20px;
+}
+
+
+.datepicker-wrap {
+  width: 300px;
+  margin-right: 10px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 70%;
+}
+
+.datepicker-wrap:nth-child(4) {
+  grid-column: 1/2;
+}
+
+.datepicker-wrap:nth-child(5) {
+  grid-column: 2/3;
+}
+
+.datepicker-wrap:nth-child(6) {
+  grid-column: 1/2;
+}

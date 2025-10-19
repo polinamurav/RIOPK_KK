@@ -1,0 +1,43 @@
+import { LocalNames } from '..';
+
+export class RoleDto implements LocalNames {
+  authority: string;
+  code: string;
+  id: number;
+  nameRu: string;
+  nameAm: string;
+  nameEn: string;
+}
+
+export enum RoleAuthority {
+  ADMIN = 'ADMIN',
+  ADMIN_IT = 'ADMIN_IT',
+  CREDIT_MANAGER = 'CREDIT_MANAGER',
+  CALL_CENTER = 'CALL_CENTER',
+  VERIFIER = 'VERIFIER',
+  AUDITOR = 'AUDITOR',
+  BUSINESS_OWNER = 'BUSINESS_OWNER',
+  URPA = 'URPA',
+  CREDIT_MANAGER_BOSS = 'CREDIT_MANAGER_BOSS',
+  CALL_CENTER_BOSS = 'CALL_CENTER_BOSS',
+  DECISION_MAKER = 'DECISION_MAKER',
+  RM = 'RM',
+  RM_BOSS = 'RM_BOSS',
+  JEWELER = 'JEWELER',
+  SALES_DEP = 'SALES_DEP',
+  DSA = 'DSA',
+  DSA_BOSS = 'DSA_BOSS',
+  VIDEO_BANK = 'VIDEO_BANK',
+  VIDEO_BANK_BOSS = 'VIDEO_BANK_BOSS',
+  DECISION_MAKER_BOSS = 'DECISION_MAKER_BOSS',
+  VERIFIER_BOSS = 'VERIFIER_BOSS',
+  ARCHIVIST = 'ARCHIVIST',
+  BO = 'BO',
+  TT1_POS = 'TT1_POS',
+  TT2_POS = 'TT2_POS',
+  HEAD_POS = 'HEAD_POS',
+  REG_MANAGER_POS = 'REG_MANAGER_POS',
+  SUPPORT_POS = 'SUPPORT_POS',
+  SUPER_ADMIN_POS = 'SUPER_ADMIN_POS',
+  SECURITY_POS = 'SECURITY_POS'
+}

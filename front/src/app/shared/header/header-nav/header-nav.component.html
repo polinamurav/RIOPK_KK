@@ -1,0 +1,104 @@
+<div class='navigation-container'>
+  <ng-container *ngIf='currentWidth > 990'>
+    <ng-container>
+      <a class='navigation-link' routerLink='dashboard' routerLinkActive='active'>
+        <span class='navigation-link-text'>{{ 'Header.Tasks' | translate }}</span>
+      </a>
+    </ng-container>
+    <ng-container>
+      <a class='navigation-link' routerLink='queues' routerLinkActive='active'>
+        <span class='navigation-link-text'>{{ 'Header.Queues' | translate }}</span>
+      </a>
+    </ng-container>
+
+    <ng-container *ngIf='currentRoles.isRiskManager'>
+      <a class='navigation-link' routerLink='pre-approved-offers' routerLinkActive='active'>
+        <span class='navigation-link-text'>{{'Header.PreApprovedOffers' | translate}}</span>
+      </a>
+    </ng-container>
+
+    <ng-container
+      *ngIf='currentRoles.isAdmin
+       || currentRoles.isAdminIT
+       || currentRoles.isAuditor
+       || currentRoles.isRiskBoss
+       || currentRoles.isCallCenterBoss
+       || currentRoles.isURPA
+       || currentRoles.isBusinessOwner
+       || currentRoles.isRegManagerPos
+       || currentRoles.isSupportPos
+       || currentRoles.isHeadPos
+       || currentRoles.isRiskManager
+       || currentRoles.isRiskManagerBoss'
+    >
+      <a class='navigation-link' routerLink='report' routerLinkActive='active'>
+        <span class='navigation-link-text'>{{ 'Header.Reporting' | translate }}</span>
+      </a>
+    </ng-container>
+    <ng-container *ngIf='currentRoles.isAdmin || currentRoles.isUnder'>
+      <a class='navigation-link' routerLink='directories' routerLinkActive='active'>
+        <span class='navigation-link-text'>{{ 'Header.References' | translate }}</span>
+      </a>
+    </ng-container>
+    <ng-container *ngIf='isAdminTabVisible'>
+      <a class='navigation-link' routerLink='administration' routerLinkActive='active'>
+        <span class='navigation-link-text'>{{ 'Header.Administration' | translate }}</span>
+      </a>
+    </ng-container>
+    <ng-container *ngIf='currentRoles.isAdmin || currentRoles.isAnalyst'>
+      <a class='navigation-link' routerLink='preapproved' routerLinkActive='active'>
+        <span class='navigation-link-text'>{{ 'Header.PreApproved' | translate }}</span>
+      </a>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf='currentWidth <= 990'>
+    <div ngbDropdown class='retail-menu' placement='bottom-right'>
+      <button class='retail-menu-toggle' id='retail-menu-dropdown' ngbDropdownToggle>
+        <nb-icon icon='menu' pack='eva'></nb-icon>
+      </button>
+
+      <div ngbDropdownMenu aria-labelledby='retail-menu-dropdown' class='retail-menu-dropdown'>
+        <a class='retail-menu-link' routerLink='dashboard' routerLinkActive='active' ngbDropdownItem>
+          <span class='navigation-link-text'>{{ 'Header.Tasks' | translate }}</span>
+        </a>
+        <a class='retail-menu-link' routerLink='queues' routerLinkActive='active' ngbDropdownItem>
+          <span class='navigation-link-text'>{{ 'Header.Queues' | translate }}</span>
+        </a>
+        <a
+          *ngIf='
+            currentRoles.isAdmin || currentRoles.isAuditor || currentRoles.isRiskBoss || currentRoles.isCallCenterBoss
+            || currentRoles.isURPA
+            || currentRoles.isBusinessOwner
+            || currentRoles.isRegManagerPos
+            || currentRoles.isSupportPos
+            || currentRoles.isHeadPos
+            || currentRoles.isRiskManager
+            || currentRoles.isRiskManagerBoss
+          '
+          class='retail-menu-link'
+          routerLink='report'
+          routerLinkActive='active'
+          ngbDropdownItem
+        >
+          <span class='navigation-link-text'>{{ 'Header.Reporting' | translate }}</span>
+        </a>
+        <ng-container *ngIf='currentRoles.isAdmin || currentRoles.isUnder'>
+          <a class='retail-menu-link' routerLink='directories' routerLinkActive='active' ngbDropdownItem>
+            <span class='navigation-link-text'>{{ 'Header.References' | translate }}</span>
+          </a>
+        </ng-container>
+        <ng-container *ngIf='currentRoles.isAdmin || currentRoles.isUnder'>
+          <a class='retail-menu-link' routerLink='administration' routerLinkActive='active' ngbDropdownItem>
+            <span class='navigation-link-text'>{{ 'Header.Administration' | translate }}</span>
+          </a>
+        </ng-container>
+        <ng-container *ngIf='currentRoles.isAdmin || currentRoles.isAnalyst'>
+          <a class='retail-menu-link' routerLink='preapproved' routerLinkActive='active' ngbDropdownItem>
+            <span class='navigation-link-text'>{{ 'Header.PreApproved' | translate }}</span>
+          </a>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</div>

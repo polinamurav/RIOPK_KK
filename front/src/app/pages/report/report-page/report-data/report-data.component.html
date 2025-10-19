@@ -1,0 +1,172 @@
+<div class="filter-wrapper">
+  <form [formGroup]="reportForm" class="filter-form">
+    <div class="form-grid">
+      <div class="form-grid-label">
+        Период заявки (создания)
+      </div>
+    <div class="datepicker-wrap">
+      <app-date-picker
+        formControlName="createdFrom"
+        [placeholder]="'Report.Placeholder.DateFromPos'"
+        [required]="true"
+      >
+      </app-date-picker>
+    </div>
+
+    <div class="datepicker-wrap">
+      <app-date-picker
+        formControlName="createdTo"
+        [placeholder]="'Report.Placeholder.DateToPos'"
+        [required]="true"
+      >
+      </app-date-picker>
+    </div>
+
+      <div class="form-grid-label">
+        Период выдачи
+      </div>
+    <div class="datepicker-wrap">
+      <app-date-picker
+        formControlName="issuedFrom"
+        [placeholder]="'Report.Placeholder.DateFromPos'"
+        [showClearButton]="true"
+      >
+      </app-date-picker>
+    </div>
+
+    <div class="datepicker-wrap">
+      <app-date-picker
+        formControlName="issuedTo"
+        [placeholder]="'Report.Placeholder.DateToPos'"
+        [showClearButton]="true"
+      >
+      </app-date-picker>
+    </div>
+      <div class="form-grid-label">
+        {{ 'Administration.Placeholders.Product' | translate }}
+      </div>
+      <div class="datepicker-wrap">
+        <mat-app-search-select-lazy
+          [formControlName]="'productIds'"
+          [placeholder]="'Administration.Placeholders.Product'"
+          [options]="optionsList['product']"
+          [propertyName]="getPropertyName()"
+          [valueType]='ValueType.Object'
+          [language]="language"
+          [multiple]="true"
+          [selectAllOption]="true"
+        >
+        </mat-app-search-select-lazy>
+      </div>
+
+      <div class="form-grid-label datepicker-wrap">
+        {{ 'Administration.Placeholders.Channel' | translate }}
+      </div>
+    <div class="datepicker-wrap">
+      <div class="datepicker-wrap">
+        <mat-app-search-select-lazy
+          [formControlName]="'salesChannelIds'"
+          [placeholder]="'Administration.Placeholders.Channel'"
+          [options]="optionsList['channelsList']"
+          [propertyName]="getPropertyName()"
+          [valueType]='ValueType.Object'
+          [language]="language"
+          [multiple]="true"
+          [selectAllOption]="true"
+        >
+        </mat-app-search-select-lazy>
+      </div>
+    </div>
+
+      <div class="form-grid-label datepicker-wrap">
+        {{ 'ClientModal.Placeholder.Branch' | translate }}
+      </div>
+    <div class="datepicker-wrap">
+      <mat-app-search-select-lazy
+        [formControlName]="'branchCodes'"
+        [placeholder]="'ClientModal.Placeholder.Branch'"
+        [propertyName]="getPropertyName()"
+        [options]="optionsList['branchesForSelect']"
+        [valueType]='ValueType.Object'
+        [language]="language"
+        [multiple]="true"
+        [selectAllOption]="true"
+      >
+      </mat-app-search-select-lazy>
+    </div>
+
+      <div class="form-grid-label datepicker-wrap">
+        Статус
+      </div>
+      <div class="datepicker-wrap">
+        <mat-app-search-select-lazy
+          [formControlName]="'statusReportsIds'"
+          [placeholder]="'Report.Placeholder.ApplicationStatus'"
+          [options]="optionsList['applicationStatusId']"
+          [valueType]='ValueType.Object'
+          [language]="language"
+          [multiple]="true"
+          [selectAllOption]="true"
+        >
+        </mat-app-search-select-lazy>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="accordion-section mt-4">
+    <app-layout-for-steps
+            [headerText]="'Выбор полей'"
+            [headerNumb]="1"
+            [isNotAccordion]="true">
+        <mat-accordion class="accordion-spacing w-80">
+            <mat-expansion-panel *ngFor="let block of infoBlocks">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <mat-checkbox
+                        class="mat-select-search-toggle-all-checkbox"
+                        [checked]="block.selected"
+                        (change)="toggleAllFields(block, $event.checked)">
+                        {{ block.name }}
+                      </mat-checkbox>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Выберите поле для отчета
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <div class="fields-list vertical-checkboxes">
+                  <mat-checkbox
+                    *ngFor="let field of block.fields"
+                    [checked]="field.selected"
+                    (change)="onFieldChange(block, field, $event.checked)">
+                    {{ field.label }}
+                  </mat-checkbox>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </app-layout-for-steps>
+</div>
+
+<div class="buttons-box mt-4 filter-wrapper">
+    <mat-app-button
+      [type]="'button'"
+      [size]="'medium'"
+      [border]="true"
+      [radius]="'semiRound'"
+      [backgroundColor]="'blue'"
+      [color]="'white'"
+      (clickEvent)="getReport()"
+    >
+      {{ 'Buttons.Start' | translate }}
+    </mat-app-button>
+  </div>
+<!--<div class="status">-->
+<!--  {{ status?.nameRu }}-->
+<!--</div>-->
+
+<div class="content-box">
+  <div *ngIf="isLoading" class="spinner-box d-flex align-items-center justify-content-center h-100">
+    <mat-spinner class="text-center"></mat-spinner>
+  </div>
+</div>

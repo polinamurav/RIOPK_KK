@@ -1,0 +1,35 @@
+.info {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  .info_item {
+    margin-top: 1rem;
+
+    span {
+      margin-right: 1rem;
+    }
+  }
+}
+
+.details {
+  gap: 1rem;
+  display: grid;
+  .detail-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+
+    .detail-row-item {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .name {
+      //min-width: 10rem;
+    }
+
+    .sum {
+      width: 30%;
+    }
+  }
+}

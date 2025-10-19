@@ -1,0 +1,37 @@
+<app-modal-view [title]="data.title | translate" [showClose]="showClose">
+  <div class="info-content">
+    <h5>{{ data.textContent | translate }}</h5>
+  </div>
+
+  <app-modal-view-actions>
+    <mat-app-button
+      *ngIf="data.btnConfirmName"
+      [type]="'submit'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+      (clickEvent)="confirm()"
+    >
+      {{ data.btnConfirmName | translate }}
+    </mat-app-button>
+
+    <mat-app-button
+      *ngIf="data.btnCancelName"
+      [type]="'button'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [mat-dialog-close]="'close'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+    >
+      {{ data.btnCancelName | translate }}
+    </mat-app-button>
+  </app-modal-view-actions>
+</app-modal-view>

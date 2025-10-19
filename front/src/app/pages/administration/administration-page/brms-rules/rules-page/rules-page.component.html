@@ -1,0 +1,28 @@
+<div class="filter-wrapper">
+  <app-search-field
+    class="input-wrapper"
+    [placeholder]="'TableHeader.Code'"
+    (searchEvent)="onSearchEvent($event)"
+    (clearEvent)="onClearEvent($event)"
+  >
+  </app-search-field>
+</div>
+
+<div class="flex-block">
+  <div class="table-block">
+    <mat-app-table
+      [changePage]="changePage"
+      [objColNameProps]="objColNameProps"
+      [isSorting]="false"
+      [tableData]="dataSource"
+      [totalCount]="totalCount"
+      [itemLimit]="itemLimit"
+      [tableBlockWidth]="'3000px'"
+      (selectedItem)="updateRule($event)"
+      (selectedPage)="selectedPageEvent($event)"
+      (sortingData)="sortingDataEvent($event)"
+      [isSelectsItem]="allowSelectItem"
+    >
+    </mat-app-table>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="table-block">
+  <div *ngIf="dataLoading" class="spinner-box d-flex align-items-center justify-content-center h-100">
+    <mat-spinner class="text-center"></mat-spinner>
+  </div>
+  <div class="filter-wrapper">
+    <mat-app-button
+      [className]="'mr-2'"
+      [size]="'medium'"
+      [border]="true"
+      [radius]="'semiRound'"
+      [backgroundColor]="'white'"
+      [color]="'gray'"
+      [hover]="'gray'"
+      (clickEvent)="uploadExcel()"
+    >
+      {{ 'Buttons.ImportExcel' | translate }}
+    </mat-app-button>
+  </div>
+
+  <div class="table-wrap">
+    <mat-app-table
+      [objColNameProps]="objColNameProps"
+      [isSorting]="false"
+      [isSelectsItem]="false"
+      [changePage]="changePage"
+      [totalCount]="totalCount"
+      [tableData]="dataSource"
+      [itemLimit]="itemLimit"
+      [tableBlockWidth]="'2000px'"
+      (selectedPage)="selectedPageEvent($event)"
+      (linkEvent)="linkEvent($event)"
+    >
+    </mat-app-table>
+  </div>
+</div>

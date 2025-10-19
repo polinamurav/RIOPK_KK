@@ -1,0 +1,36 @@
+<app-modal-view [title]="title | translate">
+  <div class="table-duplecates">
+    <mat-app-table [isSorting]="false" [footerIsHide]="true" tableHeight="25vh" [tableData]="appDuplicatesTableConfig">
+    </mat-app-table>
+  </div>
+
+  <app-modal-view-actions *ngIf="data.createPossible">
+    <mat-app-button
+      [type]="'submit'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+      (clickEvent)="createNew()"
+    >
+      {{ 'Buttons.CreateNewRequest' | translate }}
+    </mat-app-button>
+
+    <mat-app-button
+      [type]="'button'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [mat-dialog-close]="'close'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+    >
+      {{ 'Buttons.Cancel' | translate }}
+    </mat-app-button>
+  </app-modal-view-actions>
+</app-modal-view>

@@ -1,0 +1,53 @@
+<div class="text-field" [class.hidden-overflow]="isOverflowHidden">
+  <mat-form-field [ngSwitch]="autosize">
+    <mat-label>{{ label | translate }}</mat-label>
+    <textarea
+      *ngSwitchCase="'set-autosize'"
+      matInput
+      (blur)="onBlur()"
+      (focus)="onTouched()"
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="10"
+      [maxlength]="maxlength"
+      [formControl]="fc"
+      [style.overflow]="scroll ? 'scroll' : 'hidden'"
+    ></textarea>
+    <textarea
+      *ngSwitchCase="'set-autosize-scroll'"
+      [class.weswap-current]="lines > 7"
+      [class.hidden]="lines <= 7"
+      matInput
+      (blur)="onBlur()"
+      (focus)="onTouched()"
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="7"
+      [formControl]="fc"
+      [style.overflow]="scroll ? 'scroll' : 'hidden'"
+    ></textarea>
+    <textarea
+      *ngSwitchCase="'none'"
+      matInput
+      [rows]="rows"
+      [formControl]="fc"
+      [maxlength]="maxlength"
+      [ngStyle]="{ resize: resize }"
+      [style.overflow]="scroll ? 'scroll' : 'hidden'"
+      [(ngModel)]="value"
+      (blur)="onBlur()"
+      (focus)="onTouched()"
+    ></textarea>
+    <textarea
+      *ngSwitchDefault
+      matInput
+      (blur)="onBlur()"
+      (focus)="onTouched()"
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="10"
+      [style.overflow]="scroll ? 'scroll' : 'hidden'"
+      [maxlength]="maxlength"
+      [formControl]="fc"
+    ></textarea>
+  </mat-form-field>
+</div>

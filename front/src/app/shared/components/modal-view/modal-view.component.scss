@@ -1,0 +1,69 @@
+@import "src/theme/styles/common";
+
+:host {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  mat-app-button {
+    position: absolute;
+    top: 13px;
+    right: 20px;
+
+    ::ng-deep {
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: $cadet-grey;
+      }
+
+      &:hover {
+        svg {
+          fill: $snow;
+        }
+      }
+    }
+  }
+
+  .close-modal {
+    position: absolute;
+    cursor: pointer;
+    right: 5px;
+    top: 5px;
+
+    img {
+      transition: all 0.3s ease;
+      opacity: 0.4;
+
+      &:hover {
+        transform: rotate(90deg);
+        opacity: 0.7;
+      }
+    }
+  }
+}
+
+.modal-view-header {
+  display: flex;
+  justify-content: center;
+  padding: 38px 80px 10px 80px;
+
+  h3 {
+    min-height: 1.75rem;
+  }
+}
+
+.modal-view-body {
+  width: 100%;
+  padding: 15px;
+}
+
+.otp-verification {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.modal-view-actions {
+  width: 100%;
+}

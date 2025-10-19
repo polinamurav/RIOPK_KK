@@ -1,0 +1,55 @@
+<div class="filter-wrapper"></div>
+<div class="table-block">
+  <mat-app-table
+    [changePage]="changePage"
+    [totalCount]="totalCount"
+    [tableData]="dataSource"
+    [itemLimit]="itemLimit"
+    [showPagination]="showPagination"
+    [isSorting]="false"
+    [tableBlockWidth]="tableBlockWidth"
+    (selectedPage)="selectedPageEvent($event)"
+    (sortingData)="sortingDataEvent($event)"
+  >
+    <div class="button-block">
+      <mat-app-button
+        *ngIf="buttonsParams.downloadExel.show"
+        [className]="'mr-2'"
+        [size]="'medium'"
+        [border]="true"
+        [radius]="'semiRound'"
+        [backgroundColor]="'white'"
+        [color]="'gray'"
+        [hover]="'gray'"
+        (clickEvent)="downloadExel()"
+      >
+        {{ buttonsParams.downloadExel.name | translate }}
+      </mat-app-button>
+      <mat-app-button
+        *ngIf="buttonsParams.uploadExel.show && userRole === 1"
+        [size]="'medium'"
+        [border]="true"
+        [radius]="'semiRound'"
+        [backgroundColor]="'white'"
+        [color]="'gray'"
+        [hover]="'gray'"
+        (clickEvent)="uploadExel()"
+      >
+        {{ buttonsParams.uploadExel.name | translate }}
+      </mat-app-button>
+
+      <mat-app-button
+        *ngIf="buttonsParams.otherButton.show && userRole === 1"
+        [size]="'medium'"
+        [border]="true"
+        [radius]="'semiRound'"
+        [backgroundColor]="'white'"
+        [color]="'gray'"
+        [hover]="'gray'"
+        (clickEvent)="otherButton()"
+      >
+        {{ buttonsParams.otherButton.name | translate }}
+      </mat-app-button>
+    </div>
+  </mat-app-table>
+</div>

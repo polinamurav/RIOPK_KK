@@ -1,0 +1,188 @@
+<form [formGroup]="borrowersInfoform">
+  <app-layout-for-steps
+    [id]="BorrowersGroupKeys.Management"
+    [isPanelDescHidden]="true"
+    [headerText]="titles[BorrowersGroupKeys.Management]"
+    [headerNumb]="1"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="pt-2">
+        <h5>{{ 'Borrowers.Income' | translate }}</h5>
+
+        <nv-editable-table
+          [canEditRows]="!readonlyForm"
+          [canAddRows]="false"
+          [fixedHeader]="true"
+          [tableHeaders]="managementInfoTableHeaders"
+          [isDeleteObjLink]="true"
+          [tableRows]="managementInfoDto"
+          [selectData]="optionsList"
+          [buttonsLeftPosition]="'30%'"
+          [language]="language"
+          (savedRow)="saveRow($event, BorrowersGroupKeys.Management)"
+          (editedRow)="editedRow($event, BorrowersGroupKeys.Management)"
+        >
+          <!-- (getNextPartEvent)="nextPartEvent($event)"
+            (getSortPartEvent)="sortPartEvent($event)" -->
+        </nv-editable-table>
+      </div>
+
+      <div class="pt-2">
+        <h5>{{ 'Borrowers.LastWorksExpirence' | translate }}</h5>
+
+        <nv-editable-table
+          [canEditRows]="!readonlyForm"
+          [canAddRows]="false"
+          [canDeleteRows]="false"
+          [fixedHeader]="true"
+          [tableHeaders]="lastWorkExpirenceTableHeaders"
+          [isDeleteObjLink]="true"
+          [tableRows]="lastWorkExpirenceDto"
+          [selectData]="optionsList"
+          [buttonsLeftPosition]="'30%'"
+          [language]="language"
+          (savedRow)="saveRow($event, BorrowersGroupKeys.LastWorksExpirence)"
+          (editedRow)="editedRow($event, BorrowersGroupKeys.LastWorksExpirence)"
+          (removedRow)="removeRow($event, BorrowersGroupKeys.LastWorksExpirence)"
+        >
+          <!-- (getNextPartEvent)="nextPartEvent($event)"
+            (getSortPartEvent)="sortPartEvent($event)" -->
+        </nv-editable-table>
+      </div>
+
+      <div class="pt-2">
+        <h5>{{ 'Borrowers.JobPosition' | translate }}</h5>
+
+        <nv-editable-table
+          [canEditRows]="!readonlyForm"
+          [canAddRows]="false"
+          [fixedHeader]="true"
+          [tableHeaders]="jobPositionTableHeaders"
+          [isDeleteObjLink]="true"
+          [tableRows]="jobPositionDto"
+          [selectData]="optionsList"
+          [buttonsLeftPosition]="'30%'"
+          [language]="language"
+          (savedRow)="saveRow($event, BorrowersGroupKeys.JobPosition)"
+          (editedRow)="editedRow($event, BorrowersGroupKeys.JobPosition)"
+        >
+          <!-- (getNextPartEvent)="nextPartEvent($event)"
+            (getSortPartEvent)="sortPartEvent($event)" -->
+        </nv-editable-table>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [id]="BorrowersGroupKeys.CustomerRequests"
+    [isPanelDescHidden]="true"
+    [headerText]="titles[BorrowersGroupKeys.CustomerRequests]"
+    [headerNumb]="2"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="  pt-2">
+        <mat-app-table
+          [tableData]="customerRequestsTableHeaders"
+          [isSorting]="false"
+          [footerIsHide]="true"
+        ></mat-app-table>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [id]="BorrowersGroupKeys.EmployersApplications"
+    [isPanelDescHidden]="true"
+    [headerText]="titles[BorrowersGroupKeys.EmployersApplications]"
+    [headerNumb]="3"
+    [isNotAccordion]="true"
+  >
+    <div class="w-100">
+      <div class="  pt-2">
+        <mat-app-table
+          [tableData]="emploeyrApplicationsTableHeaders"
+          [isSorting]="false"
+          [footerIsHide]="true"
+        ></mat-app-table>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [id]="BorrowersGroupKeys.BlackList"
+    [isPanelDescHidden]="true"
+    [headerText]="titles[BorrowersGroupKeys.BlackList]"
+    [headerNumb]="4"
+    [isNotAccordion]="true"
+    class="padding-bottom"
+  >
+    <div class="w-100">
+      <div class=" pt-2">
+        <mat-app-table [tableData]="blackListTableHeaders" [isSorting]="false" [footerIsHide]="true"></mat-app-table>
+      </div>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [id]="'DecisionOfOPZApplication'"
+    [isPanelDescHidden]="true"
+    [headerText]="'Borrowers.Placeholders.DecisionOfOPZApplication'"
+    [headerNumb]="5"
+    [isNotAccordion]="true"
+    class="padding-bottom"
+  >
+    <div class="pt-2">
+      <div class="row pb-4 padding-bottom" [formGroupName]="BorrowersGroupKeys.BlackList">
+        <ng-container *ngFor="let control of borrowerFormConfig">
+          <div [ngClass]="control?.class">
+            <app-text-field
+              *ngIf="control.type === eInputType.Textarea"
+              [formControlName]="control.code"
+              [label]="control.placeholder | translate"
+              [autosize]="'none'"
+              [maxlength]="control.maxLength"
+              [rows]="4"
+            >
+            </app-text-field>
+
+            <ng-container *ngIf="control.type === eInputType.Select">
+              <mat-app-search-select-lazy
+                *ngIf="
+                  control.code !== 'verifierDeclineReasonId' ||
+                  (control.code === 'verifierDeclineReasonId' && isVerifierDeclineReasonVisible)
+                "
+                [formControlName]="control.code"
+                [placeholder]="control.placeholder"
+                [options]="optionsList[control.optionsListName]"
+                [propertyName]="control.propertyName"
+                [language]="language"
+                [allowEmptyValue]="control.allowEmptyValue"
+                [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+                (selectChange)="validationOfCommentFields($event)"
+              >
+              </mat-app-search-select-lazy>
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <br /><br />
+  </app-layout-for-steps>
+
+  <app-tabs-footer
+    [configSrc]="footerConfigSource"
+    [hideButtons]="readonlyForm"
+    [buttonsDisabled]="isLoading || isSubmitting"
+    [historyButtonVisible]="historyButtonVisible"
+    [isDeclineRoleAvailable]="true"
+    (footerButtonClick)="onFooterButtonClick($event)"
+    [userData]="userData"
+    [commentList]="{
+      chatUnderManagerList: chatUnderManagerList
+    }"
+    [commentsReadonly]="readonlyForm"
+    [isNewMessageExists]="isNewMessageExists"
+  ></app-tabs-footer>
+</form>

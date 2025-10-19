@@ -1,0 +1,38 @@
+<div class="filter-wrapper">
+  <app-search-field
+    class="input-wrapper"
+    [placeholder]="'Administration.Placeholders.KeyLogin'"
+    (searchEvent)="onSearchEvent($event)"
+    (clearEvent)="onClearEvent($event)"
+  >
+  </app-search-field>
+</div>
+<div class="table-block">
+  <mat-app-table
+    [objColNameProps]="objColNameProps"
+    [changePage]="changePage"
+    [totalCount]="totalCount"
+    [tableData]="dataSource"
+    [itemLimit]="itemLimit"
+    [isSorting]="false"
+    [isSelectsItem]="allowSelectItem"
+    (selectedItem)="selectedItem($event)"
+    (selectedPage)="selectedPageEvent($event)"
+    (sortingData)="sortingDataEvent($event)"
+  >
+    <div class="button-block" *ngIf="allowSelectItem">
+      <mat-app-button
+        [className]="'mr-2'"
+        [size]="'medium'"
+        [border]="true"
+        [radius]="'semiRound'"
+        [backgroundColor]="'white'"
+        [color]="'gray'"
+        [hover]="'gray'"
+        (clickEvent)="openNewUserDialog()"
+      >
+        {{ 'Administration.Titles.NewUser' | translate }}
+      </mat-app-button>
+    </div>
+  </mat-app-table>
+</div>

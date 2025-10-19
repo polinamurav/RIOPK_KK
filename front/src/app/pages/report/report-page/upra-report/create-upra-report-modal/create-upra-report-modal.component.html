@@ -1,0 +1,54 @@
+<app-modal-view [title]="modalConfig.title" [loading]="loading">
+
+  <div class="content">
+
+    <app-form-field
+      [formControl]="nameControl"
+      [placeholder]="'Название пакета'"
+      [required]="true"
+      [type]="EInputType.Text"
+    >
+    </app-form-field>
+
+    <br>
+
+    <app-file-downloader
+      [showError]="fileError"
+      [accept]="acceptTypes"
+      [attachmentMaxSize]="maxSizeBytes"
+      (fileLoadedEvent)="uploadEvent($event)"
+      titleForPreview="Выберите файл"
+    ></app-file-downloader>
+
+
+  </div>
+  <app-modal-view-actions>
+    <mat-app-button
+      [type]="'submit'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+      (clickEvent)="save()"
+    >
+      {{ 'Buttons.Save' | translate }}
+    </mat-app-button>
+
+    <mat-app-button
+      [type]="'button'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [mat-dialog-close]="'close'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+    >
+      {{ 'Buttons.Cancel' | translate }}
+    </mat-app-button>
+  </app-modal-view-actions>
+</app-modal-view>

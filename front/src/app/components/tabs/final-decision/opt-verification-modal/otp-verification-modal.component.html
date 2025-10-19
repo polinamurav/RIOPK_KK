@@ -1,0 +1,40 @@
+<app-modal-view [title]="isPhoneMode ? ('Верифицировать телефон' | translate) : ('Верифицировать email' | translate)"
+[showClass]="'otp-verification'">
+  <div>
+
+    <div [formGroup]="verificationOtpForm">
+    <app-form-field
+      *ngIf="isPhoneMode"
+      formControlName="phone"
+      [placeholder]="'ShortForm.PhoneNumber' | translate"
+      [maxLength]="20"
+      [required]="true"
+      [type]="EInputType.PhoneNumber"
+      [prefix]="phonePrefix"
+      [phoneMask]="phoneMask"
+    >
+    </app-form-field>
+      <mat-error *ngIf="verificationOtpForm.get('phone').invalid && verificationOtpForm.get('phone').dirty" style="margin-top: -15px; margin-bottom: 5px; font-size: 12px">
+        {{ getPhoneErrorMessage() | translate }}
+      </mat-error>
+
+    <ngx-otp
+      [mode]="isPhoneMode ? 'SMS' : 'EMAIL'"
+      [phoneValidation]="phoneValidation$ | async"
+      [isAbsLoading]="false"
+      (triggerValidation)="validationF.click()"
+      (otpTypeEvent)="otpTypeEvent($event)"
+      [shortForm]="verificationOtpForm"
+      [blockOtp]="blockOtpEmit"
+      [appDto]="appDto"
+      (otpValidationEvent)="otpValidationEvent($event)"
+      (smsSendEvent$)="smsSendEvent($event)"
+      (emailSendEvent$)="emailSendEvent($event)"
+      (isOtpSuccess)="isOtpSuccess($event)"
+    ></ngx-otp>
+
+    <button #validationF [hidden]="true" type="submit"></button>
+
+  </div>
+  </div>
+</app-modal-view>

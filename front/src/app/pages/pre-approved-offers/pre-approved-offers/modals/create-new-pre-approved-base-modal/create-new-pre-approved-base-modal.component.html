@@ -1,0 +1,79 @@
+<app-modal-view [title]="title">
+  <div class="form-container">
+    <form [formGroup]="form" (ngSubmit)="submitForm()">
+      <div class="w-100">
+        <div class="row m-0 p-b">
+          <ng-container *ngFor="let control of formConfig">
+            <div [ngClass]="control?.class">
+              <app-form-field
+                *ngIf="control.type === EInputType.Text && control.isVisible"
+                [emitEvent]="control.emitEvent"
+                [formControlName]="control.code"
+                [placeholder]="control.placeholder"
+                [maxLength]="control.maxLength"
+                [required]="control.required"
+                [type]="control.type"
+              >
+              </app-form-field>
+
+              <mat-app-search-select-lazy
+                *ngIf="control.type === EInputType.Select && control.isVisible"
+                [formControlName]="control.code"
+                [placeholder]="control.placeholder"
+                [options]="optionsList[control.optionsListName]"
+                [propertyName]="control?.propertyName"
+                [language]="language"
+                [valueType]="control.selectEmittedValueType || ValueType.Id"
+                [required]="control.required"
+                [allowEmptyValue]="control.allowEmptyValue"
+              >
+              </mat-app-search-select-lazy>
+
+              <app-date-picker
+                *ngIf="control.type === EInputType.Date && control.isVisible"
+                [formControlName]="control.code"
+                [placeholder]="control.placeholder"
+                [maxDate]="control.maxDate"
+                [minDate]="control.minDate"
+                [required]="control.required"
+              ></app-date-picker>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <button [hidden]="true" #submitBtn></button>
+    </form>
+  </div>
+
+  <app-modal-view-actions>
+    <mat-app-button
+      [type]="'submit'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+      [disabled]="disabledSave"
+      (clickEvent)="submitBtn.click()"
+    >
+      {{ 'Buttons.Save' | translate }}
+    </mat-app-button>
+
+    <mat-app-button
+      [type]="'button'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [mat-dialog-close]="'close'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+    >
+      {{ 'Buttons.Cancel' | translate }}
+    </mat-app-button>
+  </app-modal-view-actions>
+</app-modal-view>

@@ -1,0 +1,44 @@
+<div class="buttons-box">
+  <mat-app-button
+    [type]="'button'"
+    [className]="'ml-2'"
+    [size]="'medium'"
+    [border]="true"
+    [radius]="'semiRound'"
+    [backgroundColor]="'blue'"
+    [color]="'white'"
+
+    (clickEvent)="addNewPackage()"
+  >
+    Добавить новый пакет
+  </mat-app-button>
+
+  <mat-app-button
+    [type]="'button'"
+    [className]="'ml-2'"
+    [size]="'medium'"
+    [border]="true"
+    [radius]="'semiRound'"
+    [backgroundColor]="'blue'"
+    [color]="'white'"
+
+    (clickEvent)="refresh()"
+  >
+    {{ 'Buttons.Refresh' | translate }}
+  </mat-app-button>
+</div>
+
+<div class="table-box">
+  <mat-app-table
+    [isSorting]="false"
+    [totalCount]="config.totalCount"
+    [tableData]="dataSource"
+    [isSelectsItem]="true"
+    [itemLimit]="config.itemLimit"
+    (selectedPage)="selectedPageEvent($event)"
+    (linkEvent)="onlinkEvent($event)"
+    (selectedItem)="selectedItem($event)"
+  >
+  </mat-app-table>
+
+</div>

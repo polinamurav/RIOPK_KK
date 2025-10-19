@@ -1,0 +1,49 @@
+<div class="table-block">
+  <div class="filter-wrapper">
+    <div class="slide-wrapper d-flex">
+      <div
+        class="btn-refresh"
+        #tooltip="matTooltip"
+        matTooltip="{{ 'SearchBar.Update' | translate }}"
+        matTooltipHideDelay="300"
+        matTooltipPosition="below"
+        (click)="$event.stopPropagation(); refresh()"
+      >
+        <mat-icon class="icon icon-button" [svgIcon]="'refresh'"></mat-icon>
+      </div>
+
+      <mat-app-slide-toggle [label]="'SearchBar.AssignedToMe'" (isToggleChecked)="toggleValue($event)">
+      </mat-app-slide-toggle>
+    </div>
+
+    <app-search-field
+      class="input-wrapper"
+      [searchValue]="searchInputValue"
+      (searchEvent)="onSearchEvent($event)"
+      (clearEvent)="onClearEvent($event)"
+    ></app-search-field>
+
+    <app-dropdown-filter
+      [filterFields]="dashboardFilter"
+      [currentFilterValues]="currentFilterValues"
+      (selectedFilterFields)="selectedFilterFieldsEvent($event)"
+    ></app-dropdown-filter>
+  </div>
+
+  <div class="table-wrap">
+    <mat-app-table
+      [objColNameProps]="objColNameProps"
+      [isSorting]="false"
+      [isSelectsItem]="true"
+      [changePage]="changePage"
+      [totalCount]="totalCount"
+      [tableData]="dataSource"
+      [itemLimit]="itemLimit"
+      [tableBlockWidth]="'2000px'"
+      (selectedPage)="selectedPageEvent($event)"
+      (sortingData)="sortingDataEvent($event)"
+      (selectedItem)="selectItemEvent($event)"
+    >
+    </mat-app-table>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+@import "src/theme/styles/common";
+
+.close-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+  margin-right: 10px;
+  height: 55px;
+}
+
+.modal-content {
+  height: calc(100% - 55px);
+  border: none;
+  overflow: hidden;
+
+  mat-app-table {
+    height: 100%;
+  }
+}
+
+:host ::ng-deep {
+  .modal-content {
+    mat-app-table {
+      .table-block-scroll {
+        height: calc(100% - 20px);
+      }
+    }
+  }
+
+  .close-modal {
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: $cadet-grey;
+    }
+
+    &:hover {
+      svg {
+        fill: $snow;
+      }
+    }
+  }
+}

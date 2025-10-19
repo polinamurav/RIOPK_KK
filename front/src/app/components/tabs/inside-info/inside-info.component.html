@@ -1,0 +1,99 @@
+<form [formGroup]="insideInfoForm">
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="titles[insideInfoGroupKeys.RelatedPersons]"
+    [headerNumb]="1"
+    [isNotAccordion]="true"
+  >
+    <div class="padding-bottom pt-2">
+      <mat-app-table [tableData]="relatedPersonsColTableData" [isSorting]="false" [footerIsHide]="true">
+      </mat-app-table>
+    </div>
+  </app-layout-for-steps>
+
+  <app-layout-for-steps
+    [isPanelDescHidden]="true"
+    [headerText]="titles[insideInfoGroupKeys.InternalLoanHistory]"
+    [headerNumb]="2"
+    [isNotAccordion]="true"
+  >
+    <h5>{{ 'InsideInfo.GeneralizedDataOnIndividuals' | translate }}</h5>
+    <div class="row m-0 pb-4" [formGroupName]="insideInfoGroupKeys.InternalLoanHistory">
+      <ng-container *ngFor="let control of insideInfoConfig">
+        <div [ngClass]="control?.class">
+          <app-form-field
+            *ngIf="
+              control.type === eInputType.Text ||
+              control.type === eInputType.Number ||
+              control.type === eInputType.PhoneNumber
+            "
+            [formControlName]="control.code"
+            [maxLength]="control.maxLength"
+            [placeholder]="control.placeholder"
+            [readonly]="control?.readonly"
+            [type]="control.type"
+          >
+          </app-form-field>
+        </div>
+      </ng-container>
+    </div>
+
+    <h5>{{ 'InsideInfo.TableTitles.WorstRiskClass' | translate }}</h5>
+    <div class="padding-bottom pt-2">
+      <mat-app-table [tableData]="internalLoanHistoryColTableData" [isSorting]="false" [footerIsHide]="true">
+      </mat-app-table>
+    </div>
+
+    <h5>{{ 'InsideInfo.TableTitles.Overdue' | translate }}</h5>
+    <div class="padding-bottom pt-2">
+      <mat-app-table [tableData]="overdueColTableData" [isSorting]="false" [footerIsHide]="true"> </mat-app-table>
+    </div>
+
+    <!--<h5>{{ 'InsideInfo.TableTitles.Obligations' | translate }}</h5>-->
+    <!--<div class="padding-bottom pt-2">-->
+    <!--<mat-app-table-sort-->
+    <!--[isSorting]="true"-->
+    <!--(toggleFilterEvent)="filterEvent($event)"-->
+    <!--[tableData]="obligationsColTableData"-->
+    <!--[footerIsHide]="true"-->
+    <!--&gt;-->
+    <!--</mat-app-table-sort>-->
+    <!--</div>-->
+
+    <h5>{{ 'HistoryResponse.TableTitles.Obligations' | translate }}</h5>
+    <div class="filter-table-container">
+      <div class="row m-0" [formGroupName]="historyResponseGroupKeys.ObligationsTotalInfo">
+        <ng-container *ngFor="let control of aggregatesInfoConfig">
+          <div [ngClass]="control?.class">
+            <app-form-field
+              [formControlName]="control.code"
+              [placeholder]="control.placeholder"
+              [readonly]="control?.readonly"
+              [type]="control.type"
+            >
+            </app-form-field>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="padding-bottom pt-2">
+      <mat-app-table-sort
+        *ngIf="obligationsColTableData"
+        [isSorting]="true"
+        [changePage]="changePage"
+        (selectedPage)="selectedPageEventObligations($event)"
+        (toggleFilterEvent)="filterEvent($event)"
+        [tableData]="obligationsColTableData"
+        [itemLimit]="itemLimit"
+        [totalCount]="totalCount"
+      ></mat-app-table-sort>
+    </div>
+
+    <h5>{{ 'InsideInfo.TableTitles.ParallelApplications' | translate }}</h5>
+    <div class="padding-bottom pt-2">
+      <mat-app-table-sort [tableData]="parallelApplicationsColTableData" [isSorting]="true" [footerIsHide]="true">
+      </mat-app-table-sort>
+    </div>
+  </app-layout-for-steps>
+</form>

@@ -1,0 +1,287 @@
+@import "src/theme/styles/colors";
+
+.flex-block {
+  display: flex;
+  height: 80px;
+  justify-content: space-between;
+  background-color: var(--table-background-color);
+  border-radius: 0 0 0.25rem 0.25rem;
+}
+
+.mat-table {
+  background-color: var(--table-background-color);
+  font-family: "VTB Group Book" !important;
+}
+
+:host ::ng-deep .ps-height > .ps > .ps-content {
+  height: calc(100% - 1px);
+}
+
+:host ::ng-deep .ps > .ps-content {
+  max-height: calc(700px - 1px);
+  padding-right: 13px;
+}
+
+.table-block-scroll {
+  width: 100%;
+  overflow: auto;
+  height: calc(100% - 80px);
+  border-radius: 0.25rem 0.25rem 0 0;
+
+  .table-block {
+    height: 100%;
+  }
+}
+
+.vertical-scroll {
+  max-height: 44vh;
+}
+
+.content-table {
+  // margin-left: 20px;
+  // width: calc(100% - 40px);
+  width: 100%;
+
+  p {
+    color: $outer-space-triple;
+  }
+}
+
+.header-table {
+  margin-left: 20px;
+  width: calc(100% - 40px);
+}
+
+.header-table-container {
+  border-bottom: 1px solid $gainsboro;
+  background-color: var(--table-background-color);
+}
+
+.content-table-container {
+  position: relative;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--table-background-color);
+}
+
+.row-arrow .content-colm:first-of-type::before {
+  content: "➤";
+  font-weight: 900;
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  margin-top: -1px;
+  line-height: 100%;
+  transform: translate(0, -50%);
+  color: #66ba14;
+}
+
+.content-colm {
+  border: none;
+  font-weight: 500;
+  font-family: "VTB Group Book" !important;
+  color: var(--table-text-color);
+  padding: 8px 5px 8px 5px;
+  position: relative;
+  font-size: 0.8375rem;
+
+  .link {
+    cursor: pointer;
+    color: $blue;
+  }
+}
+
+.icon {
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 24px;
+  font-family: "VTB Group Book" !important;
+}
+
+.header-colm {
+  font-size: 0.8375rem;
+  font-weight: 500;
+  color: var(--table-text-color);
+  text-align: left !important;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: none;
+  font-family: "VTB Group Book" !important;
+  box-shadow: inset 0 -1px 0 #afbddf;
+}
+
+:host ::ng-deep {
+  .mat-sort-header-content {
+    text-align: left !important;
+    display: flex;
+    align-items: center;
+  }
+
+  .content-table {
+    thead {
+      background-color: var(--table-background-color);
+    }
+    tbody {
+      background-color: var(--table-background-color);
+    }
+  }
+
+  .header-title-center {
+    .mat-sort-header-container {
+      justify-content: center;
+    }
+  }
+
+  .mat-sort-header-button {
+    text-align: left;
+  }
+}
+
+.make-gray {
+  td {
+    background-color: $extra_light_blue;
+  }
+}
+
+.disabled-row {
+  .content-colm,
+  .icon {
+    color: $gainsboro;
+  }
+}
+
+.height-row {
+  height: 100%;
+  border-bottom: 1px solid #dfe1e6;
+
+  .icon {
+    color: $ash-grey;
+    cursor: pointer;
+  }
+
+  .icon-check {
+    color: $kelly-green;
+  }
+
+  .icon-close {
+    color: $cg-red;
+  }
+}
+
+.hover-table-blue:hover {
+  cursor: pointer;
+
+  td {
+    background-color: $blue;
+  }
+
+  .content-colm,
+  .icon {
+    color: #fff;
+  }
+}
+
+.hover-table-gray:hover {
+  td {
+    background-color: $cadet-grey;
+  }
+
+  .content-colm,
+  .icon {
+    color: #fff;
+  }
+}
+
+.footer-row-empty {
+  display: none;
+}
+
+.no-data-title {
+  padding-top: 0.5rem;
+  margin-left: 2.5rem;
+  color: $bank-gray;
+  font-size: 0.8375rem;
+  font-weight: 500;
+  font-family: "VTB Group Book" !important;
+}
+
+.icon-close {
+  color: $cg-red;
+}
+
+.icon-check {
+  color: $kelly-green;
+}
+
+.icon-doc {
+  font-size: 19px;
+  height: 100%;
+}
+
+.button-deactivation {
+  outline: none;
+  border: none;
+  background: none;
+}
+
+.button-invalid-decision {
+  mat-icon {
+    color: $ku-crimson !important;
+  }
+}
+
+.save-button {
+  padding-left: 20px;
+}
+
+.input-value {
+  font-weight: 500;
+  color: $outer-space-triple;
+  //background-color: #fff;
+  border-radius: 0.25rem;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  line-height: 30px;
+  vertical-align: initial;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid $gainsboro;
+  width: 100%;
+  font-family: "VTB Group Book" !important;
+}
+
+.textarea {
+  font-weight: 500;
+  color: $outer-space-triple;
+  //background-color: rgba(251, 251, 251, 1);
+  border: 1px solid rgba(201, 206, 212, 1);
+  border-radius: 0.25rem;
+  padding: 10px 12px;
+  display: inline-block;
+  outline: none;
+  width: 100%;
+  font-family: "VTB Group Book" !important;
+
+  &:focus {
+    border-color: rgba(28, 127, 239, 0.6);
+    border-width: 2px;
+  }
+}
+
+.m-b {
+  margin-bottom: 0;
+}
+
+.btn-inactive {
+  pointer-events: none;
+}
+
+tr.mat-header-row {
+  height: 40px;
+}
+
+.font-std {
+  font-size: 0.8375rem;
+  font-weight: 500;
+  font-family: "VTB Group Book" !important;
+}

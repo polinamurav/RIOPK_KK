@@ -1,0 +1,72 @@
+<div class="filter-wrapper">
+  <app-search-field
+    [placeholder]="'SearchBar.Search.TradingCompanyPoints'"
+    class="input-wrapper"
+    (searchEvent)="onSearchEvent($event)"
+    (clearEvent)="onClearEvent($event)"
+  >
+  </app-search-field>
+</div>
+
+<div class="spinner-box-administration-page" *ngIf="isLoading">
+  <mat-spinner class="text-center"></mat-spinner>
+</div>
+
+<div class="flex-block">
+  <div class="table-block" *ngIf="(selectCurrentUserData$ | async) as userInfo">
+    <mat-app-table
+      [objColNameProps]="tableConfig"
+      [changePage]="changePage"
+      [isSorting]="false"
+      [tableData]="dataSource"
+      [totalCount]="totalCount"
+      [itemLimit]="itemLimit"
+      [tableBlockWidth]="'3000px'"
+      (selectedPage)="selectedPageEvent($event)"
+      (sortingData)="sortingDataEvent($event)"
+      (selectedItem)="selectedItem($event)"
+      [isSelectsItem]="allowSelectItemForPos"
+    >
+      <div class="button-block">
+        <mat-app-button *ngIf="allowAddTradingPointsForPos"
+          [className]="'mr-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'white'"
+          [color]="'gray'"
+          [hover]="'gray'"
+          (clickEvent)="createNew()"
+        >
+          {{ 'Administration.Buttons.AddToTradingPointslist' | translate }}
+        </mat-app-button>
+
+        <mat-app-button *ngIf="isCanViewOpz"
+          [className]="'mr-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'white'"
+          [color]="'gray'"
+          [hover]="'gray'"
+          (clickEvent)="downloadExcel()"
+        >
+          {{ 'Administration.Buttons.DownloadExcel' | translate }}
+        </mat-app-button>
+
+        <mat-app-button *ngIf="isCanViewOpz"
+          [className]="'mr-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'white'"
+          [color]="'gray'"
+          [hover]="'gray'"
+          (clickEvent)="uploadExcel()"
+        >
+          {{ 'Administration.Buttons.UploadExcel' | translate }}
+        </mat-app-button>
+      </div>
+    </mat-app-table>
+  </div>
+</div>

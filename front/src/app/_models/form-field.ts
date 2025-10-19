@@ -1,0 +1,42 @@
+import { CustomValidatorData, RoleAuthority, ValueType } from '.';
+import { ValidatorFn } from '@angular/forms';
+
+export class BaseFormField {
+  code: string;
+  type: string;
+  objectName?: string;
+  innerObjectName?: string;
+  placeholder: string;
+  valuePath?: string;
+  disabled: boolean;
+  disabledIfValue?: boolean;
+  required: boolean;
+  readonly: boolean;
+  scroll?: boolean;
+  optionsListName?: string;
+  propertyName?: string;
+  class?: string;
+  minDate?: Date | string;
+  maxDate?: Date | string;
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+  customListValueName?: string;
+  selectEmittedValueType?: ValueType;
+  customValidators?: CustomValidatorData[];
+  validatorsFns?: ValidatorFn[];
+  pattern?: RegExp | string;
+  connectedList?: string;
+  visibleForRolesList?: RoleAuthority[];
+  editableForRolesList?: RoleAuthority[];
+  compareWithProp?: string;
+  labelPosition?: string;
+  language?: string;
+  isVisible?: boolean;
+  emitEvent?: boolean;
+  emptyValue?: boolean;
+  allowEmptyValue?: boolean;
+  showValueIfOptionsIsEmpty?: boolean;
+  showOnlyValueIfExist?: boolean;
+}

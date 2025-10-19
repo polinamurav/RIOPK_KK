@@ -1,0 +1,346 @@
+<div [class]="isVerticalScroll ? 'table-block-scroll vertical-scroll' : 'table-block-scroll'"
+     [style.height]='tableHeight'>
+  <div class='table-block'>
+    <div class='content-table-container'>
+      <perfect-scrollbar #pfScrollbar  (psYReachEnd)="psYReachEnd($event)" (psScrollY)="scrollStart($event)">
+        <!--<cdk-virtual-scroll-viewport [itemSize]="80" [style.height]="scrollHeight" >-->
+        <table
+          mat-table
+          [dataSource]="dataSource$ | async"
+          matSort
+          class='content-table'
+          aria-describedby='table-caption'
+        >
+          <ng-container
+            [matColumnDef]='column?.code'
+            *ngFor='let column of tableData?.tableDataHeader; trackBy: trackByFn'
+          >
+            <th
+              class='header-colm'
+              [ngClass]="[headerClass[(column?.type)] ? headerClass[(column?.type)] : '']"
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              [disabled]='!isSorting || !column?.sortBy'
+              disableClear
+              scope='col'
+              [hidden]="
+                (column?.type === 'ru' || column?.type === 'am' || column?.type === 'en') &&
+                column?.type !== currentLanguage
+              "
+            >
+              {{ column?.value | translate }}
+            </th>
+            <td
+              class='content-colm'
+              mat-cell
+              *matCellDef='let element'
+              [hidden]="
+                (column.type === 'ru' || column.type === 'am' || column.type === 'en') &&
+                column.type !== currentLanguage
+              "
+            >
+              <ng-container [ngSwitch]='column.type'>
+
+                <div
+                  [class]="column?.cellConfig?.class && column?.cellConfig?.class(element?.rowValue)"
+
+                  (click)="!!column?.cellConfig?.clickEvent && column?.cellConfig?.clickEvent(element?.rowValue, $event);
+                   !!column?.cellConfig?.clickEvent ? $event.stopPropagation() : null; "
+
+                  *ngIf="!!column?.cellConfig?.visible && column?.cellConfig?.visible(element?.rowValue)">
+
+                <div class='mt-2' *ngSwitchCase="'text'">
+                  <app-form-field
+                    [(ngModel)]='(element?.tableCell)[column.code]'
+                    type='text'
+                    (inputOnBlur)='inputBlur(element?.tableCell)'
+                    [disabled]='isReadonly'
+                  >
+                  </app-form-field>
+                </div>
+                <div *ngSwitchCase="'inputNumber'">
+                  <input
+                    type='number'
+                    class='input-value'
+                    (click)='$event.stopPropagation()'
+                    [(ngModel)]='(element?.tableCell)[column.code]'
+                    [disabled]='isReadonly'
+                  />
+                </div>
+                <div *ngSwitchCase="'select'" class='mt-2'>
+                  <mat-app-search-select
+                    [(ngModel)]='(element?.tableCell)[column.code]'
+                    (selectChange)='selectChange(element?.tableCell)'
+                    [options]='column.optionsListName ? selectData[column.optionsListName] : selectData'
+                    [propertyName]='column.optionPropertyName'
+                    [disabled]='isReadonly'
+                  >
+                  </mat-app-search-select>
+                </div>
+
+                <div *ngSwitchCase="'deactivation'" class='text-center'>
+                  <div *ngIf='!!element.tableCell[column.code]'>
+                    <button
+                      class='button-deactivation'
+                      (click)='$event.stopPropagation(); buttonClick(element?.tableCell)'
+                    >
+                      <mat-icon class='icon' svgIcon='not_interested'></mat-icon>
+                    </button>
+                  </div>
+                </div>
+
+                <div *ngSwitchCase="'deleted'" class='text-center'>
+                  <button
+                    class='button-deactivation'
+                    title="{{ 'Buttons.DelCondition' | translate }}"
+                    (click)='$event.stopPropagation(); buttonClick(element?.tableCell)'
+                  >
+                    <mat-icon class='icon' svgIcon='delete_forever'></mat-icon>
+                  </button>
+                </div>
+
+                <div *ngSwitchCase="'deletedDoc'" class='text-center'>
+                  <button
+                    *ngIf='!!element.tableCell[column.code]'
+                    class='button-deactivation'
+                    title="{{ 'Buttons.DelDocument' | translate }}"
+                    (click)='$event.stopPropagation(); buttonClick(element?.tableCell)'
+                  >
+                    <mat-icon class='icon' svgIcon='delete_forever'></mat-icon>
+                  </button>
+                </div>
+
+                  <div *ngSwitchCase="'userReassignment'" class='text-center'>
+                    <ng-container>
+                      <button
+                        *ngIf="isReassignAvailable(element?.tableCell, column.code)"
+                        class='button-deactivation'
+                        (click)='$event.stopPropagation(); userReassign(element?.tableCell, column.code)'
+                      >
+                        <p class='m-b font-std'>{{ (element?.tableCell)[column.code] }}</p>
+                        <mat-icon
+                          class='icon'
+                          svgIcon='change-user'
+                        ></mat-icon>
+                      </button>
+
+                      <span *ngIf="!isReassignAvailable(element?.tableCell, column.code)">
+      {{ (element?.tableCell)[column.code] }}
+    </span>
+                    </ng-container>
+                  </div>
+
+                <div *ngSwitchCase="'status'" class='text-center'>
+                  <ng-container *ngIf='!element.tableCell[column.code]; else checkIcon'>
+                    <mat-icon class='icon icon-close' svgIcon='cancel'></mat-icon>
+                  </ng-container>
+
+                  <ng-template #checkIcon>
+                    <mat-icon class='icon icon-check' svgIcon='check'></mat-icon>
+                  </ng-template>
+                </div>
+
+                <div *ngSwitchCase="'statusPreapprove'" class='text-left'>
+                  <ng-container *ngIf="element.tableCell[column.code] === 'CALCULATING_DONE'">
+                    <mat-icon class='icon icon-check' svgIcon='check'
+                              #tooltip="matTooltip"
+                              matTooltip="Расчет завершен"
+                              matTooltipPosition="right"></mat-icon>
+                  </ng-container>
+
+                  <ng-container *ngIf="element.tableCell[column.code] === 'CALCULATING'">
+                    <mat-icon class='icon icon-wait' svgIcon='hourglass'
+                              #tooltip="matTooltip"
+                              matTooltip="Ожидание результата расчета"
+                              matTooltipPosition="right"></mat-icon>
+                  </ng-container>
+
+                  <ng-container *ngIf="element.tableCell[column.code] === 'DEACTIVATED'">
+                    <mat-icon class='icon icon-wait' svgIcon='delete_forever'
+                              #tooltip="matTooltip"
+                              matTooltip="Деактивировано"
+                              matTooltipPosition="right"></mat-icon>
+                  </ng-container>
+
+                  <ng-container *ngIf="element.tableCell[column.code] === 'STOPPED'">
+                    <mat-icon class='icon icon-wait' svgIcon='not_interested'
+                              #tooltip="matTooltip"
+                              matTooltip="Остановлено"
+                              matTooltipPosition="right"></mat-icon>
+                  </ng-container>
+                </div>
+
+                <div *ngSwitchCase="'doc'" class='d-flex'>
+                  <mat-icon class='icon-doc' svgIcon='description'></mat-icon>
+                  {{ (element?.tableCell)[column.code] }}
+                </div>
+
+                <div
+                  *ngSwitchCase="'iconButton'"
+                  class='text-center'
+                  (click)='$event.stopPropagation(); emitIconButtonEvent(element.rowValue, column.path)'
+                >
+                  <mat-icon class='icon icon-button' [svgIcon]='column.code'></mat-icon>
+                </div>
+
+                <div *ngSwitchCase="'refresh'" class='text-center'>
+                  <div
+                    *ngIf='!!element.tableCell[column.code]'
+                    class='button-refresh'
+                    (click)='$event.stopPropagation(); buttonClick(element?.tableCell)'
+                  >
+                    <mat-icon class='icon' svgIcon='refresh'></mat-icon>
+                  </div>
+                </div>
+
+                <div
+                  *ngSwitchCase="'staticIconButton'"
+                  class='text-center'
+                  [ngClass]="{ 'btn-inactive': isStaticIconButtonInactive }"
+                  (click)='$event.stopPropagation(); buttonClick(element?.tableCell)'
+                >
+                  <mat-icon class='icon icon-button' [svgIcon]='column.code'></mat-icon>
+                </div>
+                <div
+                  *ngSwitchCase="'declineAdmin'"
+                  class='text-center'
+                  [ngClass]="{ 'btn-inactive': isStaticIconButtonInactive }"
+                  (click)='$event.stopPropagation(); declineAdminClick(element?.tableCell)'
+                >
+                  <mat-icon class='icon' svgIcon='not_interested'></mat-icon>
+                </div>
+
+                <div *ngSwitchCase="'button'">
+                  <mat-app-button
+                    [type]="'button'"
+                    [radius]="'semiRound'"
+                    [backgroundColor]="'blue'"
+                    [color]="'white'"
+                    [size]="'xsmall'"
+                    [disabled]='isButtonColmShouldBeDisabled'
+                    (clickEvent)='$event.stopPropagation(); buttonClick(element?.rowValue)'
+                  >
+                    {{ column.value | translate }}
+                  </mat-app-button>
+                </div>
+
+                <div *ngSwitchCase="'link'">
+                  <a class='link'
+                     (click)='$event.stopPropagation(); linkClick(element?.rowValue, column.code)'>
+                    {{
+                    (element?.tableCell)[column.code]
+                    }}</a>
+                </div>
+
+                <div *ngSwitchCase="'textarea'">
+                  <textarea
+                    matInput
+                    [(ngModel)]='(element?.tableCell)[column.code]'
+                    (ngModelChange)='isTouched()'
+                    class='textarea'
+                  ></textarea>
+                </div>
+
+                <div *ngSwitchCase="'toggleDisabled'">
+                  <mat-app-slide-toggle [(ngModel)]='(element?.tableCell)[column.code]' [isDisabled]='true'>
+                  </mat-app-slide-toggle>
+                </div>
+
+                <div *ngSwitchCase="'toggle'">
+                  <mat-app-slide-toggle
+                    [(ngModel)]='(element?.tableCell)[column.code]'
+                    [isDisabled]='isToggleColmShouldBeDisabled || isReadonly'
+                    (isToggleChecked)='toggleSwitch(element?.tableCell)'
+                  ></mat-app-slide-toggle>
+                </div>
+
+                <div *ngSwitchCase="'date'">
+                  {{ (element?.tableCell)[column.code] | customDate: 'dd-MM-yyyy' }}
+                </div>
+
+                <div *ngSwitchCase="'dateAndTime'">
+                  {{ (element?.tableCell)[column.code] | customDate: 'dd-MM-yyyy HH:mm' }}
+                </div>
+
+                <div *ngSwitchCase="'creditType'">
+                  {{ (element?.tableCell)[column.code] | codeValTransform: creditType | translate }}
+                </div>
+
+                <div *ngSwitchCase="'number'">
+                  {{ +(element?.tableCell)[column.code] | number: '1.2-2' }}
+                </div>
+
+                <div *ngSwitchCase="'wholeNumber'">
+                  {{ (element?.tableCell)[column.code] | number: '1.0-0' }}
+                </div>
+
+                <div *ngSwitchDefault>
+                  {{ (element?.tableCell)[column.code] }}
+                </div>
+
+                </div>
+
+              </ng-container>
+            </td>
+
+
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef='displayedColumns; sticky: true'>
+          </tr>
+          <tr
+            class='height-row'
+            [class.hover-table-gray]='!isSelectsItem && isHoveredRowHighlight'
+            [class.hover-table-blue]='isSelectsItem'
+            [class.selected-row-table-blue]='selectedElement === row.rowValue || selectedElement?.id === row.rowValue?.id'
+            mat-row
+            *matRowDef='let row; let i = index; columns: displayedColumns'
+            [ngClass]="{
+              'row-arrow': isSelectedRowHighlight && selectedRow === row,
+              'disabled-row': isSelectedRowHighlight && selectedRow !== row
+            }"
+            (click)='selectRow(row, i)'
+          >
+          </tr>
+          <!--'make-gray': i % 2 === 0,-->
+        </table>
+        <div *ngIf='!tableData?.tableContentList.length' class='no-data-title'>
+          {{ 'ErrorMessage.NoData' | translate }}
+        </div>
+        <!--</cdk-virtual-scroll-viewport>-->
+      </perfect-scrollbar>
+    </div>
+  </div>
+</div>
+
+<div *ngIf='!footerIsHide' class='flex-block'>
+  <div class='align-self-center'>
+    <div *ngIf='isEditableItem' class='save-button mt-2'>
+      <mat-app-button
+        [type]="'submit'"
+        [radius]="'semiRound'"
+        [backgroundColor]="'blue'"
+        [color]="'white'"
+        (clickEvent)='savedItems()'
+      >
+        {{ 'Buttons.Save' }}
+      </mat-app-button>
+    </div>
+
+    <div *ngIf='isToggle' class='save-button'>
+      <mat-app-slide-toggle [label]="'Buttons.Save'" [(value)]='valueToggle' (isToggleChecked)='savedItems()'>
+      </mat-app-slide-toggle>
+    </div>
+    <div>
+      <ng-content></ng-content>
+    </div>
+  </div>
+  <ngx-pagination
+    *ngIf='showPagination'
+    [totalCount]='totalCount'
+    [itemLimit]='itemLimit'
+    [changePageFromComponent]='changePageFromComponent'
+    (loadCashboxes)='paginate($event)'
+  >
+  </ngx-pagination>
+</div>

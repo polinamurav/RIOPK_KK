@@ -1,0 +1,313 @@
+<form class="aml-form" [formGroup]="amlForm">
+  <div class="w-100">
+    <div class="mt-4 mb-4 ml-4 p-2">
+      <mat-app-slide-toggle
+        class="m-b"
+        [formControlName]="EAmlControlsKeys.IsAmlNeeded"
+        [labelPosition]="'before'"
+        [label]="'Aml.Labels.MandatoryConducting'"
+      >
+      </mat-app-slide-toggle>
+    </div>
+  </div>
+
+  <ng-container>
+    <app-layout-for-steps
+      [isPanelDescHidden]="true"
+      [headerText]="'Aml.Titles.FATCASelfCertification'"
+      [headerNumb]="1"
+      [isNotAccordion]="true"
+    >
+      <div class="flex flex-column">
+        <div class="w-100" *ngFor="let item of (applicantFatcaAdditionalDto.applicantFatcaList | slice: 0:1)">
+          <div class="us-resident">
+            <mat-app-slide-toggle
+              class="m-b"
+              [ngModelOptions]="{ standalone: true }"
+              [(ngModel)]="item.result"
+              (ngModelChange)="onChangeToogle($event, item.dirFatca.id)"
+              [isDisabled]="readonlyForm"
+              [labelPosition]="'before'"
+              [label]="getNameFatca(item.dirFatca)"
+            >
+            </mat-app-slide-toggle>
+          </div>
+        </div>
+
+        <div class="w-100 mt-4" *ngIf="isResidentFormVisible" [formGroupName]="EAmlControlsKeys.UsaResidentInfo">
+          <div class="row">
+            <ng-container *ngFor="let control of usaResidentFormConfig">
+              <div [ngClass]="control?.class">
+                <app-form-field
+                  *ngIf="control.type === EInputType.Text"
+                  [formControlName]="control.code"
+                  [maxLength]="control.maxLength"
+                  [placeholder]="control.placeholder"
+                  [readonly]="control?.readonly"
+                  [type]="control.type"
+                >
+                </app-form-field>
+
+                <ng-container *ngIf="control.type === EInputType.Select">
+                  <mat-app-search-select-lazy
+                    [formControlName]="control.code"
+                    [placeholder]="control.placeholder"
+                    [options]="optionsList[control.optionsListName]"
+                    [propertyName]="control.propertyName"
+                    [language]="language"
+                    [allowEmptyValue]="control.allowEmptyValue"
+                    [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+                  >
+                  </mat-app-search-select-lazy>
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="w-100" *ngFor="let item of (applicantFatcaAdditionalDto.applicantFatcaList | slice: 1:2)">
+          <div class="us-resident">
+            <mat-app-slide-toggle
+              class="m-b"
+              [(ngModel)]="item.result"
+              [isDisabled]="readonlyForm"
+              (ngModelChange)="onChangeToogle($event, item.dirFatca.id)"
+              [ngModelOptions]="{ standalone: true }"
+              [labelPosition]="'before'"
+              [label]="getNameFatca(item.dirFatca)"
+            >
+            </mat-app-slide-toggle>
+          </div>
+        </div>
+
+        <div class="w-100" *ngIf="certificateOfRenunciationVisible">
+          <div class="us-resident">
+            <mat-app-slide-toggle
+              class="m-b"
+              [(ngModel)]="applicantFatcaAdditionalDto.certificateOfRenunciation"
+              [isDisabled]="readonlyForm"
+              [ngModelOptions]="{ standalone: true }"
+              [labelPosition]="'before'"
+              [label]="'Aml.Labels.RefuseDocument'"
+            >
+            </mat-app-slide-toggle>
+          </div>
+        </div>
+
+        <div class="w-100" *ngFor="let item of (applicantFatcaAdditionalDto.applicantFatcaList | slice: 2:3)">
+          <div class="us-resident">
+            <mat-app-slide-toggle
+              class="m-b"
+              [(ngModel)]="item.result"
+              [isDisabled]="readonlyForm"
+              (ngModelChange)="onChangeToogle($event, item.dirFatca.id)"
+              [ngModelOptions]="{ standalone: true }"
+              [labelPosition]="'before'"
+              [label]="getNameFatca(item.dirFatca)"
+            >
+            </mat-app-slide-toggle>
+          </div>
+        </div>
+
+        <div class="w-100 mt-4" *ngIf="isFactAddressVisible" [formGroupName]="EAmlControlsKeys.UsaFactAddress">
+          <div class="row">
+            <ng-container *ngFor="let control of usaFactAddressFormConfig">
+              <div [ngClass]="control?.class">
+                <app-form-field
+                  *ngIf="control.type === EInputType.Text"
+                  [formControlName]="control.code"
+                  [maxLength]="control.maxLength"
+                  [placeholder]="control.placeholder"
+                  [readonly]="control?.readonly"
+                  [type]="control.type"
+                >
+                </app-form-field>
+
+                <ng-container *ngIf="control.type === EInputType.Select">
+                  <mat-app-search-select-lazy
+                    [formControlName]="control.code"
+                    [placeholder]="control.placeholder"
+                    [options]="optionsList[control.optionsListName]"
+                    [propertyName]="control.propertyName"
+                    [language]="language"
+                    [allowEmptyValue]="control.allowEmptyValue"
+                    [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+                  >
+                  </mat-app-search-select-lazy>
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="w-100" *ngFor="let item of (applicantFatcaAdditionalDto.applicantFatcaList | slice: 3:4)">
+          <div class="us-resident">
+            <mat-app-slide-toggle
+              class="m-b"
+              [(ngModel)]="item.result"
+              [isDisabled]="readonlyForm"
+              (ngModelChange)="onChangeToogle($event, item.dirFatca.id)"
+              [ngModelOptions]="{ standalone: true }"
+              [labelPosition]="'before'"
+              [label]="getNameFatca(item.dirFatca)"
+            >
+            </mat-app-slide-toggle>
+          </div>
+        </div>
+
+        <div class="w-100 mt-4" *ngIf="isUsaPhoneVisible">
+          <div class="row">
+            <ng-container *ngFor="let control of amlFormConfig">
+              <div [ngClass]="control?.class" *ngIf="control.type === EInputType.PhoneNumber">
+                <app-form-field
+                  [formControlName]="control.code"
+                  [placeholder]="control.placeholder"
+                  [maxLength]="control.maxLength"
+                  [required]="control.required"
+                  [type]="control.type"
+                  [phoneMask]="phoneMask"
+                >
+                </app-form-field>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="w-100" *ngFor="let item of (applicantFatcaAdditionalDto.applicantFatcaList | slice: 4:6)">
+          <div class="us-resident">
+            <mat-app-slide-toggle
+              class="m-b"
+              [(ngModel)]="item.result"
+              [isDisabled]="readonlyForm"
+              [ngModelOptions]="{ standalone: true }"
+              [labelPosition]="'before'"
+              (ngModelChange)="onChangeToogle($event, item.dirFatca.id)"
+              [label]="getNameFatca(item.dirFatca)"
+            >
+            </mat-app-slide-toggle>
+          </div>
+        </div>
+
+        <div class="w-100">
+          <div class="us-resident">
+            <mat-app-slide-toggle
+              class="m-b"
+              [(ngModel)]="applicantFatcaAdditionalDto.consentToProvideInformation"
+              [ngModelOptions]="{ standalone: true }"
+              [labelPosition]="'before'"
+              [isDisabled]="readonlyForm"
+              [label]="'Aml.Labels.infoAgreement'"
+              (ngModelChange)="onChangeToogle($event, 21)"
+            >
+            </mat-app-slide-toggle>
+          </div>
+        </div>
+
+        <div class="w-100 mt-4">
+          <div class="row">
+            <ng-container *ngFor="let control of amlFormConfig">
+              <div
+                [ngClass]="control?.class"
+                *ngIf="control.type === EInputType.Date || control.type === EInputType.Select"
+              >
+                <app-date-picker
+                  *ngIf="control.type === EInputType.Date"
+                  [formControlName]="control.code"
+                  [placeholder]="control.placeholder"
+                  [maxDate]="control.maxDate"
+                  [minDate]="control.minDate"
+                  [required]="control.required"
+                ></app-date-picker>
+
+                <ng-container *ngIf="control.type === EInputType.Select">
+                  <mat-app-search-select-lazy
+                    [formControlName]="control.code"
+                    [placeholder]="control.placeholder"
+                    [options]="optionsList[control.optionsListName]"
+                    [propertyName]="control.propertyName"
+                    [language]="language"
+                    [availableIds]="availableIds"
+                    [allowEmptyValue]="control.allowEmptyValue"
+                    [valueType]="control.selectEmittedValueType ? control.selectEmittedValueType : ValueType.Id"
+                  >
+                  </mat-app-search-select-lazy>
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </app-layout-for-steps>
+
+    <!--<app-layout-for-steps-->
+    <!--[isPanelDescHidden]="true"-->
+    <!--[headerText]="'Aml.Titles.KYC'"-->
+    <!--[headerNumb]="2"-->
+    <!--[isNotAccordion]="true"-->
+    <!--&gt;-->
+    <!--<div class="w-100">-->
+    <!--<div class="mt-2">-->
+    <!--<div class="flex flex-column">-->
+    <!--<h5>{{ 'Aml.Titles.BankBusinessRelationshipPurpose' | translate }}</h5>-->
+    <!--<div class="flex flex-column" [formGroupName]="EAmlControlsKeys.BankBusinessRelationshipPurpose">-->
+    <!--<ng-container *ngFor="let item of applicantOperationInfo">-->
+    <!--<div class="mt-2 kyc-group">-->
+    <!--<mat-app-slide-toggle-->
+    <!--[formControlName]="item.id"-->
+    <!--[labelObj]="item.dirOperationType"-->
+    <!--[labelPosition]="'before'"-->
+    <!--[language]="language"-->
+    <!--(isToggleChecked)="-->
+    <!--item.result = $event; saveToggleValue(item, EAmlControlsKeys.BankBusinessRelationshipPurpose)-->
+    <!--"-->
+    <!--&gt;</mat-app-slide-toggle>-->
+    <!--</div>-->
+    <!--</ng-container>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="flex flex-column mt-4">-->
+    <!--<h5>{{ 'Aml.Titles.ExpectedOperations' | translate }}</h5>-->
+    <!--<div class="flex flex-column" [formGroupName]="EAmlControlsKeys.ExpectedOperations">-->
+    <!--<ng-container *ngFor="let item of applicantOperationFreqInfo">-->
+    <!--<div class="mt-2 kyc-group">-->
+    <!--<mat-app-slide-toggle-->
+    <!--[formControlName]="item.id"-->
+    <!--[labelObj]="item.dirOperationFreqType"-->
+    <!--[labelPosition]="'before'"-->
+    <!--[language]="language"-->
+    <!--(isToggleChecked)="item.result = $event; saveToggleValue(item, EAmlControlsKeys.ExpectedOperations)"-->
+    <!--&gt;</mat-app-slide-toggle>-->
+    <!--</div>-->
+    <!--</ng-container>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</app-layout-for-steps>-->
+
+    <!--<app-layout-for-steps-->
+    <!--[isPanelDescHidden]="true"-->
+    <!--[headerText]="'Aml.Titles.AML'"-->
+    <!--[headerNumb]="3"-->
+    <!--[isNotAccordion]="true"-->
+    <!--&gt;-->
+    <!--<div class="mt-2 aml">-->
+    <!--<mat-app-slide-toggle-->
+    <!--class="m-b"-->
+    <!--[formControlName]="EAmlControlsKeys.IsIpdl"-->
+    <!--[labelPosition]="'before'"-->
+    <!--[label]="'Aml.Labels.PublicOfficialsBelonging'"-->
+    <!--&gt;-->
+    <!--</mat-app-slide-toggle>-->
+    <!--</div>-->
+    <!--</app-layout-for-steps>-->
+  </ng-container>
+
+  <app-tabs-footer
+    *ngIf="isAmlNeeded"
+    [configSrc]="footerConfigSource"
+    [hideButtons]="readonlyForm"
+    [buttonsDisabled]="isLoading"
+    (footerButtonClick)="onFooterButtonClick($event)"
+  ></app-tabs-footer>
+</form>

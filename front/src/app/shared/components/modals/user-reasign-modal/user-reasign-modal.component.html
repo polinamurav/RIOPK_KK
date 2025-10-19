@@ -1,0 +1,25 @@
+<div class="close-btn-wrapper">
+  <mat-app-button
+    [mat-dialog-close]="'close'"
+    [radius]="'round'"
+    [className]="'custom-style-close-modal'"
+    [backgroundColor]="'white'"
+    [color]="'gray'"
+    [hover]="'gray'"
+    [border]="true"
+  >
+    <div type="" class="close-modal" [inlineSVG]="'./assets/img/close-1.svg'"></div>
+  </mat-app-button>
+</div>
+
+<div class="modal-content">
+  <mat-app-table
+    [isSorting]="false"
+    [tableData]="dataSource"
+    [isSelectsItem]="false"
+    [footerIsHide]="true"
+    [isShowChangeUserIcon]="true"
+    (userReassignEvent)="onReasignEvent($event)"
+  >
+  </mat-app-table>
+</div>

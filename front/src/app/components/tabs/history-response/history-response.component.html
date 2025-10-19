@@ -1,0 +1,88 @@
+<form [formGroup]="creditReportform">
+  <app-layout-for-steps [isPanelDescHidden]="true" [headerText]="" [headerNumb]="1" [isNotAccordion]="true">
+    <div class="w-100">
+      <h5>{{ 'HistoryResponse.GeneralizedDataOnIndividuals' | translate }}</h5>
+      <div class="row m-0 pb-4" [formGroupName]="historyResponseGroupKeys.IndividualsInformation">
+        <ng-container *ngFor="let control of individualsInfoConfig">
+          <div [ngClass]="control?.class">
+            <app-form-field
+              *ngIf="
+                control.type === eInputType.Text ||
+                control.type === eInputType.Number ||
+                control.type === eInputType.PhoneNumber
+              "
+              [formControlName]="control.code"
+              [maxLength]="control.maxLength"
+              [placeholder]="control.placeholder"
+              [readonly]="control?.readonly"
+              [type]="control.type"
+            >
+            </app-form-field>
+
+            <app-date-picker
+              *ngIf="control.type === eInputType.Date"
+              [formControlName]="control.code"
+              [placeholder]="control.placeholder"
+              [maxDate]="control.maxDate"
+              [minDate]="control.minDate"
+              [required]="control.required"
+            ></app-date-picker>
+          </div>
+        </ng-container>
+      </div>
+
+      <h5>{{ 'HistoryResponse.TableTitles.WorstRiskClass' | translate }}</h5>
+      <div class="padding-bottom pt-2">
+        <mat-app-table
+          [tableData]="worstRiskClassColTableData"
+          [isSorting]="false"
+          [footerIsHide]="true"
+        ></mat-app-table>
+      </div>
+
+      <h5>{{ 'HistoryResponse.TableTitles.Overdue' | translate }}</h5>
+      <div class="padding-bottom pt-2">
+        <mat-app-table [tableData]="overdueColTableData" [isSorting]="false" [footerIsHide]="true"></mat-app-table>
+      </div>
+
+      <h5>{{ 'HistoryResponse.TableTitles.Obligations' | translate }}</h5>
+      <div class="filter-table-container">
+        <div class="row m-0" [formGroupName]="historyResponseGroupKeys.ObligationsTotalInfo">
+          <ng-container *ngFor="let control of aggregatesInfoConfig">
+            <div [ngClass]="control?.class">
+              <app-form-field
+                [formControlName]="control.code"
+                [placeholder]="control.placeholder"
+                [readonly]="control?.readonly"
+                [type]="control.type"
+              >
+              </app-form-field>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="padding-bottom pt-2">
+        <mat-app-table-sort
+          *ngIf="obligationsColTableData"
+          [isSorting]="true"
+          [changePage]="changePage"
+          (selectedPage)="selectedPageEventObligations($event)"
+          (toggleFilterEvent)="filterEvent($event)"
+          [tableData]="obligationsColTableData"
+          [itemLimit]="itemLimit"
+          [totalCount]="totalCount"
+        ></mat-app-table-sort>
+      </div>
+
+      <h5>{{ 'HistoryResponse.TableTitles.OtherBanksRequests' | translate }}</h5>
+      <div class="padding-bottom pt-2">
+        <mat-app-table
+          [tableData]="otherBanksRequestsColTableData"
+          [isSorting]="false"
+          [footerIsHide]="true"
+        ></mat-app-table>
+      </div>
+    </div>
+  </app-layout-for-steps>
+</form>

@@ -1,0 +1,52 @@
+<div class="pos-modal">
+  <div class="pos-dialog-wrapper">
+    <h5>{{ title | translate }}</h5>
+    <span class="close-btn-wrapper" type="" [mat-dialog-close]="'close'" (click)="close()">
+      <img src="./assets/img/PopupCloseDark.png" alt="Close modal" />
+    </span>
+  </div>
+
+  <div class="table-block">
+    <mat-app-table
+      [changePage]="changePage"
+      [totalCount]="totalCount"
+      [tableData]="dataSource"
+      [itemLimit]="itemLimit"
+      [isSorting]="false"
+      [isSelectsItem]="(currentUserData?.authorities)[0].id === 2 || (currentUserData?.authorities)[0].id === 10"
+      [tableBlockWidth]="'3000px'"
+      [objColNameProps]="objColNameProps"
+      (selectedItem)="selectedItem($event)"
+      (selectedPage)="selectedPageEvent($event)"
+      (sortingData)="sortingDataEvent($event)"
+    >
+      <div
+        class="button-block"
+        *ngIf="(currentUserData?.authorities)[0].id === 2 || (currentUserData?.authorities)[0].id === 10"
+      >
+        <mat-app-button
+          [className]="'mr-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'blue'"
+          [color]="'white'"
+          (clickEvent)="createNewRequest()"
+        >
+          {{ 'Buttons.CreateNewRequest' | translate }}
+        </mat-app-button>
+        <mat-app-button
+          [className]="'mr-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'white'"
+          [color]="'gray'"
+          (click)="close()"
+        >
+          {{ 'Buttons.Cancel' | translate }}
+        </mat-app-button>
+      </div>
+    </mat-app-table>
+  </div>
+</div>

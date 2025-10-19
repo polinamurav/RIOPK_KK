@@ -1,0 +1,10 @@
+<button
+  mat-button
+  [disabled]="disabled"
+  [ngClass]="[radius, backgroundColor, 'size-' + size, 'color-' + color, 'hover-' + hover, className]"
+  [class.myBorder]="border"
+  [type]="type"
+  (click)="click($event)"
+>
+  <ng-content></ng-content>
+</button>

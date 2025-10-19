@@ -1,0 +1,47 @@
+<app-modal-view [title]="'Acceptance.Placeholders.PaymentFirstDay' | translate">
+  <div class="message">
+    {{ config.message }}
+  </div>
+  <div class="offer-date">
+    Предлагаемая дата погашения:
+  </div>
+  <div class="date-container">
+    <app-date-picker
+      [formControl]="firstPayDateControl"
+      [placeholder]="'Acceptance.Placeholders.PaymentFirstDay'"
+    ></app-date-picker>
+
+    <mat-app-slide-toggle class="m-b" [formControl]="firstPayDateCheckboxControl" [label]="'Выбрать предложенную дату'">
+    </mat-app-slide-toggle>
+  </div>
+
+  <app-modal-view-actions>
+    <mat-app-button
+      [type]="'submit'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+      (clickEvent)="save()"
+    >
+      {{ 'Buttons.Save' | translate }}
+    </mat-app-button>
+
+    <mat-app-button
+      [type]="'button'"
+      [className]="'mt-2'"
+      [size]="'big'"
+      [mat-dialog-close]="'close'"
+      [radius]="'semiRound'"
+      [backgroundColor]="'transparent'"
+      [border]="true"
+      [hover]="'blue'"
+      [color]="'blue'"
+    >
+      {{ 'Buttons.Cancel' | translate }}
+    </mat-app-button>
+  </app-modal-view-actions>
+</app-modal-view>

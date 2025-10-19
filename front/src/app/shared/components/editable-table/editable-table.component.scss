@@ -1,0 +1,316 @@
+@import "../../../../theme/styles/colors.scss";
+
+/* Chrome, Safari, Edge, Opera Убрать стрелки в input[type=»number»]*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox Убрать стрелки в input[type=»number»]*/
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.table-block {
+  margin-left: 0;
+  margin-top: 0;
+  padding-right: 13px;
+  border-radius: 10px;
+  border-spacing: 0;
+  background-color: var(--table-background-color);
+  max-height: 600px;
+}
+
+.myerror {
+  color: $ku-crimson;
+  margin-left: 5px;
+  font-size: 11px;
+}
+
+.cel-style {
+  text-align: left;
+  color: var(--table-text-color);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-family: "VTB Group Book" !important;
+}
+
+.t-header {
+  .sort-icon {
+    margin-left: 1rem;
+    //display: none; todo
+    display: inline-flex;
+    ::ng-deep {
+      svg {
+        width: 1rem;
+        height: 0.7rem;
+      }
+    }
+  }
+
+  &:hover {
+    .sort-icon {
+      display: inline-flex;
+    }
+  }
+}
+
+.empl-table-head {
+  background-color: var(--table-background-color);
+  color: var(--table-text-color);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  box-shadow: inset 0 -1px 0 #afbddf;
+  font-family: "VTB Group Book" !important;
+  height: 40px;
+  border-radius: 12px 12px 0 0;
+
+  &.fixed-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+}
+
+thead tr th {
+  min-width: 260px;
+  padding: 0 10px;
+}
+
+tbody tr {
+  &:hover td {
+    background: var(--table-background-color);
+  }
+
+  td.cel-style {
+    padding-top: 4px;
+    vertical-align: top;
+  }
+}
+
+tfoot tr td button {
+  //width: 100%;
+  border: none;
+  text-align: left;
+  background: var(--table-background-color);
+  outline: none;
+  padding: 10px 0 10px 22px;
+  color: rgba(28, 127, 239, 1);
+  cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.9;
+    background-color: var(--table-background-color);
+  }
+
+  .button-add-text {
+    margin-left: 5px;
+  }
+}
+
+.empty-row {
+  display: block;
+  width: 100%;
+  height: 40px;
+}
+
+.button-colm {
+  position: relative;
+  padding: 0;
+
+  .button-block {
+    left: 50%;
+    padding: 6px;
+    transform: translate(-50%);
+    margin-top: -2px;
+    background: var(--table-background-color);
+    border: 1px solid #ccc;
+    border-top: 2px solid #ededed;
+    z-index: 1;
+    display: inline-block;
+    position: sticky;
+    font-size: 0;
+
+    button {
+      border: none;
+      background-color: transparent;
+      outline: none;
+      color: rgba(28, 127, 239, 1);
+    }
+    .check-icon-error{
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+}
+
+.toggleDisabled {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  justify-content: center;
+}
+
+.select-width {
+  width: 549px;
+  min-width: 549px !important;
+}
+
+.size-small {
+  width: 170px;
+  min-width: 170px !important;
+}
+
+.size-medium {
+  width: 350px;
+  min-width: 350px !important;
+}
+
+.size-auto {
+  width: auto;
+  min-width: auto !important;
+}
+
+.size-large {
+  width: 450px;
+  min-width: 450px !important;
+}
+
+.disabled {
+  pointer-events: none;
+}
+
+.required-input .input {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  height: 42px;
+  min-width: 100%;
+  background-color: var(--table-background-color);
+  border: none transparent;
+  border-bottom: 1px solid #afbddf;
+  padding: 0 12px;
+  cursor: pointer;
+  color: var(--table-text-color);
+  font-family: "VTB Group Book" !important;
+
+  &.isEditing {
+    cursor: auto;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+    border-bottom: 1px solid $blue;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.9;
+    border: none;
+  }
+
+  &.validate-error {
+    border: 1px solid rgba(227, 53, 48, 0.6);
+    padding: 0 12px;
+  }
+
+  &:hover:not(.mat-focused) {
+    background-color: var(--light-green) !important;
+  }
+}
+
+::ng-deep {
+  nv-editable-table {
+    .mat-form-field {
+      margin-bottom: 0 !important;
+    }
+    .mat-slide-toggle {
+      height: 40px !important;
+    }
+  }
+}
+
+::ng-deep {
+  .editable-table-select .required-input {
+    .date-picker-wrapper .mat-form-field {
+      //background: $white;
+      width: 100%;
+      height: 42px;
+      padding: 5px 0 0 16px;
+      border: solid $border-gray;
+      border-width: 0 0 1px 0;
+      //border-radius: 0.25rem;
+      font-family: "VTB Group Light" !important;
+      font-weight: 400;
+      overflow: hidden;
+      &.mat-form-field-disabled {
+        border: none;
+        //background: $white;
+        input,
+        .mat-select-value-text > span {
+          color: var(--table-text-color);
+        }
+      }
+      .mat-form-field-underline {
+        width: 0;
+      }
+
+      .mat-form-field-label-wrapper {
+        top: -0.54375em;
+        .mat-form-field-label {
+          padding-top: 3px;
+          font-size: 0.9375rem;
+          font-weight: 400;
+          font-family: "VTB Group Light" !important;
+        }
+        .mat-form-field-required-marker {
+          font-size: 0.7375rem;
+        }
+      }
+
+      & .mat-select-arrow {
+        opacity: 0;
+      }
+
+      &.mat-focused {
+        border: solid $dodger-blue;
+        border-width: 0 0 1px 0;
+      }
+    }
+
+    .isEditing .date-picker-wrapper .mat-form-field {
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+
+      .mat-form-field-flex .mat-form-field-infix .input {
+        cursor: auto;
+      }
+    }
+
+    .validate-error .date-picker-wrapper .mat-form-field {
+      border: 1px solid rgba(227, 53, 48, 0.6);
+      padding: 0 12px;
+    }
+
+    mat-app-button {
+      .size-medium.round {
+        width: 30px;
+        top: 5px;
+        height: 30px;
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}
+
+.total-row {
+  td {
+    padding: 0 10px;
+    font-size: 13px;
+  }
+}

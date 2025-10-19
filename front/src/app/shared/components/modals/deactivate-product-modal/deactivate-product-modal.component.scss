@@ -1,0 +1,43 @@
+@import "src/theme/styles/common";
+
+.deactivate-product-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.deactivate-product-modal-content {
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  .deactivate-product-modal-title {
+    font-size: 22px;
+    font-weight: 500; //600
+    color: $dark-jungle-green;
+    font-family: "VTB Group Book" !important;
+  }
+}
+
+.deactivate-product-modal-footer.footer {
+  display: flex;
+  padding-left: 0;
+  justify-content: center;
+  .buttons-wrapper {
+    width: 286px;
+  }
+}
+
+:host ::ng-deep {
+  .close-modal {
+    margin-left: 2px;
+
+    svg {
+      fill: $cadet-grey;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

@@ -1,0 +1,39 @@
+@import "src/theme/styles/colors";
+
+.tabs-footer {
+  bottom: 0;
+  display: flex;
+  height: 64px;
+  position: fixed;
+  z-index: 999;
+  width: calc(100% - 20px);
+  padding-top: 8px;
+  padding-left: 30px;
+  background: var(--header-background-color);
+}
+
+.blur {
+  backdrop-filter: blur(4px);
+}
+
+.dialog-footer {
+  display: flex;
+  height: 25%;
+  background: var(--header-background-color);
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.comment-wrap {
+  position: relative;
+
+  .dropdown-toggle::after {
+    display: none;
+  }
+
+  .icon {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+  }
+}

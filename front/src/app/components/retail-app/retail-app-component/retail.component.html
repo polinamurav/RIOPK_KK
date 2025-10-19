@@ -1,0 +1,293 @@
+<app-layout>
+  <ngx-layout-colm [size]="'small-link'">
+    <app-sidebar
+      [applicationNumber]="applicationNumber"
+      [infoBlock]="infoBlock"
+      [isInfoBlockFixed]="true"
+      [isQueueApp]="isAppFromQueues"
+      [isSidebarContentVisible]="isSideMenuVisible"
+      [language]="language"
+      [linkList]="sidebarLinkList"
+    >
+    </app-sidebar>
+  </ngx-layout-colm>
+  <ngx-layout-colm [size]="'big-link'">
+    <div *ngIf="isLoading" class="spinner-box d-flex align-items-center justify-content-center">
+      <mat-spinner class="text-center"></mat-spinner>
+    </div>
+    <div class="wrapper">
+      <div class="prev-stage-block">
+        <div class="header-title">
+          <div class="header-title-icon">
+            <span [inlineSVG]="'./assets/img/done.svg'"></span>
+          </div>
+          <div>
+            {{ language === ELanguage.Am ? stage?.nameAm : stage?.nameRu }}
+            <div *ngIf="stage?.id === 'COMPLETED'">
+              ({{ language === ELanguage.Am ? status?.nameAm : status?.nameRu }})
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!!progressStages.length && !isLoading" class="steps">
+          <app-stepper [barList]="progressStages" [currentStage]="applicationData.stage"></app-stepper>
+        </div>
+      </div>
+
+      <mat-tab-group
+        #tabGroup
+        (selectedTabChange)="tabChanged($event)"
+        *ngIf="!isProgressBarLoading"
+        [(selectedIndex)]="selectedTabIndex"
+        class="full-form-tabs"
+      >
+        <!-- * Акцепт -->
+        <mat-tab *ngIf="tabsState[TabNames.Acceptance].isVisible" [label]="tabTitles[TabNames.Acceptance] | translate">
+          <perfect-scrollbar>
+            <div class="mat-tab-body-height">
+              <ng-acceptance
+                *ngIf="!isLoading"
+                [accountIssue]="tabsData[TabsDataNames.AccountIssue]"
+                [applicationData]="applicationData"
+                [language]="language"
+                [readonlyForm]="tabsState[TabNames.Acceptance].isReadonly"
+              >
+              </ng-acceptance>
+            </div>
+          </perfect-scrollbar>
+        </mat-tab>
+
+        <!-- * Оформление документов -->
+        <mat-tab *ngIf="tabsState[TabNames.Paperwork].isVisible" [label]="tabTitles[TabNames.Paperwork] | translate">
+          <perfect-scrollbar>
+            <div class="mat-tab-body-height">
+              <ng-paperwork
+                *ngIf="!isLoading"
+                [accountIssue]="tabsData[TabsDataNames.AccountIssue]"
+                [applicationData]="applicationData"
+                [language]="language"
+                [readonlyForm]="tabsState[TabNames.Paperwork].isReadonly"
+              >
+              </ng-paperwork>
+            </div>
+          </perfect-scrollbar>
+        </mat-tab>
+
+        <!-- * Верификация -->
+        <mat-tab
+          *ngIf="tabsState[TabNames.Verification].isVisible"
+          [label]="tabTitles[TabNames.Verification] | translate"
+        >
+          <perfect-scrollbar>
+            <div class="mat-tab-body-height">
+              <ng-verification
+                *ngIf="!isLoading"
+                [applicationData]="applicationData"
+                [language]="language"
+                [readonlyForm]="tabsState[TabNames.Verification].isReadonly"
+                [verificationData]="tabsData[TabsDataNames.VerificationData]"
+              >
+              </ng-verification>
+            </div>
+          </perfect-scrollbar>
+        </mat-tab>
+
+        <!-- * Окончательный выбор -->
+        <mat-tab
+          *ngIf="tabsState[TabNames.FinalDecision].isVisible"
+          [label]="tabTitles[TabNames.FinalDecision] | translate"
+        >
+          <perfect-scrollbar>
+            <div class="mat-tab-body-height padding-bottom-data-form">
+              <ng-final-decision
+                *ngIf="!isLoading"
+                [accountIssue]="tabsData[TabsDataNames.AccountIssue]"
+                [appDto]="applicationData"
+                [applicantContactPersons]="tabsData[TabsDataNames.ApplicantContactPersonInfo]"
+                [applicantLoanObligationsInfo]="tabsData[TabsDataNames.ApplicantLoanObligationsInfo]"
+                [applicantLoanFilterDto]="tabsData['applicantLoanFilterDto']"
+                [integrationInterface]="tabsData[TabsDataNames.IntegrationInterface]"
+                [language]="language"
+                [readonlyForm]="tabsState[TabNames.FinalDecision].isReadonly"
+              >
+              </ng-final-decision>
+            </div>
+          </perfect-scrollbar>
+        </mat-tab>
+
+        <!-- * AML/FATCA -->
+        <ng-container>
+          <mat-tab *ngIf="tabsState[TabNames.Aml].isVisible" [label]="tabTitles[TabNames.Aml] | translate">
+            <perfect-scrollbar>
+              <div class="mat-tab-body-height padding-bottom-data-form">
+                <ng-aml
+                  *ngIf="!isLoading"
+                  [appDto]="applicationData"
+                  [applicantFatcaInfo]="tabsData[TabsDataNames.ApplicantFatcaInfo]"
+                  [applicantOperationFreqInfo]="tabsData[TabsDataNames.ApplicantOperationFreqInfo]"
+                  [applicantOperationInfo]="tabsData[TabsDataNames.ApplicantOperationInfo]"
+                  [language]="language"
+                  [readonlyForm]="tabsState[TabNames.Aml].isReadonly"
+                >
+                </ng-aml>
+              </div>
+            </perfect-scrollbar>
+          </mat-tab>
+        </ng-container>
+
+
+<!--       инфо по  продукту ПОС   -->
+        <ng-container>
+          <mat-tab *ngIf="tabsState[TabNames.PosProductInfo].isVisible && posProductInfoVisible" [label]="tabTitles[TabNames.PosProductInfo] | translate">
+            <perfect-scrollbar>
+              <div class="mat-tab-body-height padding-bottom-data-form">
+                <ngx-pos-product-info
+                  *ngIf="!isLoading"
+                  [language]="language"
+                  [applicationData]="applicationData"
+                ></ngx-pos-product-info>
+              </div>
+            </perfect-scrollbar>
+          </mat-tab>
+        </ng-container>
+
+        <!-- * Принятие решения -->
+        <mat-tab
+          *ngIf="tabsState[TabNames.DecisionMaking].isVisible && !isArchivist"
+          [label]="tabTitles[TabNames.DecisionMaking] | translate"
+        >
+          <perfect-scrollbar>
+            <div class="mat-tab-body-height">
+              <ng-decision-making
+                *ngIf="!isLoading"
+                [applicantIncome]="tabsData[TabsDataNames.ApplicantIncomeInfoDM]"
+                [applicantLoan]="tabsData[TabsDataNames.ApplicantLoanObligationsInfo]"
+                [applicationData]="applicationData"
+                [isAppInQueues]="isAppFromQueues"
+                [language]="language"
+                [readonlyForm]="tabsState[TabNames.DecisionMaking].isReadonly"
+                [verificationData]="tabsData[TabsDataNames.VerificationData]"
+              ></ng-decision-making>
+            </div>
+          </perfect-scrollbar>
+        </mat-tab>
+
+        <!-- * ОПЗ -->
+        <!-- TODO change tabNames to 'Borrower' when api is ready-->
+        <mat-tab
+          *ngIf="tabsState[TabNames.Borrower].isVisible && isRiskManager"
+          [label]="tabTitles[TabNames.Borrower] | translate"
+        >
+          <perfect-scrollbar>
+            <div class="mat-tab-body-height">
+              <ng-borrowers
+                *ngIf="!isLoading"
+                [language]="language"
+                [applicationData]="applicationData"
+                [borrowersInfo]="tabsData[TabsDataNames.BorrowerInfo]"
+                [readonlyForm]="tabsState[TabNames.Borrower].isReadonly"
+                [applicationsAppTheOPZTab]="tabsData[TabsDataNames.ApplicationsAppTheOPZTab]"
+                [applicantIncomeInfoDM]="tabsData[TabsDataNames.ApplicantIncomeInfoDM]"
+                [emploeyrApplications]="tabsData[TabsDataNames.EmployersApplications]"
+                [emploeyrBlackList]="tabsData[TabsDataNames.EmployersBlackList]"
+              >
+              </ng-borrowers>
+            </div>
+          </perfect-scrollbar>
+        </mat-tab>
+
+        <!-- * Анкета -->
+        <mat-tab *ngIf="!isArchivist" label="{{ tabTitles[TabNames.FullForm] | translate }}">
+          <perfect-scrollbar>
+            <div class="padding-bottom-data-form mat-tab-body-height">
+              <ng-data-form
+                *ngIf="!isLoading"
+                [applicantIncome]="tabsData[TabsDataNames.ApplicantIncomeInfoDM]"
+                [applicationData]="applicationData"
+                [applicantLoanFilterDto]="tabsData['applicantLoanFilterDto']"
+                [isMenuVisible]="isSideMenuVisible"
+                [language]="language"
+                [managerInfo]="tabsData[TabsDataNames.ManagerInfo]"
+                [readonlyForm]="tabsState[TabNames.FullForm].isReadonly"
+              >
+              </ng-data-form>
+            </div>
+          </perfect-scrollbar>
+        </mat-tab>
+
+        <!-- * Информация о занятости -->
+        <mat-tab *ngIf="tabsState[TabNames.Employment].isVisible" [label]="tabTitles[TabNames.Employment] | translate">
+          <perfect-scrollbar>
+            <div class="mat-tab-body-height">
+              <ng-employment-response
+                *ngIf="!isLoading"
+                [applicantIncome]="tabsData[TabsDataNames.ApplicantIncomeInfoDM]"
+                [applicationData]="applicationData"
+                [employmentInfo]="tabsData[TabsDataNames.EmploymentInfo]"
+              >
+              </ng-employment-response>
+            </div>
+          </perfect-scrollbar>
+        </mat-tab>
+
+        <!-- * Кредитный отчет -->
+        <mat-tab
+          *ngIf="tabsState[TabNames.AcbInfo].isVisible && !isArchivist"
+          [label]="tabTitles[TabNames.AcbInfo] | translate"
+        >
+          <perfect-scrollbar>
+            <div class="mat-tab-body-height">
+              <ng-history-response
+                *ngIf="!isLoading"
+                [applicationData]="applicationData"
+                [acraCreditInfo]="tabsData[TabsDataNames.AcraCreditInfo]"
+              ></ng-history-response>
+            </div>
+          </perfect-scrollbar>
+        </mat-tab>
+
+        <!-- * Решение -->
+        <mat-tab *ngIf="!isArchivist" [label]="tabTitles[TabNames.Decision] | translate">
+          <perfect-scrollbar>
+            <div class="mat-tab-body-height">
+              <ng-brms-decision
+                *ngIf="!isLoading"
+                [appDto]="applicationData"
+                [language]="language"
+                [readonlyForm]="tabsState[TabNames.Decision].isReadonly"
+              ></ng-brms-decision>
+            </div>
+          </perfect-scrollbar>
+        </mat-tab>
+
+        <!-- * Внутренняя информация -->
+        <mat-tab
+          *ngIf="tabsState[TabNames.InternalInfo].isVisible && !isArchivist"
+          [label]="tabTitles[TabNames.InternalInfo] | translate"
+        >
+          <perfect-scrollbar>
+            <div class="mat-tab-body-height">
+              <ng-inside-info
+                *ngIf="!isLoading"
+                [applicationNumber]="applicationNumber"
+                [summaryIndividualsInfo]="tabsData[TabsDataNames.SummaryIndividualsInfo]"
+              ></ng-inside-info>
+            </div>
+          </perfect-scrollbar>
+        </mat-tab>
+
+        <!-- * Документы -->
+        <mat-tab *ngIf="tabsState[TabNames.Documents].isVisible" [label]="tabTitles[TabNames.Documents] | translate">
+          <perfect-scrollbar>
+            <div class="mat-tab-body-height">
+              <ng-documents *ngIf="!isLoading"
+                            [readonlyForm]="tabsState[TabNames.Documents].isReadonly"
+                            [applicationData]="applicationData" [language]="language">
+              </ng-documents>
+            </div>
+          </perfect-scrollbar>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </ngx-layout-colm>
+</app-layout>

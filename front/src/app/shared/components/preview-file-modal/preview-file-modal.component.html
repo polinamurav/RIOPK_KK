@@ -1,0 +1,7 @@
+<app-simply-modal-wrapper [ngSwitch]="type">
+  <div *ngSwitchCase="types.IMAGE">
+    <div *ngFor="let item of images">
+      <img [src]="item" alt="" />
+    </div>
+  </div>
+</app-simply-modal-wrapper>

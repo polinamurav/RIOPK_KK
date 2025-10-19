@@ -1,0 +1,39 @@
+<ngx-login-layout>
+  <app-login-container>
+    <div class="login-container">
+      <h4 class="card-title text-center mt-5 mb-5">
+        {{ 'Login.Title' | translate }}
+      </h4>
+      <form (ngSubmit)="login($event)" [formGroup]="loginForm" novalidate>
+        <div class="form-group">
+          <label class="d-block">
+            <app-form-field
+              [formControlName]="'username'"
+              [placeholder]="'Login.Placeholder.Name'"
+              [ngClass]="{ 'invalid-form': isInvalid }"
+            ></app-form-field>
+          </label>
+          <label class="d-block">
+            <app-form-field
+              [formControlName]="'password'"
+              [type]="'password'"
+              [placeholder]="'Login.Placeholder.Password'"
+              [ngClass]="{ 'invalid-form': isInvalid }"
+            >
+            </app-form-field>
+          </label>
+          <span *ngIf="isInvalid" class="notification">{{ 'ErrorMessage.IncorrectCredentials' | translate }}</span>
+        </div>
+        <button
+          nbButton
+          type="submit"
+          [status]="'primary'"
+          [disabled]="isLoading$ | async"
+          [nbSpinner]="isLoading$ | async"
+        >
+          <span>{{ 'Buttons.Login' | translate }}</span>
+        </button>
+      </form>
+    </div>
+  </app-login-container>
+</ngx-login-layout>

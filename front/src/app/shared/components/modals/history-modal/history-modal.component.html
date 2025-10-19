@@ -1,0 +1,32 @@
+<div class="close-btn-wrapper">
+  <mat-app-button
+    [mat-dialog-close]="'close'"
+    [radius]="'round'"
+    [className]="'custom-style-close-modal'"
+    [backgroundColor]="'white'"
+    [color]="'gray'"
+    [hover]="'gray'"
+    [border]="true"
+  >
+    <div type="" class="close-modal" [inlineSVG]="'assets/img/close-1.svg'"></div>
+  </mat-app-button>
+</div>
+
+<div class="client-modal">
+  <div class="name-dialog-wrapper">
+    <h3 class="name-dialog">{{ title | translate }}</h3>
+  </div>
+  <div *ngIf="isLoading" class="d-flex align-items-center justify-content-center h-100">
+    <mat-spinner class="text-center"></mat-spinner>
+  </div>
+  <div class="content-wrapper" *ngIf="!isLoading">
+    <mat-app-table
+      [isSorting]="false"
+      [footerIsHide]="true"
+      [totalCount]="totalCount"
+      [tableData]="historyInfoData"
+      [itemLimit]="itemLimit"
+    >
+    </mat-app-table>
+  </div>
+</div>

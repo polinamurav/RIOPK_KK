@@ -1,0 +1,497 @@
+<perfect-scrollbar (psYReachEnd)="psYReachEnd($event)" (psScrollY)="scrollStart($event)">
+  <table aria-describedby="editable-table-caption">
+    <div class="table-block" [style.max-height]="maxHeight">
+      <thead class="empl-table-head" [class.fixed-header]="fixedHeader">
+        <tr>
+          <ng-container *ngFor="let title of tableHeaders">
+            <th
+              class="cel-style t-header"
+              [ngClass]="{
+                'select-width': title.type === 'select',
+                'size-small': title.size === 'small',
+                'size-medium': title.size === 'medium',
+                'size-large': title.size === 'large',
+                'size-auto': title.size === 'auto'
+              }"
+              scope="col"
+            >
+              {{ title.value | translate }}
+
+              <ng-container *ngIf="showSortFor[title.code]">
+                <div class="sort-icon" [inlineSVG]="getDirectionForSort(title)" (click)="sortTableCol(title)"></div>
+              </ng-container>
+
+              <ng-container *ngIf="showFilterFor[title.code]">
+                <!--[selected]="filterObject[column.path]"-->
+                <app-table-drop-menu
+                  [language]="language"
+                  [isBooleanFilter]="title?.isBooleanFilter"
+                  [selected]="filterObject[title.code]"
+                  [list]="filterOptions[title.code]"
+                  (toggleFilter)="toggleFilter(title, $event)"
+                >
+                </app-table-drop-menu>
+              </ng-container>
+            </th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of (dataSource$ | async)">
+          <tr>
+            <ng-container *ngFor="let cell of tableHeaders">
+              <td class="cel-style">
+                <ng-container [ngSwitch]="cell.type">
+                  <!-- Text -->
+                  <div class="required-input" *ngSwitchCase="'Text'">
+                    <ng-container *ngIf="childLanguage === ELanguage.Am; else ruTemplate">
+                      <p>
+                        {{
+                          cell.targetField
+                            ? row[cell.targetField][ELocalNames.NameAm]
+                            : !!row[ELocalNames.NameAm]
+                            ? row[ELocalNames.NameAm]
+                            : row[cell.code]
+                        }}
+                      </p>
+                    </ng-container>
+                    <ng-template #ruTemplate>
+                      <p>{{ cell.targetField ? row[cell.targetField][cell.code] : row[cell.code] }}</p>
+                    </ng-template>
+                  </div>
+
+                  <!-- Date -->
+                  <div class="required-input" *ngSwitchCase="'Date'">
+                    <app-date-picker
+                      [(ngModel)]="row[cell.code]"
+                      [disabled]="
+                        cellDisabled(cell, isEditing === row) ||
+                        !canEditRows ||
+                        (isEditing && isEditing !== row) ||
+                        isTemporaryDisabled(cell.code)
+                      "
+                      [class.disabled]="
+                        cellDisabled(cell, isEditing === row) ||
+                        !canEditRows ||
+                        (isEditing && isEditing !== row) ||
+                        isTemporaryDisabled(cell.code)
+                      "
+                      [ngClass]="{
+                        isEditing: isEditing === row,
+                        'validate-error': !row[cell.code] && submitted && cell.isRequired && isEditing === row
+                      }"
+                      (click)="editRow(row)"
+                    >
+                    </app-date-picker>
+                    <div *ngIf="!row[cell.code] && submitted && cell.isRequired && isEditing === row" class="myerror">
+                      <div>{{ requiredMessage | translate }}</div>
+                    </div>
+                  </div>
+
+                  <!-- Textarea -->
+                  <div class="required-input" *ngSwitchCase="'textarea'">
+                    <textarea
+                      class="input"
+                      [disabled]="
+                        cellDisabled(cell, isEditing === row) ||
+                        !canEditRows ||
+                        (isEditing && isEditing !== row) ||
+                        isTemporaryDisabled(cell.code)
+                      "
+                      [ngClass]="{
+                        isEditing: isEditing === row,
+                        'validate-error':
+                          (!row[cell.code] && submitted && cell.isRequired) ||
+                          (row[cell.code] && row[cell.code].length > cell.maxLength && submitted && cell.maxLength)
+                      }"
+                      type="text"
+                      [(ngModel)]="row[cell.code]"
+                      (focus)="editRow(row)"
+                    ></textarea>
+                    <div *ngIf="!row[cell.code] && submitted && cell.isRequired" class="myerror">
+                      <div>{{ requiredMessage | translate }}</div>
+                    </div>
+                  </div>
+                  <!-- Select -->
+                  <div class="required-input" *ngSwitchCase="'select'">
+                    <mat-app-search-select
+                      class="editable-table-select"
+                      [(ngModel)]="row[cell.code]"
+                      (openedChange)="editRow(row)"
+                      [disabled]="
+                        cellDisabled(cell, isEditing === row) ||
+                        !canEditRows ||
+                        (isEditing && isEditing !== row) ||
+                        isTemporaryDisabled(cell.code)
+                      "
+                      [options]="cell.selectDataName ? selectData[cell.selectDataName] : selectData"
+                      [propertyName]="cell.selectPropertyName"
+                      [language]="childLanguage"
+                      [ngClass]="{
+                        isEditing: isEditing === row,
+                        'validate-error': !row[cell.code] && submitted && cell.isRequired
+                      }"
+                    >
+                    </mat-app-search-select>
+                    <div *ngIf="!row[cell.code] && submitted && cell.isRequired" class="myerror">
+                      <div>{{ requiredMessage | translate }}</div>
+                    </div>
+                  </div>
+
+                  <!-- LazySelect -->
+                  <div class="required-input" *ngSwitchCase="'lazySelect'">
+                    <mat-app-search-select-lazy
+                      class="editable-table-select"
+                      [(ngModel)]="cell.isObject && row[cell.code].id ? row[cell.code].id : row[cell.code]"
+                      (openedChange)="editRow(row)"
+                      [allowEmptyValue]="cell?.emptySelectOption"
+                      [availableIds]="!!cell?.availableIdsForOptions ? cell?.availableIdsForOptions(row) : null"
+                      [disabled]="
+                        cellDisabled(cell, isEditing === row) ||
+                        !canEditRows ||
+                        (isEditing && isEditing !== row) ||
+                        isTemporaryDisabled(cell.code) ||
+                        setDisableIf(cell, row)
+                      "
+                      [options]="cell.selectDataName ? selectData[cell.selectDataName] : selectData"
+                      [propertyName]="cell.selectPropertyName"
+                      [language]="childLanguage"
+                      [ngClass]="{
+                        isEditing: isEditing === row,
+                        'validate-error':
+                          (row[cell.code] === '' || row[cell.code] === null) && submitted && cell.isRequired
+                      }"
+                    >
+                    </mat-app-search-select-lazy>
+                    <div *ngIf="!row[cell.code] && submitted && cell.isRequired" class="myerror">
+                      <div>{{ requiredMessage | translate }}</div>
+                    </div>
+                  </div>
+
+                  <!-- PaginationSelect -->
+                  <div class="required-input" *ngSwitchCase="'paginationSelect'">
+                    <mat-app-search-select-pagination
+                      class="editable-table-select"
+                      [allowEmptyValue]="cell?.emptySelectOption"
+                      [(ngModel)]="row[cell.code]"
+                      [availableIds]="!!cell?.availableIdsForOptions ? cell?.availableIdsForOptions(row) : null"
+                      (openedChange)="editRow(row)"
+                      (getNextPartEvent)="nextPartEvent($event)"
+                      (getSortPartEvent)="sortPartEvent($event)"
+                      [disabled]="
+                        cellDisabled(cell, isEditing === row) ||
+                        !canEditRows ||
+                        (isEditing && isEditing !== row) ||
+                        isTemporaryDisabled(cell.code)
+                      "
+                      [options]="cell.selectDataName ? selectData[cell.selectDataName] : selectData"
+                      [propertyName]="cell.selectPropertyName"
+                      [valueType]="cell.valueType || ValueType.Id"
+                      [pageForSelect]="pageForSelect"
+                      [language]="childLanguage"
+                      [ngClass]="{
+                        isEditing: isEditing === row,
+                        'validate-error':
+                          (row[cell.code] === '' || row[cell.code] === null) && submitted && cell.isRequired
+                      }"
+                    >
+                    </mat-app-search-select-pagination>
+                    <div *ngIf="!row[cell.code] && submitted && cell.isRequired" class="myerror">
+                      <div>{{ requiredMessage | translate }}</div>
+                    </div>
+                  </div>
+
+                  <!-- PhoneNumber -->
+                  <div class="required-input" *ngSwitchCase="'phoneNumber'">
+                    <input
+                      class="input"
+                      prefix="+"
+                      mask="000 (000) 00 00 00"
+                      [disabled]="
+                        cellDisabled(cell, isEditing === row) ||
+                        !canEditRows ||
+                        (isEditing && isEditing !== row) ||
+                        isTemporaryDisabled(cell.code)
+                      "
+                      [ngClass]="{
+                        isEditing: isEditing === row,
+                        'validate-error':
+                          (!row[cell.code] || row[cell.code].length !== 12) && submitted && cell.isRequired
+                      }"
+                      type="text"
+                      [(ngModel)]="row[cell.code]"
+                      (focus)="editRow(row)"
+                    />
+                    <div *ngIf="!row[cell.code] && submitted && cell.isRequired" class="myerror">
+                      <div>{{ requiredMessage | translate }}</div>
+                    </div>
+                    <div
+                      *ngIf="row[cell.code] && row[cell.code].length !== 12 && submitted && cell.isRequired"
+                      class="myerror"
+                    >
+                      <div>Некорректный номер</div>
+                      <div>{{ row[cell.code].length }}</div>
+                    </div>
+                  </div>
+
+                  <!-- Toggle Disabled-->
+                  <div class="toggleDisabled" *ngSwitchCase="'toggleDisabled'">
+                    <mat-app-slide-toggle [(ngModel)]="row[cell.code]" [isDisabled]="true"></mat-app-slide-toggle>
+                  </div>
+
+                  <!-- Toggle Changed -->
+                  <div class="toggleDisabled" *ngSwitchCase="'toggleDependent'">
+                    <mat-app-slide-toggle
+                      [(ngModel)]="row[cell.code]"
+                      [isDisabled]="
+                        (toggleDependentChecked && !row[cell.code]) ||
+                        cellDisabled(cell, isEditing === row) ||
+                        !canEditRows ||
+                        (isEditing && isEditing !== row) ||
+                        isTemporaryDisabled(cell.code) ||
+                        setDisableIf(cell, row)
+                      "
+                      (isToggleChecked)="editRow(row, cell.code)"
+                    >
+                    </mat-app-slide-toggle>
+                  </div>
+
+                  <!-- Toggle-->
+                  <div class="toggle" *ngSwitchCase="'toggle'">
+                    <mat-app-slide-toggle
+                      [(ngModel)]="row[cell.code]"
+                      [isDisabled]="
+                        cellDisabled(cell, isEditing === row) ||
+                        !canEditRows ||
+                        (isEditing && isEditing !== row) ||
+                        setDisableIf(cell, row) ||
+                        isTemporaryDisabled(cell.code)
+                      "
+                      (isToggleChecked)="editRow(row, cell.code)"
+                    >
+                    </mat-app-slide-toggle>
+                  </div>
+
+                  <!-- String -->
+                  <div class="required-input" *ngSwitchCase="'string'">
+                    <input
+                      class="input"
+                      [disabled]="
+                        cellDisabled(cell, isEditing === row) ||
+                        !canEditRows ||
+                        (isEditing && isEditing !== row) ||
+                        isTemporaryDisabled(cell?.code) ||
+                        setDisableIf(cell, row)
+                      "
+                      [ngClass]="{
+                        isEditing: isEditing === row,
+                        'size-small': cell.size === 'small',
+                        'validate-error':
+                          isEditing &&
+                          isEditing === row &&
+                          (row[cell.code] === '' || row[cell.code] === null) &&
+                          (cell.isRequired || setRequiredField(cell, row))
+                      }"
+                      type="text"
+                      [maxlength]="cell.maxLength"
+                      [(ngModel)]="row[cell.code]"
+                      (blur)="onBlur(row, cell)"
+                      (focus)="editRow(row)"
+                    />
+
+                    <div
+                      *ngIf="(row[cell.code] === '' || row[cell.code] === null) && submitted && cell.isRequired"
+                      class="myerror"
+                    >
+                      <div>{{ requiredMessage | translate }}</div>
+                    </div>
+
+                    <div
+                      *ngIf="
+                        !setDisableIf(cell, row) &&
+                          isEditing === row &&
+                          (!!cell?.inputValidator && !cell?.inputValidator(row[cell.code]).valid);
+                        else secondError
+                      "
+                      class="myerror"
+                    >
+                      <div>{{ cell?.inputValidator(row[cell.code]).msg | translate }}</div>
+                    </div>
+
+                    <ng-template #secondError>
+                      <ng-container *ngIf="!!cell?.innerValidation && cell?.innerValidation.length">
+                        <ng-container *ngFor="let innerValidator of cell?.innerValidation">
+                          <div
+                            *ngIf="
+                              !setDisableIf(cell, row) &&
+                              isEditing === row &&
+                              !innerValidator(row, cell.code, row[cell.code]).valid
+                            "
+                            class="myerror"
+                          >
+                            <div>{{ innerValidator(row, cell.code, row[cell.code]).msg | translate }}</div>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+                    </ng-template>
+
+                    <div
+                      *ngIf="
+                        cell.pattern &&
+                        row[cell.code] &&
+                        row[cell.code].length &&
+                        !cell.pattern.test(row[cell.code]) &&
+                        submitted
+                      "
+                      class="myerror"
+                    >
+                      <div>{{ patternMessage | translate }}</div>
+                    </div>
+                  </div>
+
+                  <!-- Number -->
+                  <div class="required-input" *ngSwitchCase="'number'">
+                    <input
+                      class="input"
+                      [disabled]="
+                        cellDisabled(cell, isEditing === row) ||
+                        !canEditRows ||
+                        (isEditing && isEditing !== row) ||
+                        isTemporaryDisabled(cell.code) ||
+                        setDisableIf(cell, row)
+                      "
+                      [ngClass]="{
+                        isEditing: isEditing === row,
+                        'size-small': cell.size === 'small',
+                        'validate-error':
+                          isEditing &&
+                          isEditing === row &&
+                          (row[cell.code] === '' || row[cell.code] === null) &&
+                          (cell.isRequired || setRequiredField(cell, row))
+                      }"
+                      type="text"
+                      [maxlength]="cell.maxLength"
+                      (paste)="onPasteOnlyNumbers($event)"
+                      onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                      [(ngModel)]="row[cell.code]"
+                      (blur)="onBlur(row, cell)"
+                      (focus)="editRow(row)"
+                    />
+
+                    <div
+                      *ngIf="(row[cell.code] === '' || row[cell.code] === null) && submitted && cell.isRequired"
+                      class="myerror"
+                    >
+                      <div>{{ requiredMessage | translate }}</div>
+                    </div>
+
+                    <div
+                      *ngIf="
+                        !setDisableIf(cell, row) &&
+                          isEditing === row &&
+                          (!!cell?.inputValidator && !cell?.inputValidator(row[cell.code]).valid);
+                        else secondError
+                      "
+                      class="myerror"
+                    >
+                      <div>{{ cell?.inputValidator(row[cell.code]).msg | translate }}</div>
+                    </div>
+
+                    <ng-template #secondError>
+                      <ng-container *ngIf="!!cell?.innerValidation && cell?.innerValidation.length">
+                        <ng-container *ngFor="let innerValidator of cell?.innerValidation">
+                          <div
+                            *ngIf="
+                              !setDisableIf(cell, row) &&
+                              isEditing === row &&
+                              !innerValidator(row, cell.code, row[cell.code]).valid
+                            "
+                            class="myerror"
+                          >
+                            <div>{{ innerValidator(row, cell.code, row[cell.code]).msg | translate }}</div>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+                    </ng-template>
+
+                    <div
+                      *ngIf="
+                        cell.pattern &&
+                        row[cell.code] &&
+                        row[cell.code].length &&
+                        !cell.pattern.test(row[cell.code]) &&
+                        submitted
+                      "
+                      class="myerror"
+                    >
+                      <div>{{ patternMessage | translate }}</div>
+                    </div>
+                  </div>
+
+                  <div
+                    *ngIf="cell.maxLength && row[cell.code] && row[cell.code].length > cell.maxLength && submitted"
+                    class="myerror"
+                  >
+                    <div>
+                      {{ maxLengthMessage | translate: { expected: cell.maxLength, length: row[cell.code].length } }}
+                    </div>
+                  </div>
+
+                  <!-- Empty-column -->
+                  <div class="required-input" *ngSwitchCase="'empty-column'"></div>
+                </ng-container>
+              </td>
+            </ng-container>
+          </tr>
+
+          <tr>
+            <td class="button-colm" [attr.colspan]="tableHeaders.length">
+              <div
+                class="button-block"
+                [ngStyle]="{ left: buttonsLeftPosition }"
+                *ngIf="isEditing === row && canEditRows"
+              >
+                <button *ngIf="isEditing === row && enableSearchBtn" type="button" (click)="openSearchModal(row)">
+                  <mat-icon color="primary" svgIcon="search"></mat-icon>
+                </button>
+                <button *ngIf="isEditing === row" type="button" (click)="saveRow(row)">
+                  <mat-icon svgIcon="check" (error)="errorLoadIcon = true" *ngIf="!errorLoadIcon; else textIcon"></mat-icon>
+                  <ng-template #textIcon>
+                    <img class="check-icon-error" src="./assets/img/tick.svg" alt="">
+                  </ng-template>
+
+                </button>
+                <button *ngIf="isEditing === row" type="button" (click)="cancelEdition(row)">
+                  <mat-icon svgIcon="cancel"></mat-icon>
+                </button>
+                <button *ngIf="isBtnDeleteAvailable && isEditing === row" type="button" (click)="deleteRow(row)">
+                  <mat-icon svgIcon="delete_forever"></mat-icon>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+      <tfoot>
+        <tr class="total-row" *ngIf="isTotal">
+          <td *ngFor="let col of tableHeaders">
+            <b>{{ getTotalFor(col) }}</b>
+          </td>
+        </tr>
+        <tr>
+          <td [attr.colspan]="tableHeaders.length">
+            <ng-container *ngIf="canAddRows; else emptyRow">
+              <button (click)="addRow()" [disabled]="!!isEditing">
+                <mat-icon svgIcon="add_circle"></mat-icon>
+                <span class="button-add-text">{{ buttonName | translate }}</span>
+              </button>
+            </ng-container>
+            <ng-template #emptyRow>
+              <span class="empty-row"></span>
+            </ng-template>
+          </td>
+        </tr>
+      </tfoot>
+    </div>
+  </table>
+</perfect-scrollbar>

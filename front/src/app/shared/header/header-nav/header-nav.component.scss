@@ -1,0 +1,173 @@
+@import "../../../../theme/styles/common";
+
+:host {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navigation-container {
+  width: 100%;
+  display: flex;
+
+  .navigation-link {
+    position: relative;
+    display: block;
+    font-size: 14px;
+    text-align: center;
+    line-height: 20px;
+    float: left;
+    padding: 0;
+    margin: 0;
+    border-radius: 0 0 0.25rem 0.25rem;
+
+    /*
+    &:not(:last-child)::after {
+      content: "";
+      background: $light_gray;
+      position: absolute;
+      bottom: 10px;
+      left: calc(100% - 1px);
+      height: 61%;
+      width: 1px;
+    }*/
+
+    span {
+      display: inline-block;
+      width: 100%;
+      padding: 10px;
+      font-weight: 500;
+      color: nb-theme(header-text-color);
+      font-family: "VTB Group Book" !important;
+    }
+
+    /*&.active::after {
+      font-size: 12px;
+      color: $blue;
+      right: 1px;
+      border: solid;
+      border-width: 0 0 4px 0;
+      border-radius: 0 0 1px 1px;
+      span {
+        color: #fff;
+      }
+    }*/
+
+    &.active::after {
+      position: absolute;
+      bottom: -8px;
+      left: 4px;
+      right: 4px;
+      content: "";
+      height: 3px;
+      background-color: var(--ds-iconBorder-brand, var(--color-primary-default));
+      border-top-left-radius: 1px;
+      border-top-right-radius: 1px;
+    }
+  }
+
+  .retail-menu {
+    .retail-menu-toggle {
+      position: relative;
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: "VTB Group Book" !important;
+      text-align: center;
+      height: 40px;
+      border-radius: 0 0 0.25rem 0.25rem;
+      border: none;
+      color: $bank-gray;
+      background-color: transparent;
+      right: 1px;
+      cursor: pointer;
+
+      nb-icon {
+        width: 30px;
+        height: 30px;
+      }
+
+      &::after {
+        display: none;
+      }
+
+      &:hover,
+      &:focus,
+      &:active {
+        outline: none !important;
+      }
+
+      .arrow-down {
+        padding-left: 6px;
+        color: $bank-gray;
+      }
+    }
+
+    .retail-menu-dropdown {
+      position: absolute;
+      transform: translate(10px, 40px) !important;
+      min-width: 200px;
+
+      &.show {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .retail-menu-link {
+        position: relative;
+        display: block;
+        font-size: 14px;
+        line-height: 25px;
+        float: left;
+        padding: 0;
+        margin: 0;
+        border-radius: 0 0 0.25rem 0.25rem;
+
+        span {
+          display: inline-block;
+          width: 100%;
+          padding: 10px;
+          font-weight: 500;
+          font-family: "VTB Group Book" !important;
+          color: $bank-gray;
+        }
+
+        &.active {
+          background: $blue;
+          font-size: 14px;
+          right: 1px;
+          span {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  .navbar-locale {
+    margin-left: auto;
+    cursor: pointer;
+
+    .navbar-locale-icon {
+      width: 40px;
+      line-height: 40px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .navbar-locale-value {
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+  }
+}
+
+.dropdown-item:hover {
+  background: var(--color-basic-600) !important;
+  cursor: pointer;
+}

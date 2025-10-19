@@ -1,0 +1,36 @@
+<div class="col-lg-12 text-center d-flex">
+  <div class="col text-center">
+    <!--<span>
+      <nb-icon class="lh-31" icon="globe-outline" pack="eva"></nb-icon>
+      <nb-select matRipple class="lang-select" [selected]="currentLanguage" (selectedChange)="setLanguage($event)">
+        <nb-option matRipple *ngFor="let lang of languages" [value]="lang">
+          {{ lang }}
+        </nb-option>
+      </nb-select>
+    </span>-->
+    <span>
+      <nb-icon class="lh-31" icon="globe-outline" pack="eva"></nb-icon>
+      <!--(selectedChange)="setLanguage($event)"-->
+      <nb-select matRipple class="lang-select" [selected]="currentLanguage">
+        <nb-option routerLink="/{{ lang }}" routerLinkActive="active" *ngFor="let lang of languages" [value]="lang">
+          {{ lang }}
+        </nb-option>
+      </nb-select>
+    </span>
+  </div>
+  <div class="col created-by text-center lh-31">
+    <span>© 2023 VTB Armenia - ABLE Platform</span>
+  </div>
+  <div class="col text-center lh-31">
+    <button
+      *ngFor="let theme of themes"
+      nbButton
+      (click)="changeTheme(theme.value)"
+      [status]="theme.value === 'default' ? '' : 'primary'"
+      [size]="'small'"
+      class="ml-1"
+    >
+      {{ theme.name }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="filter-wrapper"></div>
+<div class="flex-block">
+  <div class="table-block">
+    <mat-app-table
+      [objColNameProps]="objColNameProps"
+      [isSorting]="false"
+      [tableData]="dataSource"
+      [totalCount]="totalCount"
+      [itemLimit]="itemLimit"
+      [tableBlockWidth]="'3000px'"
+      (selectedPage)="selectedPageEvent($event)"
+      (selectedItem)="selectedItem($event)"
+      (sortingData)="sortingDataEvent($event)"
+      [isSelectsItem]="allowSelectItem"
+    >
+      <div class="button-block" *ngIf="allowSelectItem">
+        <mat-app-button
+          [className]="'mr-2'"
+          [size]="'medium'"
+          [border]="true"
+          [radius]="'semiRound'"
+          [backgroundColor]="'white'"
+          [color]="'gray'"
+          [hover]="'gray'"
+          (clickEvent)="openNewDialog()"
+        >
+          {{ 'Administration.Buttons.AddAccountProduct' | translate }}
+        </mat-app-button>
+      </div>
+    </mat-app-table>
+  </div>
+</div>

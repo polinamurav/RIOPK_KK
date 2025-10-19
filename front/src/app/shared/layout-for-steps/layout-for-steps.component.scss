@@ -1,0 +1,106 @@
+@import "../../../theme/styles/colors";
+
+::ng-deep {
+  .mat-expansion-panel {
+    box-shadow: none !important;
+
+    .mat-expansion-panel-content {
+      .mat-expansion-panel-body {
+        padding: 10px 31px 16px;
+
+        .col:first-child {
+          padding-left: 0;
+        }
+      }
+    }
+  }
+}
+
+mat-expansion-panel-header {
+  padding: 3px 0 3px 0;
+  border-radius: 0;
+  background-color: var(--layout-background-color);
+}
+
+.mat-expansion-panel-header[aria-disabled="true"] {
+  background-color: var(--layout-background-color);
+}
+
+mat-panel-description {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.circle {
+  display: flex;
+  justify-content: flex-end;
+  height: 22px;
+  width: 30px;
+  margin-right: 10px;
+  padding-right: 10px;
+  //padding-top: 2px;
+  border: 1px solid $blue;
+  border-radius: 0 5px 5px 0;
+  background-color: $blue;
+  color: $snow;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  font-family: "VTB Group Book" !important;
+}
+
+.header-info {
+  display: flex;
+}
+
+.text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--header-text-color);
+  line-height: 24px;
+  font-family: "VTB Group Book" !important;
+}
+
+.clear-button {
+  position: relative;
+  padding-top: 10px;
+  font-size: 0.9375rem;
+  color: $outer-space-triple;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: "VTB Group Book" !important;
+
+  span:first-child {
+    position: absolute;
+    top: 8px;
+    left: -15px;
+  }
+}
+
+.toggle-btn {
+  border: none;
+  background-color: transparent;
+  color: $outer-space-triple;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  font-family: "VTB Group Book" !important;
+
+  &:focus {
+    outline: none;
+  }
+
+  span:first-child {
+    margin-right: 10px;
+  }
+}
+
+//.flex-content {
+//  display: flex;
+//}
+
+::ng-deep .arr-rotate svg {
+  transform: rotate(180deg);
+}
+
+.display-none {
+  display: none;
+}
