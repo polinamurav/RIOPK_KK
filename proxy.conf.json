@@ -1,7 +1,0 @@
-{
-  "/vtb/api/v1": {
-    "target": "http://192.168.50.61",
-    "secure": false,
-    "logLevel": "debug"
-  }
-}
