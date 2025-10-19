@@ -1,165 +1,71 @@
-# ngX Starter Kit
+1 АРХИТЕКТУРА ПРОГРАММНОГО СРЕДСТВА В НОТАЦИИ С4
 
-Web project starter kit including modern tools and workflow based on
-[angular-cli](https://github.com/angular/angular-cli), best practices from the community, a scalable base template and
-a good learning base.
+На рисунке 1 представлен контейнерный уровень архитектуры программного средства.
 
-Generated using [ngX-Rocket](https://github.com/ngx-rocket/generator-ngx-rocket).
+<img width="930" height="575" alt="image" src="https://github.com/user-attachments/assets/16769db3-7de3-46ae-a38e-efa1664a7766" />
 
-### Benefits
+Рисунок 1 – Контейнерный уровень архитектуры программного средства 
 
-- Quickstart a project in seconds and focus on features, not on frameworks or tools
+Программное средство «Кредитный конвейер» предназначено для обработки и принятия решений по кредитным заявкам физических лиц. Основным элементом системы является веб-приложение, разработанное на Angular и TypeScript. Оно предоставляет удобный интерфейс для клиентов, кредитных менеджеров, специалистов по рискам и администраторов. Клиенты могут подать заявку и отслеживать её статус, менеджеры обрабатывают данные и принимают решения, а администраторы следят за стабильной и безопасной работой системы.
+Все запросы от веб-приложения обрабатываются серверным API-приложением, реализованным на Java с использованием Spring MVC. Этот компонент выполняет основную бизнес-логику: регистрацию и обработку заявок, взаимодействие с внешними банковскими сервисами и управление процессом принятия решений. Для связи с другими частями системы сервер использует REST API, а также обращается к базе данных и сервису уведомлений.
+Хранилищем данных является база PostgreSQL, где сохраняется информация о клиентах, заявках, результатах проверок и итоговых решениях. Она обеспечивает надёжное хранение и быстрый доступ к информации, необходимой для работы системы.
+Отдельный сервис уведомлений, построенный на WebSocket, отвечает за информирование клиентов и сотрудников о ходе обработки заявок и результатах решений на электронную почту. Это позволяет пользователям получать актуальные данные в реальном времени.
+Важным элементом архитектуры является интеграция с внешней банковской системой. Через REST API серверное приложение получает данные о кредитной истории и финансовом состоянии клиентов. Эти сведения используются при скоринговой проверке и помогают принимать более точные и обоснованные решения.
+На рисунке 2 представлен компонентный уровень архитектуры программного средства.
 
-- Industrial-grade tools, ready for usage in a continuous integration environment and DevOps
+<img width="974" height="644" alt="image" src="https://github.com/user-attachments/assets/05942f05-0d98-4dac-880a-c86536cf37ea" />
 
-- Scalable architecture with base app template including example components, services and tests
+Рисунок 2 – Компонентный уровень архитектуры программного средства 
 
-# Getting started
+Компонентный уровень архитектуры кредитного конвейера представляет собой совокупность функциональных блоков, каждый из которых реализует определённые задачи и взаимодействует с другими через четко определённые интерфейсы.
+Контейнер с API-приложением разбит на несколько контроллеров – компонентов, каждый из которых отвечает за специализированную функцию внутри системы. Веб-клиент, построенный с использованием Angular и TypeScript, общается с бекендом через REST API, обращаясь к соответствующим контроллерам.
+User Controller управляет пользовательскими данными, включая регистрацию, обновление профиля и ролевой доступ. Он взаимодействует с базой данных, обеспечивая надежное хранение информации о клиентах и сотрудниках.
+Security Controller, основанный на Spring Security, реализует механизмы аутентификации и авторизации, гарантируя, что к функционалу системы имеют доступ только уполномоченные пользователи с разными ролями – от клиентов до администраторов.
+Decision Controller содержит логику принятия решений, включая расчеты рисков, используя данные заявок и внешних систем.
+Document Controller занимается загрузкой, хранением и проверкой документов, необходимых для рассмотрения кредитных заявок, связывая клиентов, менеджеров и базу данных.
+Application Controller служит центром обработки заявок – принимает новые заявки, обновляет их статусы, связывает с решениями и результатами проверок, обеспечивая сквозной бизнес-процесс.
+Notification Component Controller формирует и отправляет уведомления пользователям, используя WebSocket для своевременного информирования клиентов и сотрудников о ходе обработки и результатах на электронную почту.
+Banking Systems Facade – объединённый интерфейс для интеграции с внешними банковскими системами, системами документооборота и платёжными сервисами, обеспечивая прозрачное и унифицированное взаимодействие.
+Вся ключевая информация – данные пользователей, заявки, документы, решения и уведомления – надёжно хранится в базе данных PostgreSQL, обеспечивая высокую производительность, целостность и доступность данных.
+Кодовый уровень архитектуры программного средства представлен на рисунке 3.
 
-1. Go to project folder and install dependencies:
- ```bash
- npm install
- ```
- 
-2. Launch development server, and open `localhost:4200` in your browser:
- ```bash
- npm start
- ```
- 
-# Project structure
+<img width="974" height="757" alt="image" src="https://github.com/user-attachments/assets/512b6851-848a-42b8-a9fb-04366cd7ddcc" />
 
-```
-dist/                        compiled version
-docs/                        project docs and coding guides
-e2e/                         end-to-end tests
-src/                         project source code
-|- app/                      app components
-|  |- core/                  core module (singleton services and single-use components)
-|  |- shared/                shared module  (common components, directives and pipes)
-|  |- app.component.*        app root component (shell)
-|  |- app.module.ts          app root module definition
-|  |- app-routing.module.ts  app routes
-|  +- ...                    additional modules and components
-|- assets/                   app assets (images, fonts, sounds...)
-|- environments/             values for various build environments
-|- theme/                    app global scss variables and theme
-|- translations/             translations files
-|- index.html                html entry point
-|- main.scss                 global style entry point
-|- main.ts                   app entry point
-|- polyfills.ts              polyfills needed by Angular
-+- test.ts                   unit tests entry point
-reports/                     test and coverage reports
-proxy.conf.js                backend proxy configuration
-```
+Рисунок 3 – Кодовый уровень архитектуры программного средства 
 
-# Main tasks
+Кодовый уровень архитектуры программного средства «Кредитный конвейер» отражает структуру классов, реализующих бизнес-логику обработки кредитных заявок. В центре модели находится класс Application, который содержит ключевые атрибуты кредитной заявки: идентификатор, данные клиента, сумму кредита, срок и текущий статус. Класс предоставляет метод для обновления статуса, что позволяет отслеживать весь жизненный цикл заявки.
+С классом Application связаны другие важные сущности. Класс Document хранит информацию о документах, прикреплённых к заявке: название, путь к файлу и тип документа. Он реализует методы генерации и отправки документов. Класс Decision описывает принятое решение по заявке, включая срок, сумму и результат одобрения. Он связан с конкретной заявкой и фиксирует итог обработки.
+Класс User управляет данными пользователей системы: идентификатором, логином, паролем и ролью (клиент, менеджер, администратор). С ним связан класс Notification, который отвечает за хранение и отправку уведомлений. Уведомления содержат текст сообщения, дату отправки и привязаны к конкретному пользователю.
+За безопасность отвечает класс Security, который хранит список пользователей и ролей, а также реализует методы аутентификации и авторизации. Он обеспечивает доступ к функциям системы только для проверенных ролей.
+Отдельный компонент BankingSystemFacade – служит интерфейсом для взаимодействия с внешними банковскими системами. Он содержит параметры подключения и методы для отправки запросов и получения прогнозов кредитоспособности клиента. Этот фасад скрывает сложность интеграции и предоставляет единый способ работы с внешними сервисами.
+Кодовый уровень архитектуры «Кредитного конвейера» демонстрирует чёткое разделение ответственности между классами: Application управляет заявками, Document и Decision обеспечивают документооборот и фиксацию решений, User и Notification отвечают за взаимодействие с пользователями, Security гарантирует защиту доступа, а BankingSystemFacade обеспечивает интеграцию с банковской инфраструктурой.
 
-Task automation is based on [NPM scripts](https://docs.npmjs.com/misc/scripts).
+2 СИСТЕМА ДИЗАЙНА ПОЛЬЗОВАТЕЛЬСКОГО ИНТЕРФЕЙСА
 
-Tasks                         | Description
-------------------------------|---------------------------------------------------------------------------------------
-npm start                     | Run development server on `http://localhost:4200/`
-npm run build [-- --env=prod] | Lint code and build app for production in `dist/` folder
-npm test                      | Run unit tests via [Karma](https://karma-runner.github.io) in watch mode
-npm run test:ci               | Lint code and run unit tests once for continuous integration
-npm run e2e                   | Run e2e tests using [Protractor](http://www.protractortest.org)
-npm run lint                  | Lint code
-npm run translations:extract  | Extract strings from code and templates to `src/app/translations/template.json`
-npm run docs                  | Display project documentation
+В программном средстве разработана система дизайна пользовательского интерфейса. Она включает набор стандартных элементов и правил оформления, которые используются во всех модулях приложения. На рисунке 4 представлен UI Kit программного средства.
 
-When building the application, you can specify the target environment using the additional flag `--env <name>` (do not
-forget to prepend `--` to pass arguments to npm scripts).
+<img width="974" height="675" alt="image" src="https://github.com/user-attachments/assets/cb7646d9-1a39-41f4-8614-0e3e6eb8093d" />
 
-The default build environment is `prod`.
+Рисунок 4 – UI Kit программного средства 
 
-## Development server
+В систему входят основные компоненты: кнопки, переключатели, чекбоксы, радиокнопки, поля для ввода текста и выпадающие списки. Для выбора дат используется календарь, а для подсказок всплывающие окна с пояснениями. Также предусмотрены иконки для быстрых действий и цветовые обозначения для разных статусов. Определены единые правила для текста – используются одинаковые шрифты и размеры, чтобы информация выглядела аккуратно и легко читалась.
+Дополнительно предусмотрены анимации загрузки, которые показывают, что система обрабатывает запрос. 
+Основой цветовой гаммы станут оттенки синего и серого, которые создают ощущение надёжности и стабильности. Для акцентных элементов, таких как кнопок действий и ключевых уведомлений – будут использоваться более яркие цвета: зелёный для успешных операций и красный для ошибок.
 
-Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change
-any of the source files.
-You should not use `ng serve` directly, as it does not use the backend proxy configuration by default.
+3 АРХИТЕКТУРА
 
-## Code scaffolding
+<img width="974" height="1103" alt="image" src="https://github.com/user-attachments/assets/da7ee30f-7927-4e6a-8e64-b61291c3af84" />
 
-Run `npm run generate -- component <name>` to generate a new component. You can also use
-`npm run generate -- directive|pipe|service|class|module`.
+ПОЛЬЗОВАТЕЛЬСКИЙ ИНТЕРФЕЙС
+<img width="1920" height="901" alt="кредитный менеджер - главная" src="https://github.com/user-attachments/assets/9aa2f8f0-4356-4fe6-8dcb-d43e19b913d4" />
+<img width="1920" height="917" alt="кредитный менеджер - документ" src="https://github.com/user-attachments/assets/fc66540f-fb0c-4019-888e-aade3d0c3cc6" />
+<img width="1920" height="912" alt="кредитный менеджер - прикрепление документа" src="https://github.com/user-attachments/assets/dc1fc067-b0f9-43fe-9779-9be4729ee739" />
+<img width="1920" height="912" alt="кредитный менеджер - полная анкета" src="https://github.com/user-attachments/assets/85c13fc6-7a17-46d2-81bf-41f7d84491ea" />
+<img width="1920" height="902" alt="кредитный менеджер - скоринг принятия решения" src="https://github.com/user-attachments/assets/9da73c9d-1c32-4a7c-a3ee-d772e9e429a9" />
+<img width="1920" height="912" alt="риск-менеджер этап принятия решения" src="https://github.com/user-attachments/assets/1d22da7f-3435-4f67-b8ed-f86a353cc88c" />
+<img width="1920" height="907" alt="админ - кредитные программы" src="https://github.com/user-attachments/assets/79834374-0d82-47cc-b2d1-9173083def24" />
+<img width="1920" height="396" alt="админ - отчетность" src="https://github.com/user-attachments/assets/3c14dfd9-18fe-439b-af33-fbb1f9922f9d" />
 
-If you have installed [angular-cli](https://github.com/angular/angular-cli) globally with `npm install -g @angular/cli`,
-you can also use the command `ng generate` directly.
+ВЫВОДЫ
 
-## Additional tools
-
-Tasks are mostly based on the `angular-cli` tool. Use `ng help` to get more help or go check out the
-[Angular-CLI README](https://github.com/angular/angular-cli).
-
-# What's in the box
-
-The app template is based on [HTML5](http://whatwg.org/html), [TypeScript](http://www.typescriptlang.org) and
-[Sass](http://sass-lang.com). The translation files use the common [JSON](http://www.json.org) format.
-
-#### Tools
-
-Development, build and quality processes are based on [angular-cli](https://github.com/angular/angular-cli) and
-[NPM scripts](https://docs.npmjs.com/misc/scripts), which includes:
-
-- Optimized build and bundling process with [Webpack](https://webpack.github.io)
-- [Development server](https://webpack.github.io/docs/webpack-dev-server.html) with backend proxy and live reload
-- Cross-browser CSS with [autoprefixer](https://github.com/postcss/autoprefixer) and
-  [browserslist](https://github.com/ai/browserslist)
-- Asset revisioning for [better cache management](https://webpack.github.io/docs/long-term-caching.html)
-- Unit tests using [Jasmine](http://jasmine.github.io) and [Karma](https://karma-runner.github.io)
-- End-to-end tests using [Protractor](https://github.com/angular/protractor)
-- Static code analysis: [TSLint](https://github.com/palantir/tslint), [Codelyzer](https://github.com/mgechev/codelyzer),
-  [Stylelint](http://stylelint.io) and [HTMLHint](http://htmlhint.com/)
-- Local knowledgebase server using [Hads](https://github.com/sinedied/hads)
-
-#### Libraries
-
-- [Angular](https://angular.io)
-- [Bootstrap 4](https://getbootstrap.com)
-- [Font Awesome](http://fontawesome.io)
-- [RxJS](http://reactivex.io/rxjs)
-- [ng-bootstrap](https://ng-bootstrap.github.io)
-- [ngx-translate](https://github.com/ngx-translate/core)
-- [Lodash](https://lodash.com)
-
-#### Coding guides
-
-- [Angular](docs/coding-guides/angular.md)
-- [TypeScript](docs/coding-guides/typescript.md)
-- [Sass](docs/coding-guides/sass.md)
-- [HTML](docs/coding-guides/html.md)
-- [Unit tests](docs/coding-guides/unit-tests.md)
-- [End-to-end tests](docs/coding-guides/e2e-tests.md)
-
-#### Other documentation
-
-- [I18n guide](docs/i18n.md)
-- [Working behind a corporate proxy](docs/corporate-proxy.md)
-- [Updating dependencies and tools](docs/updating.md)
-- [Using a backend proxy for development](docs/backend-proxy.md)
-- [Browser routing](docs/routing.md)
-
-# Licence
-
-The MIT License (MIT)
-
-Copyright (c) 2016-2018 Thales Services SAS
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+В ходе выполнения лабораторной работы была спроектирована и описана архитектура программного средства «Кредитный конвейер» для обработки и принятия решений по кредитным заявкам физических лиц. Система рассмотрена на контейнерном, компонентном и кодовом уровнях, что позволило показать её структуру и логику работы. Дополнительно разработана система дизайна пользовательского интерфейса, включающая набор стандартных элементов, правила оформления и цветовую палитру, обеспечивающую единый стиль и удобство взаимодействия. Проведённый анализ и рефакторинг кода позволили выделить ключевые сущности, разделить ответственность между компонентами и упростить дальнейшее сопровождение. В результате получено программное средство с чёткой архитектурой, удобным интерфейсом и возможностью масштабирования, что соответствует поставленной цели работы.
