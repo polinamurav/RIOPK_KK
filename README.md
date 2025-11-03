@@ -66,6 +66,112 @@ Banking Systems Facade – объединённый интерфейс для и
 <img width="1920" height="907" alt="админ - кредитные программы" src="https://github.com/user-attachments/assets/79834374-0d82-47cc-b2d1-9173083def24" />
 <img width="1920" height="396" alt="админ - отчетность" src="https://github.com/user-attachments/assets/3c14dfd9-18fe-439b-af33-fbb1f9922f9d" />
 
+БЕЗОПАСНОСТЬ:
+Authorization Server – это центральный компонент системы OAuth2, отвечающий за выдачу, хранение и проверку токенов доступа. Он взаимодействует с базой данных, в которой хранится информация о клиентах и пользователях системы.
+Используемая конфигурация позволяет гибко управлять политикой доступа и поддерживает разные типы клиентов — от браузерного интерфейса до серверных приложений. Это особенно важно для системы «Кредитный конвейер», в которой предусмотрены как внутренние пользовательские роли (менеджеры, администраторы), так и интеграции с внешними сервисами.
+Пример конфигурации Authorization Server представлен ниже:
+
+@Configuration
+@EnableAuthorizationServer
+public class OAuth2Config implements AuthorizationServerConfigurer {
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+        oauthServer
+                .tokenKeyAccess("permitAll()")  // Разрешаем доступ к endpoint получения токена
+                .checkTokenAccess("isAuthenticated()");  // Проверка токена требует аутентификации
+    }
+
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.jdbc(dataSource)
+                .withClient("browser")
+                .secret("{noop}secret")
+                .authorizedGrantTypes("password", "refresh_token")
+                .scopes("api")
+                .and()
+                .withClient("application-service")
+                .secret("{noop}secret")
+                .authorizedGrantTypes("client_credentials")
+                .scopes("server");
+    }
+
+    @Bean
+    public JdbcTokenStore tokenStore() {
+        return new CustomJdbcTokenStore(dataSource);
+    }
+}
+Для повышения надежности работы с токенами была создана кастомная реализация JdbcTokenStore, которая обрабатывает исключительные ситуации, возникающие при повреждении токенов (например, из-за сбоев при сериализации или устаревших записей в БД).
+
+@Slf4j
+public class CustomJdbcTokenStore extends JdbcTokenStore {
+
+    public CustomJdbcTokenStore(DataSource dataSource) {
+        super(dataSource);
+    }
+
+    @Override
+    public OAuth2AccessToken readAccessToken(String tokenValue) {
+        OAuth2AccessToken accessToken = null;
+
+        try {
+            accessToken = new DefaultOAuth2AccessToken(tokenValue);
+        }
+        catch (EmptyResultDataAccessException e) {
+            log.info("Failed to find access token for token {}", tokenValue);
+        }
+        catch (IllegalArgumentException e) {
+            log.warn("Failed to deserialize access token for {}", tokenValue, e);
+            removeAccessToken(tokenValue);
+        }
+        return accessToken;
+    }
+}
+Одним из ключевых компонентов системы безопасности в «Кредитном конвейере» является сервис аудита (AuditLogService).
+Он регистрирует все критические действия пользователей и системных компонентов: создание, изменение и удаление сущностей, входы в систему, попытки доступа без достаточных прав и другие важные события.
+
+@Service
+public class AuditLogService {
+
+    public void create(AuditEventTypeEnum eventType, String entityType, 
+                      String entityId, String description, Object details) {
+        AuditLog auditLog = new AuditLog();
+        auditLog.setEventType(eventType);
+        auditLog.setEntityType(entityType);
+        auditLog.setEntityId(entityId);
+        auditLog.setDescription(description);
+        auditLog.setDetails(serializeDetails(details));
+        auditLog.setTimestamp(LocalDateTime.now());
+        auditLog.setUsername(SecurityUtils.getCurrentUsername());
+        
+        auditLogRepository.save(auditLog);
+    }
+}
+Для безопасного взаимодействия между фронтендом и бэкендом настроен Cross-Origin Resource Sharing (CORS).
+Это предотвращает несанкционированный доступ к API из сторонних доменов и позволяет гибко определять доверенные источники запросов.
+
+@Configuration
+public class WebCorsConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**")
+                .allowedOrigins("https://frontend.example.com")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowCredentials(true)
+                .maxAge(3600);
+    }
+}
+
+Дополнительно в конфигурации Spring Security включены следующие механизмы:
+	HTTP Strict Transport Security (HSTS) — принудительное использование HTTPS;
+	Content Security Policy (CSP) — предотвращение XSS-атак;
+	Rate Limiting — ограничение частоты запросов для защиты от brute-force атак на токены и логины;
+	Security Headers — настройка заголовков X-Content-Type-Options, X-Frame-Options, Referrer-Policy.
+
 ВЫВОДЫ
 
 В ходе выполнения лабораторной работы была спроектирована и описана архитектура программного средства «Кредитный конвейер» для обработки и принятия решений по кредитным заявкам физических лиц. Система рассмотрена на контейнерном, компонентном и кодовом уровнях, что позволило показать её структуру и логику работы. Дополнительно разработана система дизайна пользовательского интерфейса, включающая набор стандартных элементов, правила оформления и цветовую палитру, обеспечивающую единый стиль и удобство взаимодействия. Проведённый анализ и рефакторинг кода позволили выделить ключевые сущности, разделить ответственность между компонентами и упростить дальнейшее сопровождение. В результате получено программное средство с чёткой архитектурой, удобным интерфейсом и возможностью масштабирования, что соответствует поставленной цели работы.
