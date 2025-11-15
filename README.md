@@ -46,7 +46,8 @@ UML-Диаграммы
 <img width="4386" height="4542" alt="диаграмма классов" src="https://github.com/user-attachments/assets/5c245626-38c0-4b0a-9b8f-e12f85c42ca6" />
 <img width="1214" height="1974" alt="диаграмма деятельности" src="https://github.com/user-attachments/assets/89c67fcb-69d6-44a8-9e3f-462ba8f6778a" />
 <img width="636" height="941" alt="диаграмма состояний" src="https://github.com/user-attachments/assets/308f916a-5199-456f-9e78-74a24ddf2c6c" />
-<img width="1205" height="957" alt="вариантов использования2" src="https://github.com/user-attachments/assets/5ec5e94c-8bb1-46a3-a5cc-dbb1b29d6938" />
+<img width="1206" height="958" alt="вариантов использования2" src="https://github.com/user-attachments/assets/ea32cdeb-1524-48a8-aa21-0e8197b7b6ab" />
+
 
 2 СИСТЕМА ДИЗАЙНА ПОЛЬЗОВАТЕЛЬСКОГО ИНТЕРФЕЙСА
 
