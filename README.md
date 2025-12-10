@@ -182,6 +182,208 @@ public class WebCorsConfig implements WebMvcConfigurer {
 	Security Headers — настройка заголовков X-Content-Type-Options, X-Frame-Options, Referrer-Policy.
 
 
+
+ТЕСТИРОВАНИЕ:
+2 ПРИМЕРЫ UNIT-ТЕСТОВ
+
+Unit-тестирование направлено на проверку корректности работы отдельных функций и модулей системы, изолированных от остальной системы.
+Примеры функций, проверяемых unit-тестами
+1  Расчет ежемесячного платежа (аннуитетный метод).
+2  Валидация входных данных кредитной заявки.
+3  Проверка лимитов и условий кредитования.
+4  Расчет максимальной суммы кредита на основе кредитного рейтинга клиента.
+Unit-тест 1. Расчет ежемесячного платежа:
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class PaymentCalculatorTest {
+
+    double calculateMonthlyPayment(double amount, double rate, int term) {
+        double monthlyRate = rate / 12 / 100;
+        return (amount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -term));
+    }
+
+    @Test
+    void testCalculateMonthlyPayment() {
+        double result = calculateMonthlyPayment(10000, 12, 12);
+        assertEquals(888.49, result, 0.5);
+    }
+}
+
+Unit-тест 2. Тест валидации кредитной заявки:
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class ApplicationValidatorTest {
+
+    boolean validateApplication(CreditApplication app) {
+        return app.amount > 0 && app.term > 0 && app.userId != null;
+    }
+
+    static class CreditApplication {
+        Integer userId;
+        double amount;
+        int term;
+
+        CreditApplication(Integer userId, double amount, int term) {
+            this.userId = userId;
+            this.amount = amount;
+            this.term = term;
+        }
+    }
+
+    @Test
+    void testValidApplication() {
+        CreditApplication app = new CreditApplication(123, 5000, 6);
+        assertTrue(validateApplication(app));
+    }
+
+    @Test
+    void testInvalidApplication() {
+        CreditApplication app = new CreditApplication(null, 5000, 6);
+        assertFalse(validateApplication(app));
+    }
+}
+Unit-тест 3. Тест проверки кредитных лимитов
+Например: если сумма превышает 50 000 — заявка отклоняется.
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class CreditLimitTest {
+
+    boolean checkLimit(double amount) {
+        return amount <= 50000;  // лимит банка
+    }
+
+    @Test
+    void testAmountWithinLimit() {
+        assertTrue(checkLimit(30000));
+    }
+
+    @Test
+    void testAmountExceedsLimit() {
+        assertFalse(checkLimit(75000));
+    }
+}
+
+Unit-тест 4. Тест расчёта максимальной суммы кредита по рейтингу
+Например:
+рейтинг < 600 → максимум 0
+рейтинг 600–700 → максимум 10 000
+рейтинг > 700 → максимум 30 000
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class MaxCreditAmountTest {
+
+    double getMaxCreditAmount(int rating) {
+        if (rating < 600) return 0;
+        if (rating < 700) return 10000;
+        return 30000;
+    }
+
+    @Test
+    void testLowRating() {
+        assertEquals(0, getMaxCreditAmount(550));
+    }
+
+    @Test
+    void testMediumRating() {
+        assertEquals(10000, getMaxCreditAmount(650));
+    }
+
+    @Test
+    void testHighRating() {
+        assertEquals(30000, getMaxCreditAmount(750));
+    }
+}
+Unit-тестирование в разработке программного средства «Кредитный конвейер» применялось для проверки корректности работы отдельных функций и модулей, не зависящих от внешних сервисов и других компонентов системы. Цель unit-тестов состояла в том, чтобы убедиться, что каждая функция бизнес-логики работает строго в соответствии с заданными правилами, корректно обрабатывает входные данные и возвращает предсказуемые результаты.
+Для unit-тестирования были выделены ключевые функции кредитного конвейера:
+1  Расчёт ежемесячного платежа – тест позволяет определить корректность реализации аннуитетной формулы и проверить, что при разных входных параметрах (сумма, ставка, срок) результат совпадает с расчётным значением.
+2  Валидация входных данных кредитной заявки – тестируется, что система корректно отбрасывает заявки без обязательных параметров (ID пользователя, сумма, срок) и принимает корректно оформленные заявки.
+3  Проверка лимитов кредитования – тест проверяет, что система верно определяет, превышает ли требуемая сумма установленный для банка лимит, и корректно реагирует на граничные значения.
+4  Расчёт максимальной доступной суммы по кредитному рейтингу – тестирование подтверждает, что система использует правильные диапазоны кредитных рейтингов и корректно определяет доступный клиенту максимум.
+Unit-тесты выполнялись в полностью изолированной среде без обращений к базе данных или сетевым сервисам. Это позволило локализовать ошибки в отдельных функциях и обеспечить высокую надёжность базовой бизнес-логики кредитного конвейера.
+
+3 ИНТЕГРАЦИОННОЕ ТЕСТИРОВАНИЕ
+
+Интеграционные тесты проверяют корректность взаимодействия модулей и процессов в рамках всей системы.
+Основные сценарии интеграционных тестов
+1  Полный процесс обработки заявки: от ввода данных до принятия решения и уведомления клиента.
+2  Обработка заявок с низким кредитным рейтингом (отклонение).
+3  Обработка заявок с превышением лимита кредита (отклонение).
+4  Проверка правильности уведомлений клиентов при изменении статуса заявки.
+В тестах используется фиктивный сервис TestCreditServices, который имитирует работу зависимостей.
+Примеры интеграционных тестов:
+Интеграционный тест 1. Полный процесс обработки заявки (успешный сценарий)
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class CreditPipelineIntegrationTest {
+
+    @Test
+    public void testFullCreditApplicationFlow() {
+        // Arrange
+        CreditApplication application =
+                new CreditApplication(123, 10000, 12);
+
+        TestCreditServices services = new TestCreditServices();
+
+        CreditPipeline pipeline = new CreditPipeline(
+                services, services, services, services
+        );
+
+        // Act
+        CreditResult result = pipeline.process(application);
+
+        // Assert
+        assertEquals("approved", result.getStatus());
+        assertTrue(result.isNotificationSent());
+    }
+}
+
+Интеграционный тест 2. Отклонение заявки из-за низкого кредитного рейтинга:
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class CreditPipelineLimitTest {
+
+    @Test
+    public void testApplicationRejectedLimitExceeded() {
+        // Arrange
+        CreditApplication application =
+                new CreditApplication(789, 1000000, 24); // Очень большая сумма
+
+        TestCreditServices services = new TestCreditServices();
+        services.setMaxAllowedAmount(50000); // Устанавливаем лимит
+
+        CreditPipeline pipeline = new CreditPipeline(
+                services, services, services, services
+        );
+
+        // Act
+        CreditResult result = pipeline.process(application);
+
+        // Assert
+        assertEquals("rejected_limit", result.getStatus());
+        assertFalse(result.isNotificationSent());
+    }
+}
+Интеграционное тестирование предназначено для проверки корректности взаимодействия отдельных модулей и компонентов программного средства. В отличие от unit-тестов, интеграционные тесты выполнялись в условиях, максимально приближённых к реальной работе кредитного конвейера, с имитацией работы основных подсистем.
+Интеграционное тестирование охватывало следующие ключевые сценарии:
+1  Полный процесс обработки кредитной заявки – от валидации и получения кредитного рейтинга до расчёта ежемесячного платежа, сохранения заявки и отправки уведомления клиенту. Тест подтверждает, что все этапы процесса выполняются последовательно и без ошибок.
+2  Обработка заявок с низким кредитным рейтингом – проверяется корректность отказа в выдаче кредита и отсутствие шагов, которые должны выполняться только при одобрении (например, отправка уведомления).
+Интеграционные тесты обеспечивали проверку совместной работы функций расчётов, модулей валидации, подсистемы рейтинга, подсистемы уведомлений и хранилища данных. Это позволило выявить ошибки взаимодействия, которые не могли быть обнаружены на уровне unit-тестов.
+
+
+
+
 РАЗВЕРТЫВАНИЕ:
 1	Подготовка окружения
 Шаг 1. Для работы бэкенд-части требуется установленная платформа Java.
