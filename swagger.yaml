@@ -1,0 +1,644 @@
+openapi: 3.0.3
+info:
+  title: Кредитный конвейер API
+  description: Программное средство «Кредитный конвейер» для обработки и принятия решений по кредитным заявкам физических лиц
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+    description: Локальный сервер разработки
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Role:
+      type: object
+      properties:
+        role_id:
+          type: integer
+        role_name:
+          type: string
+    User:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        login:
+          type: string
+        full_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        role_id:
+          type: integer
+        status:
+          type: string
+    Client:
+      type: object
+      properties:
+        client_id:
+          type: integer
+        full_name:
+          type: string
+        passport_number:
+          type: string
+        tax_id:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        date_of_birth:
+          type: string
+          format: date
+    CreditProgram:
+      type: object
+      properties:
+        program_id:
+          type: integer
+        name:
+          type: string
+        interest_rate:
+          type: number
+          format: float
+        term_months:
+          type: integer
+        max_amount:
+          type: number
+          format: float
+        description:
+          type: string
+        conditions:
+          type: string
+    Application:
+      type: object
+      properties:
+        application_id:
+          type: integer
+        client_id:
+          type: integer
+        program_id:
+          type: integer
+        manager_id:
+          type: integer
+        amount:
+          type: number
+          format: float
+        requested_amount:
+          type: number
+          format: float
+        approved_amount:
+          type: number
+          format: float
+        status:
+          type: string
+        decision_date:
+          type: string
+          format: date-time
+        comments:
+          type: string
+    Document:
+      type: object
+      properties:
+        document_id:
+          type: integer
+        application_id:
+          type: integer
+        file_name:
+          type: string
+        file_path:
+          type: string
+        document_type:
+          type: string
+        upload_date:
+          type: string
+          format: date-time
+    RiskAssessment:
+      type: object
+      properties:
+        risk_id:
+          type: integer
+        application_id:
+          type: integer
+        risk_manager_id:
+          type: integer
+        score:
+          type: number
+          format: float
+        decision:
+          type: string
+        comments:
+          type: string
+        assessment_date:
+          type: string
+          format: date-time
+    Blacklist:
+      type: object
+      properties:
+        blacklist_id:
+          type: integer
+        client_id:
+          type: integer
+        reason:
+          type: string
+        added_by:
+          type: integer
+        date_added:
+          type: string
+          format: date-time
+    Report:
+      type: object
+      properties:
+        report_id:
+          type: integer
+        user_id:
+          type: integer
+        period_start:
+          type: string
+          format: date
+        period_end:
+          type: string
+          format: date
+        file_path:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+security:
+  - BearerAuth: []
+
+paths:
+  /auth/login:
+    post:
+      summary: Авторизация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Успешная авторизация
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Неверные учетные данные
+
+  /auth/logout:
+    post:
+      summary: Выход пользователя
+      responses:
+        '200':
+          description: Успешный выход
+
+  /roles:
+    get:
+      summary: Получить список ролей
+      responses:
+        '200':
+          description: Список ролей
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+
+  /users:
+    get:
+      summary: Получить список пользователей
+      responses:
+        '200':
+          description: Список пользователей
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Создать пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Пользователь создан
+
+  /users/{id}:
+    get:
+      summary: Получить пользователя по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Информация о пользователе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      summary: Обновить пользователя
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Пользователь обновлен
+    delete:
+      summary: Удалить пользователя
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Пользователь удален
+
+  /clients:
+    get:
+      summary: Получить список клиентов
+      responses:
+        '200':
+          description: Список клиентов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+    post:
+      summary: Создать клиента
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '201':
+          description: Клиент создан
+
+  /clients/{id}:
+    get:
+      summary: Получить клиента по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Информация о клиенте
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+    put:
+      summary: Обновить клиента
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '200':
+          description: Клиент обновлен
+    delete:
+      summary: Удалить клиента
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Клиент удален
+
+  /credit-programs:
+    get:
+      summary: Получить список кредитных программ
+      responses:
+        '200':
+          description: Список программ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreditProgram'
+    post:
+      summary: Создать кредитную программу
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditProgram'
+      responses:
+        '201':
+          description: Программа создана
+
+  /credit-programs/{id}:
+    get:
+      summary: Получить кредитную программу по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Информация о программе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditProgram'
+    put:
+      summary: Обновить кредитную программу
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditProgram'
+      responses:
+        '200':
+          description: Программа обновлена
+    delete:
+      summary: Удалить кредитную программу
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Программа удалена
+
+  /applications:
+    get:
+      summary: Получить список заявок
+      responses:
+        '200':
+          description: Список заявок
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Application'
+    post:
+      summary: Создать заявку
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+      responses:
+        '201':
+          description: Заявка создана
+
+  /applications/{id}:
+    get:
+      summary: Получить заявку по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Информация о заявке
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+    put:
+      summary: Обновить заявку
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+      responses:
+        '200':
+          description: Заявка обновлена
+    delete:
+      summary: Удалить заявку
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Заявка удалена
+
+  /applications/{id}/documents:
+    get:
+      summary: Получить документы по заявке
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Список документов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+
+  /applications/{id}/decision:
+    post:
+      summary: Принять решение по заявке
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                decision:
+                  type: string
+                approved_amount:
+                  type: number
+                  format: float
+                comments:
+                  type: string
+      responses:
+        '200':
+          description: Решение принято
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+
+  /risk-assessments:
+    get:
+      summary: Получить список оценок рисков
+      responses:
+        '200':
+          description: Список оценок
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RiskAssessment'
+    post:
+      summary: Создать оценку риска
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RiskAssessment'
+      responses:
+        '201':
+          description: Оценка создана
+
+  /blacklist:
+    get:
+      summary: Получить черный список
+      responses:
+        '200':
+          description: Список клиентов в черном списке
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Blacklist'
+    post:
+      summary: Добавить клиента в черный список
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Blacklist'
+      responses:
+        '201':
+          description: Клиент добавлен в черный список
+
+  /reports:
+    get:
+      summary: Получить список отчетов
+      responses:
+        '200':
+          description: Список отчетов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+    post:
+      summary: Создать отчет
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Report'
+      responses:
+        '201':
+          description: Отчет создан
+
+  /notifications:
+    get:
+      summary: Получить уведомления пользователя (через WebSocket)
+      responses:
+        '200':
+          description: Список уведомлений
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    notification_id:
+                      type: integer
+                    message:
+                      type: string
+                    sent_at:
+                      type: string
+                      format: date-time
